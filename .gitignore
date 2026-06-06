@@ -1,0 +1,22 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+.venv/
+.whatsapp-web-profile/
+.whatsapp-scraper-debug/
+
+# Raw WhatsApp exports/scrapes. Keep these local; they contain full chat history.
+queens.txt
+tango.txt
+mini.txt
+zip.txt
+patches.txt
+
+# Local scraper config can contain private group names.
+whatsapp_scraper_config.json
+
+# Local/archive artifacts that are not needed for the deployed site.
+old/
+presentation.ipynb
+results.xlsx

@@ -1,0 +1,425 @@
+"""
+whatsapp_scraper.py
+
+Experimental local WhatsApp Web scraper.
+
+It opens WhatsApp Web in a persistent browser profile, lets you log in normally,
+reads visible/history messages from configured group chats, writes WhatsApp
+export-style .txt files, and can run parse_chat.py afterwards.
+
+Install once:
+  python -m pip install playwright
+  python -m playwright install chromium
+
+Copy whatsapp_scraper_config.example.json to whatsapp_scraper_config.json, edit
+chat names if needed, then run:
+  python whatsapp_scraper.py --config whatsapp_scraper_config.json --once
+
+For periodic syncing:
+  python whatsapp_scraper.py --config whatsapp_scraper_config.json
+
+Notes:
+  - This is intentionally local and uses your normal WhatsApp Web session.
+  - WhatsApp Web markup changes often, so selectors may need maintenance.
+  - Only scrape chats you are allowed to access and store.
+"""
+
+from __future__ import annotations
+
+import argparse
+import asyncio
+import json
+import re
+import subprocess
+import sys
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Iterable
+
+
+DEFAULT_CONFIG = "whatsapp_scraper_config.json"
+DEFAULT_PROFILE_DIR = ".whatsapp-web-profile"
+
+EXPORT_LINE_RE = re.compile(
+    r"^\[(\d{2}/\d{2}/\d{4}), (\d{2}:\d{2}:\d{2})\] ([^:]+): (.*)$"
+)
+
+WEB_PRE_PATTERNS = [
+    # Common WhatsApp Web shape: "[12:34, 01/06/2026] Adam: "
+    re.compile(
+        r"^\[(?P<hour>\d{1,2}):(?P<minute>\d{2})(?::(?P<second>\d{2}))?, "
+        r"(?P<date>\d{1,2}/\d{1,2}/\d{2,4})\] (?P<sender>.*?):\s*$"
+    ),
+    # Export-like shape, useful if the browser locale changes:
+    re.compile(
+        r"^\[(?P<date>\d{1,2}/\d{1,2}/\d{2,4}), "
+        r"(?P<hour>\d{1,2}):(?P<minute>\d{2})(?::(?P<second>\d{2}))?\] "
+        r"(?P<sender>.*?):\s*$"
+    ),
+]
+
+
+@dataclass(frozen=True)
+class Message:
+    date: str
+    time: str
+    sender: str
+    body: str
+
+    @property
+    def key(self) -> tuple[str, str, str, str]:
+        return self.date, self.time, self.sender, self.body
+
+    def sort_key(self) -> tuple[datetime, str, str]:
+        try:
+            when = datetime.strptime(f"{self.date} {self.time}", "%d/%m/%Y %H:%M:%S")
+        except ValueError:
+            when = datetime.min
+        return when, self.sender.casefold(), self.body
+
+    def to_export_text(self) -> str:
+        return f"[{self.date}, {self.time}] {self.sender}: {self.body}"
+
+
+def load_config(path: Path) -> dict:
+    if not path.exists():
+        raise SystemExit(
+            f"Config file not found: {path}\n"
+            f"Copy whatsapp_scraper_config.example.json to {DEFAULT_CONFIG} first."
+        )
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def normalise_date(date_text: str) -> str:
+    parts = date_text.split("/")
+    if len(parts) != 3:
+        raise ValueError(f"Unsupported date: {date_text}")
+    day, month, year = [p.strip() for p in parts]
+    if len(year) == 2:
+        year = f"20{year}"
+    return f"{int(day):02d}/{int(month):02d}/{int(year):04d}"
+
+
+def parse_web_message(pre_text: str, body: str) -> Message | None:
+    pre_text = pre_text.strip()
+    for pattern in WEB_PRE_PATTERNS:
+        match = pattern.match(pre_text)
+        if not match:
+            continue
+        second = match.groupdict().get("second") or "00"
+        time_text = f"{int(match.group('hour')):02d}:{int(match.group('minute')):02d}:{int(second):02d}"
+        clean_body = cleanup_message_body(body)
+        if not clean_body:
+            return None
+        return Message(
+            date=normalise_date(match.group("date")),
+            time=time_text,
+            sender=cleanup_sender(match.group("sender")),
+            body=clean_body,
+        )
+    return None
+
+
+def cleanup_sender(sender: str) -> str:
+    return (
+        sender.replace("\u202f", " ")
+        .replace("\u202a", "")
+        .replace("\u202c", "")
+        .replace("\xa0", " ")
+        .strip()
+        .lstrip("~ ")
+        .strip()
+    )
+
+
+def cleanup_message_body(body: str) -> str:
+    lines = [line.rstrip() for line in body.replace("\r\n", "\n").split("\n")]
+    while lines and not lines[-1].strip():
+        lines.pop()
+
+    # WhatsApp Web often exposes the visual timestamp as the last text node.
+    if len(lines) > 1 and re.fullmatch(r"\d{1,2}:\d{2}", lines[-1].strip()):
+        lines.pop()
+
+    return "\n".join(lines).strip()
+
+
+def read_existing_messages(path: Path) -> list[Message]:
+    if not path.exists():
+        return []
+
+    messages: list[Message] = []
+    current: Message | None = None
+    continuation: list[str] = []
+
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        match = EXPORT_LINE_RE.match(raw_line)
+        if match:
+            if current is not None:
+                messages.append(
+                    Message(current.date, current.time, current.sender, "\n".join(continuation))
+                )
+            date, time_text, sender, body = match.groups()
+            current = Message(date, time_text, cleanup_sender(sender), body)
+            continuation = [body]
+        elif current is not None:
+            continuation.append(raw_line)
+
+    if current is not None:
+        messages.append(Message(current.date, current.time, current.sender, "\n".join(continuation)))
+
+    return messages
+
+
+def write_merged_export(path: Path, scraped: Iterable[Message]) -> tuple[int, int]:
+    existing = read_existing_messages(path)
+    by_key = {message.key: message for message in existing}
+    before = len(by_key)
+
+    for message in scraped:
+        by_key[message.key] = message
+
+    merged = sorted(by_key.values(), key=lambda message: message.sort_key())
+    text = "\n".join(message.to_export_text() for message in merged)
+    if text:
+        text += "\n"
+    path.write_text(text, encoding="utf-8")
+
+    return len(merged) - before, len(merged)
+
+
+async def click_first_visible(page, selectors: list[str], timeout_ms: int = 1500) -> bool:
+    for selector in selectors:
+        try:
+            locator = page.locator(selector).first
+            await locator.wait_for(state="visible", timeout=timeout_ms)
+            await locator.click()
+            return True
+        except Exception:
+            continue
+    return False
+
+
+async def wait_for_whatsapp_ready(page, timeout_ms: int = 300_000) -> None:
+    """Wait until WhatsApp Web shows the logged-in app shell."""
+    try:
+        await page.wait_for_function(
+            """
+            () => {
+              const visible = (el) => !!(
+                el && (el.offsetWidth || el.offsetHeight || el.getClientRects().length)
+              );
+              const selectors = [
+                '[data-testid="chat-list"]',
+                '[aria-label="Chat list"]',
+                '[aria-label="Search input textbox"]',
+                '[aria-label*="Search"]',
+                '[data-pre-plain-text]',
+                'div[contenteditable="true"][role="textbox"]',
+                'div[contenteditable="true"]'
+              ];
+              return selectors.some((selector) =>
+                Array.from(document.querySelectorAll(selector)).some(visible)
+              );
+            }
+            """,
+            timeout=timeout_ms,
+        )
+    except Exception as exc:
+        debug_dir = Path(".whatsapp-scraper-debug")
+        debug_dir.mkdir(exist_ok=True)
+        screenshot = debug_dir / "whatsapp-timeout.png"
+        html_dump = debug_dir / "whatsapp-timeout.html"
+        await page.screenshot(path=str(screenshot), full_page=True)
+        html_dump.write_text(await page.content(), encoding="utf-8")
+        raise RuntimeError(
+            "WhatsApp Web did not reach the logged-in chat UI in time. "
+            f"Saved debug files to {debug_dir}/."
+        ) from exc
+
+
+async def fill_first_visible(page, selectors: list[str], value: str, timeout_ms: int = 1500) -> bool:
+    for selector in selectors:
+        try:
+            locator = page.locator(selector).first
+            await locator.wait_for(state="visible", timeout=timeout_ms)
+            await locator.click()
+            await locator.fill(value)
+            return True
+        except Exception:
+            continue
+    return False
+
+
+async def open_chat(page, chat_name: str) -> None:
+    search_button_selectors = [
+        'button[aria-label="Search"]',
+        'button[aria-label*="Search"]',
+        '[data-icon="search"]',
+    ]
+    search_selectors = [
+        'div[contenteditable="true"][aria-label="Search input textbox"]',
+        'div[contenteditable="true"][data-tab="3"]',
+        'div[contenteditable="true"][aria-label*="Search"]',
+        'div[contenteditable="true"][role="textbox"]',
+    ]
+    if not await fill_first_visible(page, search_selectors, chat_name, timeout_ms=2500):
+        await click_first_visible(page, search_button_selectors, timeout_ms=1000)
+        if not await fill_first_visible(page, search_selectors, chat_name, timeout_ms=3000):
+            raise RuntimeError("Could not find WhatsApp search box. Is WhatsApp Web loaded?")
+
+    await page.wait_for_timeout(1200)
+
+    try:
+        await page.get_by_title(chat_name, exact=True).first.click(timeout=3000)
+    except Exception:
+        try:
+            await page.get_by_text(chat_name, exact=True).first.click(timeout=3000)
+        except Exception:
+            await page.keyboard.press("Enter")
+
+    await page.wait_for_timeout(1500)
+
+    if not await page.locator('[data-pre-plain-text]').first.is_visible(timeout=5000):
+        raise RuntimeError("Could not find WhatsApp search box. Is WhatsApp Web loaded?")
+
+
+async def scrape_visible_messages(page) -> list[Message]:
+    rows = await page.evaluate(
+        """
+        () => Array.from(document.querySelectorAll('[data-pre-plain-text]')).map((node) => ({
+          pre: node.getAttribute('data-pre-plain-text') || '',
+          text: node.innerText || node.textContent || ''
+        }))
+        """
+    )
+    messages = []
+    for row in rows:
+        message = parse_web_message(row.get("pre", ""), row.get("text", ""))
+        if message:
+            messages.append(message)
+    return messages
+
+
+async def scroll_chat_up(page) -> None:
+    await page.evaluate(
+        """
+        () => {
+          const candidates = Array.from(document.querySelectorAll('div'))
+            .filter((el) => el.scrollHeight > el.clientHeight + 400);
+          const scroller = candidates.sort((a, b) => b.scrollHeight - a.scrollHeight)[0];
+          if (scroller) {
+            scroller.scrollTop = Math.max(0, scroller.scrollTop - Math.floor(scroller.clientHeight * 1.8));
+          }
+        }
+        """
+    )
+    await page.wait_for_timeout(900)
+
+
+async def scrape_chat(page, chat_name: str, scrolls: int) -> list[Message]:
+    await open_chat(page, chat_name)
+
+    by_key: dict[tuple[str, str, str, str], Message] = {}
+    stale_rounds = 0
+
+    for _ in range(max(1, scrolls)):
+        for message in await scrape_visible_messages(page):
+            by_key[message.key] = message
+
+        before = len(by_key)
+        await scroll_chat_up(page)
+        for message in await scrape_visible_messages(page):
+            by_key[message.key] = message
+
+        if len(by_key) == before:
+            stale_rounds += 1
+        else:
+            stale_rounds = 0
+        if stale_rounds >= 4:
+            break
+
+    return sorted(by_key.values(), key=lambda message: message.sort_key())
+
+
+async def run_scrape(config: dict, profile_dir: Path, headless: bool) -> None:
+    try:
+        from playwright.async_api import async_playwright
+    except ImportError as exc:
+        raise SystemExit(
+            "Playwright is not installed.\n"
+            "Run:\n"
+            "  python -m pip install playwright\n"
+            "  python -m playwright install chromium"
+        ) from exc
+
+    chats = config.get("chats") or {}
+    if not chats:
+        raise SystemExit("No chats configured. Add a 'chats' object to the scraper config.")
+
+    scrolls = int(config.get("scrolls", 25))
+
+    async with async_playwright() as p:
+        context = await p.chromium.launch_persistent_context(
+            user_data_dir=str(profile_dir),
+            headless=headless,
+            viewport={"width": 1400, "height": 900},
+            args=["--disable-blink-features=AutomationControlled"],
+        )
+        page = context.pages[0] if context.pages else await context.new_page()
+        await page.goto("https://web.whatsapp.com/", wait_until="domcontentloaded")
+        print("Opened WhatsApp Web. Scan the QR code if this is the first run.")
+        await wait_for_whatsapp_ready(page)
+
+        for chat_name, output_file in chats.items():
+            print(f"Scraping: {chat_name}")
+            messages = await scrape_chat(page, chat_name, scrolls=scrolls)
+            added, total = write_merged_export(Path(output_file), messages)
+            print(f"  saved {output_file}: +{added} new, {total} total")
+
+        await context.close()
+
+
+def run_parser(dashboard: str | None) -> None:
+    command = [sys.executable, "parse_chat.py"]
+    if dashboard:
+        command.append(dashboard)
+    print("Running parse_chat.py")
+    subprocess.run(command, check=True)
+
+
+async def main_async() -> None:
+    parser = argparse.ArgumentParser(description="Experimental WhatsApp Web scraper.")
+    parser.add_argument("--config", default=DEFAULT_CONFIG, help="Path to scraper JSON config.")
+    parser.add_argument("--profile-dir", default=DEFAULT_PROFILE_DIR, help="Persistent browser profile dir.")
+    parser.add_argument("--once", action="store_true", help="Scrape once and exit.")
+    parser.add_argument("--headless", action="store_true", help="Run browser headless after login is saved.")
+    parser.add_argument("--no-parser", action="store_true", help="Do not run parse_chat.py after scraping.")
+    args = parser.parse_args()
+
+    config = load_config(Path(args.config))
+    interval = int(config.get("interval_seconds", 300))
+    run_parser_after_scrape = bool(config.get("run_parser_after_scrape", True)) and not args.no_parser
+
+    while True:
+        started = datetime.now()
+        print(f"\nSync started: {started:%Y-%m-%d %H:%M:%S}")
+        await run_scrape(config, Path(args.profile_dir), headless=args.headless)
+        if run_parser_after_scrape:
+            run_parser(config.get("dashboard"))
+        if args.once:
+            break
+        print(f"Sleeping {interval} seconds. Press Ctrl+C to stop.")
+        await asyncio.sleep(interval)
+
+
+def main() -> None:
+    try:
+        asyncio.run(main_async())
+    except KeyboardInterrupt:
+        print("\nStopped.")
+
+
+if __name__ == "__main__":
+    main()

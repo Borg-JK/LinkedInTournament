@@ -1,0 +1,13 @@
+{
+  "chats": {
+    "Queens Tournament": "queens.txt",
+    "Tango Tournament": "tango.txt",
+    "Mini Sudoku Tournament": "mini.txt",
+    "Zip Tournament": "zip.txt",
+    "Patches Tournament": "patches.txt"
+  },
+  "dashboard": "HTML/index.html",
+  "scrolls": 25,
+  "interval_seconds": 300,
+  "run_parser_after_scrape": true
+}
