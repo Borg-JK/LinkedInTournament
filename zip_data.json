@@ -1384,7 +1384,7 @@
       "time_submitted": "12:32:00",
       "zip_time": "0:06",
       "time_seconds": 6,
-      "points": 10
+      "points": 11
     },
     {
       "zip_num": 444,
@@ -1393,7 +1393,7 @@
       "time_submitted": "09:32:00",
       "zip_time": "0:08",
       "time_seconds": 8,
-      "points": 6
+      "points": 7
     },
     {
       "zip_num": 445,
@@ -2790,7 +2790,7 @@
       "time_submitted": "09:18:00",
       "zip_time": "0:06",
       "time_seconds": 6,
-      "points": 10
+      "points": 11
     },
     {
       "zip_num": 444,
@@ -2799,7 +2799,7 @@
       "time_submitted": "10:08:00",
       "zip_time": "0:06",
       "time_seconds": 6,
-      "points": 10
+      "points": 11
     },
     {
       "zip_num": 445,
@@ -4196,7 +4196,7 @@
       "time_submitted": "10:08:00",
       "zip_time": "0:06",
       "time_seconds": 6,
-      "points": 10
+      "points": 11
     },
     {
       "zip_num": 445,
@@ -5458,7 +5458,7 @@
       "time_submitted": "10:39:00",
       "zip_time": "0:04",
       "time_seconds": 4,
-      "points": 10
+      "points": 11
     },
     {
       "zip_num": 443,
@@ -5476,7 +5476,7 @@
       "time_submitted": "10:22:00",
       "zip_time": "0:07",
       "time_seconds": 7,
-      "points": 8
+      "points": 9
     },
     {
       "zip_num": 445,
@@ -7442,7 +7442,7 @@
       "time_submitted": "09:06:00",
       "zip_time": "0:04",
       "time_seconds": 4,
-      "points": 10
+      "points": 11
     },
     {
       "zip_num": 443,
@@ -7451,7 +7451,7 @@
       "time_submitted": "09:02:00",
       "zip_time": "0:07",
       "time_seconds": 7,
-      "points": 8
+      "points": 9
     },
     {
       "zip_num": 444,
@@ -7460,7 +7460,7 @@
       "time_submitted": "10:25:00",
       "zip_time": "0:08",
       "time_seconds": 8,
-      "points": 6
+      "points": 7
     },
     {
       "zip_num": 445,
@@ -9315,7 +9315,7 @@
       "time_submitted": "09:35:00",
       "zip_time": "0:07",
       "time_seconds": 7,
-      "points": 8
+      "points": 9
     },
     {
       "zip_num": 444,
@@ -9641,7 +9641,7 @@
       "time_submitted": "09:33:00",
       "zip_time": "0:04",
       "time_seconds": 4,
-      "points": 10
+      "points": 11
     },
     {
       "zip_num": 443,
@@ -10201,7 +10201,7 @@
       "time_submitted": "11:07:00",
       "zip_time": "0:07",
       "time_seconds": 7,
-      "points": 8
+      "points": 9
     },
     {
       "zip_num": 445,
@@ -10231,26 +10231,6 @@
       "zip_time": "0:04",
       "time_seconds": 4,
       "points": 8
-    }
-  ],
-  "+48 730 750 520": [
-    {
-      "zip_num": 348,
-      "date": "2026-02-28",
-      "day_of_week": "Saturday",
-      "time_submitted": "13:36:09",
-      "zip_time": "0:16",
-      "time_seconds": 16,
-      "points": 6
-    },
-    {
-      "zip_num": 349,
-      "date": "2026-03-01",
-      "day_of_week": "Sunday",
-      "time_submitted": "11:17:46",
-      "zip_time": "0:10",
-      "time_seconds": 10,
-      "points": 6
     }
   ],
   "Sebastiaan Helbing": [
@@ -10792,6 +10772,62 @@
       "time_submitted": "20:35:14",
       "zip_time": "0:51",
       "time_seconds": 51,
+      "points": 6
+    },
+    {
+      "zip_num": 442,
+      "date": "2026-06-02",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:45:00",
+      "zip_time": "0:04",
+      "time_seconds": 4,
+      "points": 11
+    },
+    {
+      "zip_num": 443,
+      "date": "2026-06-03",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:30:00",
+      "zip_time": "0:08",
+      "time_seconds": 8,
+      "points": 7
+    },
+    {
+      "zip_num": 444,
+      "date": "2026-06-04",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:35:00",
+      "zip_time": "0:08",
+      "time_seconds": 8,
+      "points": 7
+    },
+    {
+      "zip_num": 445,
+      "date": "2026-06-05",
+      "day_of_week": "Friday",
+      "time_submitted": "10:22:00",
+      "zip_time": "0:08",
+      "time_seconds": 8,
+      "points": 11
+    }
+  ],
+  "+48 730 750 520": [
+    {
+      "zip_num": 348,
+      "date": "2026-02-28",
+      "day_of_week": "Saturday",
+      "time_submitted": "13:36:09",
+      "zip_time": "0:16",
+      "time_seconds": 16,
+      "points": 6
+    },
+    {
+      "zip_num": 349,
+      "date": "2026-03-01",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:17:46",
+      "zip_time": "0:10",
+      "time_seconds": 10,
       "points": 6
     }
   ]

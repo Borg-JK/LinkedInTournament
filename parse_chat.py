@@ -97,14 +97,21 @@ def parse_messages(filepath):
     with open(filepath, "r", encoding="utf-8") as f:
         lines = f.read().split("\n")
     messages = []
-    for i, line in enumerate(lines):
+    current = None
+
+    for line in lines:
         m = MSG_PAT.match(line.strip())
         if m:
+            if current is not None:
+                messages.append(current)
             date_str, time_str, sender, body = m.groups()
-            # Grab continuation line (e.g. split score format like "Tango #NNN\n0:52")
-            if i + 1 < len(lines) and not MSG_PAT.match(lines[i + 1].strip()):
-                body += "\n" + lines[i + 1].strip()
-            messages.append((date_str, time_str, sender.strip(), body))
+            current = [date_str, time_str, sender.strip(), body]
+        elif current is not None:
+            current[3] += "\n" + line.strip()
+
+    if current is not None:
+        messages.append(current)
+
     return messages
 
 
