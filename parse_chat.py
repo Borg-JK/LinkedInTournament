@@ -176,6 +176,19 @@ def parse_game(game_cfg):
         })
 
     # Compute points
+    # A player can appear more than once for the same puzzle if WhatsApp Web
+    # exposes quoted/repeated score text. Keep one result per player/day.
+    deduped_by_person = defaultdict(list)
+    for person, entries in data_by_person.items():
+        best_by_game = {}
+        for e in entries:
+            game_num = e[num_key]
+            current = best_by_game.get(game_num)
+            if current is None or (e["time_seconds"], e["time_submitted"]) < (current["time_seconds"], current["time_submitted"]):
+                best_by_game[game_num] = e
+        deduped_by_person[person] = list(best_by_game.values())
+    data_by_person = deduped_by_person
+
     by_day = defaultdict(list)
     for person, entries in data_by_person.items():
         for e in entries:

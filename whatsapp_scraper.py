@@ -43,6 +43,14 @@ from typing import Iterable
 DEFAULT_CONFIG = "whatsapp_scraper_config.json"
 DEFAULT_PROFILE_DIR = ".whatsapp-web-profile"
 
+OUTPUT_GAME_PATTERNS = {
+    "queens.txt": re.compile(r"\bQueens\b", re.IGNORECASE),
+    "tango.txt": re.compile(r"\bTango\b", re.IGNORECASE),
+    "mini.txt": re.compile(r"\bMini\s+Sudoku\b", re.IGNORECASE),
+    "zip.txt": re.compile(r"\bZip\b", re.IGNORECASE),
+    "patches.txt": re.compile(r"\bPatches\b", re.IGNORECASE),
+}
+
 EXPORT_LINE_RE = re.compile(
     r"^\[(\d{2}/\d{2}/\d{4}), (\d{2}:\d{2}:\d{2})\] ([^:]+): (.*)$"
 )
@@ -215,12 +223,36 @@ def read_existing_messages(path: Path) -> list[Message]:
     return messages
 
 
-def write_merged_export(path: Path, scraped: Iterable[Message]) -> tuple[int, int]:
+def output_pattern_for(path: Path) -> re.Pattern | None:
+    return OUTPUT_GAME_PATTERNS.get(path.name)
+
+
+def filter_game_messages(messages: Iterable[Message], pattern: re.Pattern | None) -> list[Message]:
+    if pattern is None:
+        return list(messages)
+    return [message for message in messages if pattern.search(message.body)]
+
+
+def write_merged_export(path: Path, scraped: Iterable[Message], prune_existing: bool = False) -> tuple[int, int, int]:
+    expected_pattern = output_pattern_for(path)
     existing = read_existing_messages(path)
+    if prune_existing:
+        existing = filter_game_messages(existing, expected_pattern)
+
+    scraped = list(scraped)
+    filtered_scraped = filter_game_messages(scraped, expected_pattern)
+    skipped = len(scraped) - len(filtered_scraped)
+
+    if scraped and expected_pattern is not None and not filtered_scraped:
+        raise RuntimeError(
+            f"Scraped {len(scraped)} messages for {path.name}, but none matched the expected game. "
+            "The wrong WhatsApp chat may be open, so nothing was written."
+        )
+
     by_key = {message.key: message for message in existing}
     before = len(by_key)
 
-    for message in scraped:
+    for message in filtered_scraped:
         by_key[message.key] = message
 
     merged = sorted(by_key.values(), key=lambda message: message.sort_key())
@@ -229,7 +261,7 @@ def write_merged_export(path: Path, scraped: Iterable[Message]) -> tuple[int, in
         text += "\n"
     path.write_text(text, encoding="utf-8")
 
-    return len(merged) - before, len(merged)
+    return len(merged) - before, len(merged), skipped
 
 
 async def click_first_visible(page, selectors: list[str], timeout_ms: int = 1500) -> bool:
@@ -398,7 +430,7 @@ async def scrape_chat(page, chat_name: str, scrolls: int) -> list[Message]:
     return sorted(by_key.values(), key=lambda message: message.sort_key())
 
 
-async def run_scrape(config: dict, profile_dir: Path, headless: bool) -> None:
+async def run_scrape(config: dict, profile_dir: Path, headless: bool, prune_existing: bool = False) -> None:
     try:
         from playwright.async_api import async_playwright
     except ImportError as exc:
@@ -430,8 +462,9 @@ async def run_scrape(config: dict, profile_dir: Path, headless: bool) -> None:
         for chat_name, output_file in chats.items():
             print(f"Scraping: {chat_name}")
             messages = await scrape_chat(page, chat_name, scrolls=scrolls)
-            added, total = write_merged_export(Path(output_file), messages)
-            print(f"  saved {output_file}: +{added} new, {total} total")
+            added, total, skipped = write_merged_export(Path(output_file), messages, prune_existing=prune_existing)
+            skipped_note = f", skipped {skipped} non-game message(s)" if skipped else ""
+            print(f"  saved {output_file}: +{added} new, {total} total{skipped_note}")
 
         await context.close()
 
@@ -442,6 +475,18 @@ def run_parser(dashboard: str | None) -> None:
         command.append(dashboard)
     print("Running parse_chat.py")
     subprocess.run(command, check=True)
+
+
+def prune_config_outputs(config: dict) -> None:
+    chats = config.get("chats") or {}
+    for output_file in chats.values():
+        path = Path(output_file)
+        if output_pattern_for(path) is None:
+            continue
+        before = len(read_existing_messages(path))
+        added, total, skipped = write_merged_export(path, [], prune_existing=True)
+        removed = before - total
+        print(f"Pruned {path}: removed {removed} wrong-game message(s), {total} kept")
 
 
 class ScraperSelfTests(unittest.TestCase):
@@ -477,15 +522,33 @@ class ScraperSelfTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "chat.txt"
             path.write_text("[06/06/2026, 09:06:00] Adam: Zip #447 | 0:48\n", encoding="utf-8")
-            added, total = write_merged_export(
+            added, total, skipped = write_merged_export(
                 path,
                 [
                     Message("06/06/2026", "09:06:00", "Adam", "Zip #447 | 0:48"),
                     Message("06/06/2026", "09:05:07", "Evie", "Zip #447\n0:59"),
                 ],
             )
-            self.assertEqual((added, total), (1, 2))
+            self.assertEqual((added, total, skipped), (1, 2, 0))
             self.assertTrue(path.read_text(encoding="utf-8").startswith("[06/06/2026, 09:05:07] Evie"))
+
+    def test_known_output_file_rejects_wrong_game(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "mini.txt"
+            with self.assertRaises(RuntimeError):
+                write_merged_export(path, [Message("06/06/2026", "09:06:00", "Adam", "Tango #607 | 0:48")])
+
+    def test_known_output_file_can_prune_existing_wrong_game(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "mini.txt"
+            path.write_text(
+                "[06/06/2026, 09:06:00] Adam: Tango #607 | 0:48\n"
+                "[06/06/2026, 09:07:00] Evie: Mini Sudoku #299 | 0:59\n",
+                encoding="utf-8",
+            )
+            added, total, skipped = write_merged_export(path, [], prune_existing=True)
+            self.assertEqual((added, total, skipped), (0, 1, 0))
+            self.assertNotIn("Tango", path.read_text(encoding="utf-8"))
 
 
 def run_self_tests() -> None:
@@ -503,6 +566,8 @@ async def main_async() -> None:
     parser.add_argument("--headless", action="store_true", help="Run browser headless after login is saved.")
     parser.add_argument("--no-parser", action="store_true", help="Do not run parse_chat.py after scraping.")
     parser.add_argument("--self-test", action="store_true", help="Run offline scraper parsing/merge tests.")
+    parser.add_argument("--prune-existing", action="store_true", help="Remove existing wrong-game messages from known output files.")
+    parser.add_argument("--prune-only", action="store_true", help="Clean known output files without opening WhatsApp Web.")
     args = parser.parse_args()
 
     if args.self_test:
@@ -510,13 +575,19 @@ async def main_async() -> None:
         return
 
     config = load_config(Path(args.config))
+    if args.prune_only:
+        prune_config_outputs(config)
+        if bool(config.get("run_parser_after_scrape", True)) and not args.no_parser:
+            run_parser(config.get("dashboard"))
+        return
+
     interval = int(config.get("interval_seconds", 300))
     run_parser_after_scrape = bool(config.get("run_parser_after_scrape", True)) and not args.no_parser
 
     while True:
         started = datetime.now()
         print(f"\nSync started: {started:%Y-%m-%d %H:%M:%S}")
-        await run_scrape(config, Path(args.profile_dir), headless=args.headless)
+        await run_scrape(config, Path(args.profile_dir), headless=args.headless, prune_existing=args.prune_existing)
         if run_parser_after_scrape:
             run_parser(config.get("dashboard"))
         if args.once:

@@ -2,7 +2,7 @@
   "chats": {
     "Queens Tournament": "queens.txt",
     "Tango Tournament": "tango.txt",
-    "Mini Sudoku Tournament": "mini.txt",
+    "Minisudoku Tournament": "mini.txt",
     "Zip Tournament": "zip.txt",
     "Patches Tournament": "patches.txt"
   },
