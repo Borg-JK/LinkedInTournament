@@ -160,6 +160,8 @@ def parse_game(game_cfg):
         game_num = int(m.group(1))
         mins, secs = int(m.group(2)), int(m.group(3))
         correct_date = base_date + timedelta(days=(game_num - base_num))
+        if correct_date < START_DATE:
+            continue
         # Strip WhatsApp unicode formatting characters from phone numbers
         clean_name = sender.replace("\u202f", " ").replace("\u202a", "").replace("\u202c", "").replace("\xa0", " ").strip().lstrip("~ ").strip()
 
@@ -230,85 +232,107 @@ def inject_patches_if_missing(html, data):
     return html
 
 
-def get_latest_month(all_results):
-    """Return the latest 'YYYY-MM' found across all game results."""
-    latest = None
+def get_all_months(all_results):
+    """Return all 'YYYY-MM' values found across game results."""
+    months = set()
     for result in all_results.values():
         for entries in result.values():
             for e in entries:
-                m = e["date"][:7]
-                if latest is None or m > latest:
-                    latest = m
-    return latest
+                months.add(e["date"][:7])
+    return sorted(months)
 
 
-def inject_month_into_dropdowns(html, month_str):
-    """
-    Add <option value="YYYY-MM">Month YYYY</option> to every month <select>
-    in the HTML if it isn't already there.
-    """
+def month_option(month_str):
     year, mon = int(month_str[:4]), int(month_str[5:])
-    label = datetime(year, mon, 1).strftime("%B %Y")   # e.g. "May 2026"
-    option_tag = f'<option value="{month_str}">{label}</option>'
+    label = datetime(year, mon, 1).strftime("%B %Y")
+    return f'        <option value="{month_str}">{label}</option>'
 
-    if option_tag in html:
-        print(f"  ℹ  Month {month_str} already in dropdowns")
+
+def inject_months_into_dropdowns(html, months):
+    """
+    Rebuild every month <select> that already contains YYYY-MM options.
+
+    Keeps non-month choices such as "All Time" and "Select month", then adds
+    every month found in the generated data. This covers the per-game pages,
+    tournament page, domination views, and battle views.
+    """
+    if not months:
         return html
 
-    # Match every <select …> block that contains existing month options
-    # and append the new option before </select>
-    month_select_pat = re.compile(
-        r'(<select[^>]*>)((?:\s*<option[^>]*>\d{4}-\d{2}[^<]*</option>\s*)+)(</select>)',
-        re.DOTALL,
-    )
+    month_options = "\n".join(month_option(m) for m in months)
+    select_pat = re.compile(r'(<select\b[^>]*>)(.*?)(</select>)', re.DOTALL)
+    month_value_pat = re.compile(r'<option\b[^>]*value="(?:19|20)\d{2}-\d{2}"[^>]*>.*?</option>\s*', re.DOTALL)
 
     count = 0
     def replacer(m):
         nonlocal count
-        # Only inject if this select already has YYYY-MM style options
-        if not re.search(r'value="\d{4}-\d{2}"', m.group(2)):
+        body = m.group(2)
+        if not month_value_pat.search(body):
             return m.group(0)
+        body_without_months = month_value_pat.sub("", body).rstrip()
+        prefix = body_without_months + "\n" if body_without_months.strip() else "\n"
         count += 1
-        return m.group(1) + m.group(2) + f'  {option_tag}\n' + m.group(3)
+        return m.group(1) + prefix + month_options + "\n      " + m.group(3)
 
-    html = month_select_pat.sub(replacer, html)
-    print(f"  ✓  Added '{label}' option to {count} month dropdown(s)")
+    html = select_pat.sub(replacer, html)
+    print(f"  ✓  Synced {count} month dropdown(s) through {months[-1]}")
     return html
 
 
-def inject_tournament_month_days(html, month_str, game_results):
+def inject_tournament_month_days(html, months, game_results):
     """
-    Update TOURNAMENT_MONTH_DAYS in the HTML to include the new month.
+    Update TOURNAMENT_MONTH_DAYS in the HTML to include all data months.
 
     The structure in the HTML is:
         { 'queens': { '2026-01': 31, ... }, 'mini': { ... }, ... }
     i.e. game key is outer, month is inner, value is calendar days in that month.
     """
     import calendar as cal_mod
-    year, mon = int(month_str[:4]), int(month_str[5:])
-    days_in_month = cal_mod.monthrange(year, mon)[1]
 
-    # Check if already present in any game line
-    already = re.search(r"'(?:queens|mini|zip|tango|patches)':\s*\{[^}]*'" + re.escape(month_str) + r"'", html)
-    if already:
-        print(f"  ℹ  {month_str} already in TOURNAMENT_MONTH_DAYS")
+    if not months:
         return html
 
+    days_by_month = {
+        month: cal_mod.monthrange(int(month[:4]), int(month[5:]))[1]
+        for month in months
+    }
+
     # Each game line looks like:  'queens':  { '2026-01': 31, '2026-04': 30 },
-    # Insert the new month before the closing }
     def add_month(m):
         line = m.group(0)
-        if month_str in line:
-            return line
-        return re.sub(r'\}', f", '{month_str}': {days_in_month}}}", line, count=1)
+        entries = ", ".join(f"'{month}': {days_by_month[month]}" for month in months)
+        prefix = re.match(r"'(?:queens|mini|zip|tango|patches)':\s*", line).group(0)
+        return prefix + "{ " + entries + " }"
 
     game_line_pat = re.compile(r"'(?:queens|mini|zip|tango|patches)':\s*\{[^}]+\}")
     updated = game_line_pat.sub(add_month, html)
 
     if updated == html:
-        print(f"  ⚠  Could not inject {month_str} into TOURNAMENT_MONTH_DAYS")
+        if all(re.search(r"'(?:queens|mini|zip|tango|patches)':\s*\{[^}]*'" + re.escape(month) + r"'", html) for month in months):
+            print(f"  ℹ  TOURNAMENT_MONTH_DAYS already synced through {months[-1]}")
+        else:
+            print("  ⚠  Could not update TOURNAMENT_MONTH_DAYS")
     else:
-        print(f"  ✓  Added '{month_str}': {days_in_month} to all games in TOURNAMENT_MONTH_DAYS")
+        print(f"  ✓  Synced TOURNAMENT_MONTH_DAYS through {months[-1]}")
+    return updated
+
+
+def inject_hall_months(html, months):
+    """Update the Hall of Fame month archive list from available data months."""
+    if not months:
+        return html
+    new_list = ", ".join(f"'{m}'" for m in months)
+    updated, count = re.subn(
+        r"const HALL_MONTHS = \[[^\]]*\];",
+        f"const HALL_MONTHS = [{new_list}];",
+        html,
+        count=1,
+        flags=re.DOTALL,
+    )
+    if count:
+        print(f"  ✓  Synced HALL_MONTHS through {months[-1]}")
+    else:
+        print("  ⚠  Could not find HALL_MONTHS")
     return updated
 
 
@@ -361,12 +385,13 @@ def main():
             html = inject_into_html(html, js_var, result)
             print(f"  ✓  Updated {js_var} in HTML")
 
-    # Inject latest month into dropdowns and TOURNAMENT_MONTH_DAYS
-    latest_month = get_latest_month(all_results)
-    if latest_month:
-        print(f"\nLatest month in data: {latest_month}")
-        html = inject_month_into_dropdowns(html, latest_month)
-        html = inject_tournament_month_days(html, latest_month, all_results)
+    # Inject all available months into dropdowns, tournament day counts, and archives
+    months = get_all_months(all_results)
+    if months:
+        print(f"\nMonths in data: {', '.join(months)}")
+        html = inject_months_into_dropdowns(html, months)
+        html = inject_tournament_month_days(html, months, all_results)
+        html = inject_hall_months(html, months)
 
     with open(dashboard, "w", encoding="utf-8") as f:
         f.write(html)

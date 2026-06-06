@@ -32,6 +32,8 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
+import unittest
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -49,13 +51,27 @@ WEB_PRE_PATTERNS = [
     # Common WhatsApp Web shape: "[12:34, 01/06/2026] Adam: "
     re.compile(
         r"^\[(?P<hour>\d{1,2}):(?P<minute>\d{2})(?::(?P<second>\d{2}))?, "
-        r"(?P<date>\d{1,2}/\d{1,2}/\d{2,4})\] (?P<sender>.*?):\s*$"
+        r"(?P<date>\d{1,2}/\d{1,2}/\d{2,4})\] (?P<sender>.*?):\s*$",
+        re.IGNORECASE,
     ),
     # Export-like shape, useful if the browser locale changes:
     re.compile(
         r"^\[(?P<date>\d{1,2}/\d{1,2}/\d{2,4}), "
         r"(?P<hour>\d{1,2}):(?P<minute>\d{2})(?::(?P<second>\d{2}))?\] "
-        r"(?P<sender>.*?):\s*$"
+        r"(?P<sender>.*?):\s*$",
+        re.IGNORECASE,
+    ),
+    # 12-hour clock variants, for browsers using an English US-ish locale:
+    re.compile(
+        r"^\[(?P<hour>\d{1,2}):(?P<minute>\d{2})(?::(?P<second>\d{2}))?\s*(?P<ampm>[AP]M), "
+        r"(?P<date>\d{1,2}/\d{1,2}/\d{2,4})\] (?P<sender>.*?):\s*$",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"^\[(?P<date>\d{1,2}/\d{1,2}/\d{2,4}), "
+        r"(?P<hour>\d{1,2}):(?P<minute>\d{2})(?::(?P<second>\d{2}))?\s*(?P<ampm>[AP]M)\] "
+        r"(?P<sender>.*?):\s*$",
+        re.IGNORECASE,
     ),
 ]
 
@@ -107,15 +123,24 @@ def parse_web_message(pre_text: str, body: str) -> Message | None:
         match = pattern.match(pre_text)
         if not match:
             continue
-        second = match.groupdict().get("second") or "00"
-        time_text = f"{int(match.group('hour')):02d}:{int(match.group('minute')):02d}:{int(second):02d}"
-        clean_body = cleanup_message_body(body)
+        groups = match.groupdict()
+        hour = int(groups["hour"])
+        if groups.get("ampm"):
+            ampm = groups["ampm"].upper()
+            if ampm == "PM" and hour != 12:
+                hour += 12
+            elif ampm == "AM" and hour == 12:
+                hour = 0
+        second = groups.get("second") or "00"
+        visual_time = f"{hour:02d}:{int(groups['minute']):02d}"
+        time_text = f"{visual_time}:{int(second):02d}"
+        clean_body = cleanup_message_body(body, visual_time=visual_time)
         if not clean_body:
             return None
         return Message(
-            date=normalise_date(match.group("date")),
+            date=normalise_date(groups["date"]),
             time=time_text,
-            sender=cleanup_sender(match.group("sender")),
+            sender=cleanup_sender(groups["sender"]),
             body=clean_body,
         )
     return None
@@ -133,16 +158,34 @@ def cleanup_sender(sender: str) -> str:
     )
 
 
-def cleanup_message_body(body: str) -> str:
+def cleanup_message_body(body: str, visual_time: str | None = None) -> str:
     lines = [line.rstrip() for line in body.replace("\r\n", "\n").split("\n")]
     while lines and not lines[-1].strip():
         lines.pop()
 
     # WhatsApp Web often exposes the visual timestamp as the last text node.
-    if len(lines) > 1 and re.fullmatch(r"\d{1,2}:\d{2}", lines[-1].strip()):
-        lines.pop()
+    # Only remove it when it matches the message metadata time; otherwise a
+    # score like "0:59" on its own line would be lost.
+    if len(lines) > 1 and visual_time:
+        last = lines[-1].strip()
+        if normalise_clock_text(last) == visual_time:
+            lines.pop()
 
     return "\n".join(lines).strip()
+
+
+def normalise_clock_text(value: str) -> str | None:
+    match = re.fullmatch(r"(\d{1,2}):(\d{2})(?:\s*([AP]M))?", value.strip(), re.IGNORECASE)
+    if not match:
+        return None
+    hour = int(match.group(1))
+    if match.group(3):
+        ampm = match.group(3).upper()
+        if ampm == "PM" and hour != 12:
+            hour += 12
+        elif ampm == "AM" and hour == 12:
+            hour = 0
+    return f"{hour:02d}:{int(match.group(2)):02d}"
 
 
 def read_existing_messages(path: Path) -> list[Message]:
@@ -282,7 +325,7 @@ async def open_chat(page, chat_name: str) -> None:
     await page.wait_for_timeout(1500)
 
     if not await page.locator('[data-pre-plain-text]').first.is_visible(timeout=5000):
-        raise RuntimeError("Could not find WhatsApp search box. Is WhatsApp Web loaded?")
+        raise RuntimeError(f"Opened '{chat_name}', but no readable message rows were visible.")
 
 
 async def scrape_visible_messages(page) -> list[Message]:
@@ -306,9 +349,21 @@ async def scroll_chat_up(page) -> None:
     await page.evaluate(
         """
         () => {
-          const candidates = Array.from(document.querySelectorAll('div'))
+          const message = document.querySelector('[data-pre-plain-text]');
+          const ancestors = [];
+          let node = message;
+          while (node && node !== document.body) {
+            ancestors.push(node);
+            node = node.parentElement;
+          }
+          const candidates = ancestors
+            .concat(Array.from(document.querySelectorAll('[role="application"] div, main div')))
             .filter((el) => el.scrollHeight > el.clientHeight + 400);
-          const scroller = candidates.sort((a, b) => b.scrollHeight - a.scrollHeight)[0];
+          const scroller = candidates.sort((a, b) => {
+            const aArea = a.clientWidth * a.clientHeight;
+            const bArea = b.clientWidth * b.clientHeight;
+            return bArea - aArea;
+          })[0];
           if (scroller) {
             scroller.scrollTop = Math.max(0, scroller.scrollTop - Math.floor(scroller.clientHeight * 1.8));
           }
@@ -389,6 +444,57 @@ def run_parser(dashboard: str | None) -> None:
     subprocess.run(command, check=True)
 
 
+class ScraperSelfTests(unittest.TestCase):
+    def test_parse_24_hour_web_message(self):
+        message = parse_web_message("[13:08, 06/06/2026] ~ Adam:", "Queens #767 | 0:42\n13:08")
+        self.assertEqual(message, Message("06/06/2026", "13:08:00", "Adam", "Queens #767 | 0:42"))
+
+    def test_parse_12_hour_web_message(self):
+        message = parse_web_message("[1:08 PM, 6/6/26] Adam:", "Tango #607 | 1:02\n1:08 PM")
+        self.assertEqual(message, Message("06/06/2026", "13:08:00", "Adam", "Tango #607 | 1:02"))
+
+    def test_parse_export_like_message(self):
+        message = parse_web_message("[06/06/2026, 09:05:07] Evie:", "Zip #447\n0:59")
+        self.assertEqual(message, Message("06/06/2026", "09:05:07", "Evie", "Zip #447\n0:59"))
+
+    def test_empty_body_is_ignored(self):
+        self.assertIsNone(parse_web_message("[09:05, 06/06/2026] Evie:", "\n09:05"))
+
+    def test_existing_multiline_export_round_trip(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "chat.txt"
+            path.write_text(
+                "[06/06/2026, 09:05:07] Evie: Zip #447\n"
+                "0:59\n"
+                "[06/06/2026, 09:06:00] Adam: Zip #447 | 0:48\n",
+                encoding="utf-8",
+            )
+            messages = read_existing_messages(path)
+            self.assertEqual(messages[0].body, "Zip #447\n0:59")
+            self.assertEqual(messages[1].body, "Zip #447 | 0:48")
+
+    def test_write_merged_export_deduplicates_and_sorts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "chat.txt"
+            path.write_text("[06/06/2026, 09:06:00] Adam: Zip #447 | 0:48\n", encoding="utf-8")
+            added, total = write_merged_export(
+                path,
+                [
+                    Message("06/06/2026", "09:06:00", "Adam", "Zip #447 | 0:48"),
+                    Message("06/06/2026", "09:05:07", "Evie", "Zip #447\n0:59"),
+                ],
+            )
+            self.assertEqual((added, total), (1, 2))
+            self.assertTrue(path.read_text(encoding="utf-8").startswith("[06/06/2026, 09:05:07] Evie"))
+
+
+def run_self_tests() -> None:
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(ScraperSelfTests)
+    result = unittest.TextTestRunner(verbosity=2).run(suite)
+    if not result.wasSuccessful():
+        raise SystemExit(1)
+
+
 async def main_async() -> None:
     parser = argparse.ArgumentParser(description="Experimental WhatsApp Web scraper.")
     parser.add_argument("--config", default=DEFAULT_CONFIG, help="Path to scraper JSON config.")
@@ -396,7 +502,12 @@ async def main_async() -> None:
     parser.add_argument("--once", action="store_true", help="Scrape once and exit.")
     parser.add_argument("--headless", action="store_true", help="Run browser headless after login is saved.")
     parser.add_argument("--no-parser", action="store_true", help="Do not run parse_chat.py after scraping.")
+    parser.add_argument("--self-test", action="store_true", help="Run offline scraper parsing/merge tests.")
     args = parser.parse_args()
+
+    if args.self_test:
+        run_self_tests()
+        return
 
     config = load_config(Path(args.config))
     interval = int(config.get("interval_seconds", 300))
