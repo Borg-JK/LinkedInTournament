@@ -35,7 +35,7 @@ import sys
 import tempfile
 import unittest
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from typing import Iterable
 
@@ -233,6 +233,19 @@ def filter_game_messages(messages: Iterable[Message], pattern: re.Pattern | None
     return [message for message in messages if pattern.search(message.body)]
 
 
+def message_date(message: Message) -> date | None:
+    try:
+        return datetime.strptime(message.date, "%d/%m/%Y").date()
+    except ValueError:
+        return None
+
+
+def latest_existing_game_date(path: Path) -> date | None:
+    messages = filter_game_messages(read_existing_messages(path), output_pattern_for(path))
+    dates = [parsed for message in messages if (parsed := message_date(message)) is not None]
+    return max(dates) if dates else None
+
+
 def write_merged_export(path: Path, scraped: Iterable[Message], prune_existing: bool = False) -> tuple[int, int, int]:
     expected_pattern = output_pattern_for(path)
     existing = read_existing_messages(path)
@@ -422,20 +435,32 @@ async def scroll_chat_up(page) -> None:
     await page.wait_for_timeout(900)
 
 
-async def scrape_chat(page, chat_name: str, scrolls: int) -> list[Message]:
+async def scrape_chat(
+    page,
+    chat_name: str,
+    scrolls: int,
+    stop_at_date: date | None = None,
+    expected_pattern: re.Pattern | None = None,
+) -> list[Message]:
     await open_chat(page, chat_name)
 
     by_key: dict[tuple[str, str, str, str], Message] = {}
     stale_rounds = 0
 
     for _ in range(max(1, scrolls)):
-        for message in await scrape_visible_messages(page):
+        visible = await scrape_visible_messages(page)
+        for message in visible:
             by_key[message.key] = message
+        if has_reached_checkpoint(visible, stop_at_date, expected_pattern):
+            break
 
         before = len(by_key)
         await scroll_chat_up(page)
-        for message in await scrape_visible_messages(page):
+        visible = await scrape_visible_messages(page)
+        for message in visible:
             by_key[message.key] = message
+        if has_reached_checkpoint(visible, stop_at_date, expected_pattern):
+            break
 
         if len(by_key) == before:
             stale_rounds += 1
@@ -445,6 +470,20 @@ async def scrape_chat(page, chat_name: str, scrolls: int) -> list[Message]:
             break
 
     return sorted(by_key.values(), key=lambda message: message.sort_key())
+
+
+def has_reached_checkpoint(
+    messages: Iterable[Message],
+    stop_at_date: date | None,
+    expected_pattern: re.Pattern | None,
+) -> bool:
+    if stop_at_date is None:
+        return False
+    for message in filter_game_messages(messages, expected_pattern):
+        parsed = message_date(message)
+        if parsed is not None and parsed <= stop_at_date:
+            return True
+    return False
 
 
 async def run_scrape(config: dict, profile_dir: Path, headless: bool, prune_existing: bool = False) -> None:
@@ -478,8 +517,19 @@ async def run_scrape(config: dict, profile_dir: Path, headless: bool, prune_exis
 
         for chat_name, output_file in chats.items():
             print(f"Scraping: {chat_name}")
-            messages = await scrape_chat(page, chat_name, scrolls=scrolls)
-            added, total, skipped = write_merged_export(Path(output_file), messages, prune_existing=prune_existing)
+            output_path = Path(output_file)
+            expected_pattern = output_pattern_for(output_path)
+            checkpoint = latest_existing_game_date(output_path)
+            if checkpoint:
+                print(f"  stopping once visible history reaches {checkpoint:%Y-%m-%d}")
+            messages = await scrape_chat(
+                page,
+                chat_name,
+                scrolls=scrolls,
+                stop_at_date=checkpoint,
+                expected_pattern=expected_pattern,
+            )
+            added, total, skipped = write_merged_export(output_path, messages, prune_existing=prune_existing)
             skipped_note = f", skipped {skipped} non-game message(s)" if skipped else ""
             print(f"  saved {output_file}: +{added} new, {total} total{skipped_note}")
 
@@ -566,6 +616,31 @@ class ScraperSelfTests(unittest.TestCase):
             added, total, skipped = write_merged_export(path, [], prune_existing=True)
             self.assertEqual((added, total, skipped), (0, 1, 0))
             self.assertNotIn("Tango", path.read_text(encoding="utf-8"))
+
+    def test_latest_existing_game_date_ignores_wrong_game_rows(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "mini.txt"
+            path.write_text(
+                "[07/06/2026, 09:06:00] Adam: Tango #608 | 0:48\n"
+                "[06/06/2026, 09:07:00] Evie: Mini Sudoku #299 | 0:59\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(latest_existing_game_date(path), date(2026, 6, 6))
+
+    def test_checkpoint_reached_on_or_before_existing_date(self):
+        messages = [
+            Message("07/06/2026", "09:06:00", "Adam", "Mini Sudoku #300 | 0:48"),
+            Message("06/06/2026", "09:07:00", "Evie", "Mini Sudoku #299 | 0:59"),
+        ]
+        self.assertTrue(
+            has_reached_checkpoint(messages, date(2026, 6, 6), OUTPUT_GAME_PATTERNS["mini.txt"])
+        )
+
+    def test_checkpoint_ignores_newer_visible_messages(self):
+        messages = [Message("07/06/2026", "09:06:00", "Adam", "Mini Sudoku #300 | 0:48")]
+        self.assertFalse(
+            has_reached_checkpoint(messages, date(2026, 6, 6), OUTPUT_GAME_PATTERNS["mini.txt"])
+        )
 
 
 def run_self_tests() -> None:
