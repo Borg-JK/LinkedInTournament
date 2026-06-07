@@ -602,6 +602,24 @@
       "patches_time": "0:41",
       "time_seconds": 41,
       "points": 8
+    },
+    {
+      "patches_num": 81,
+      "date": "2026-06-06",
+      "day_of_week": "Saturday",
+      "time_submitted": "18:40:00",
+      "patches_time": "0:20",
+      "time_seconds": 20,
+      "points": 8
+    },
+    {
+      "patches_num": 82,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:14:00",
+      "patches_time": "0:14",
+      "time_seconds": 14,
+      "points": 8
     }
   ],
   "Dominik Orkiszewski": [
@@ -1162,6 +1180,15 @@
       "patches_time": "0:43",
       "time_seconds": 43,
       "points": 5
+    },
+    {
+      "patches_num": 82,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:30:00",
+      "patches_time": "0:39",
+      "time_seconds": 39,
+      "points": 2
     }
   ],
   "Oliwer Wirkus": [
@@ -2245,6 +2272,15 @@
       "time_submitted": "09:32:00",
       "patches_time": "0:22",
       "time_seconds": 22,
+      "points": 7
+    },
+    {
+      "patches_num": 82,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:08:00",
+      "patches_time": "0:18",
+      "time_seconds": 18,
       "points": 6
     }
   ],
@@ -2959,6 +2995,15 @@
       "patches_time": "1:11",
       "time_seconds": 71,
       "points": 2
+    },
+    {
+      "patches_num": 82,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:46:00",
+      "patches_time": "0:14",
+      "time_seconds": 14,
+      "points": 8
     }
   ],
   "Omar": [
@@ -3285,6 +3330,15 @@
       "patches_time": "0:49",
       "time_seconds": 49,
       "points": 4
+    },
+    {
+      "patches_num": 82,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:40:00",
+      "patches_time": "0:31",
+      "time_seconds": 31,
+      "points": 3
     }
   ],
   "Adam": [
@@ -4015,7 +4069,16 @@
       "time_submitted": "12:14:00",
       "patches_time": "0:19",
       "time_seconds": 19,
-      "points": 7
+      "points": 9
+    },
+    {
+      "patches_num": 82,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:56:00",
+      "patches_time": "0:19",
+      "time_seconds": 19,
+      "points": 5
     }
   ],
   "Borg Knijnenburg": [
@@ -4746,7 +4809,16 @@
       "time_submitted": "09:06:00",
       "patches_time": "0:18",
       "time_seconds": 18,
-      "points": 8
+      "points": 10
+    },
+    {
+      "patches_num": 82,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:18:00",
+      "patches_time": "0:56",
+      "time_seconds": 56,
+      "points": 1
     }
   ],
   "Anna del Pozo": [
@@ -5477,7 +5549,16 @@
       "time_submitted": "09:09:00",
       "patches_time": "0:14",
       "time_seconds": 14,
-      "points": 9
+      "points": 11
+    },
+    {
+      "patches_num": 82,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:21:00",
+      "patches_time": "0:30",
+      "time_seconds": 30,
+      "points": 4
     }
   ],
   "Evie": [
@@ -5993,6 +6074,15 @@
       "patches_time": "1:33",
       "time_seconds": 93,
       "points": 1
+    },
+    {
+      "patches_num": 82,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:04:00",
+      "patches_time": "0:12",
+      "time_seconds": 12,
+      "points": 9
     }
   ],
   "Sebastiaan Helbing": [
@@ -6580,6 +6670,15 @@
       "patches_time": "0:18",
       "time_seconds": 18,
       "points": 11
+    },
+    {
+      "patches_num": 81,
+      "date": "2026-06-06",
+      "day_of_week": "Saturday",
+      "time_submitted": "20:58:00",
+      "patches_time": "0:24",
+      "time_seconds": 24,
+      "points": 6
     }
   ]
 }

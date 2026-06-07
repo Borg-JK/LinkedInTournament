@@ -267,12 +267,18 @@ def write_merged_export(path: Path, scraped: Iterable[Message], prune_existing: 
 async def click_first_visible(page, selectors: list[str], timeout_ms: int = 1500) -> bool:
     for selector in selectors:
         try:
-            locator = page.locator(selector).first
-            await locator.wait_for(state="visible", timeout=timeout_ms)
-            await locator.click()
-            return True
+            locators = page.locator(selector)
+            count = await locators.count()
         except Exception:
             continue
+        for index in range(max(1, count)):
+            try:
+                locator = locators.nth(index)
+                await locator.wait_for(state="visible", timeout=timeout_ms)
+                await locator.click()
+                return True
+            except Exception:
+                continue
     return False
 
 
@@ -317,32 +323,43 @@ async def wait_for_whatsapp_ready(page, timeout_ms: int = 300_000) -> None:
 async def fill_first_visible(page, selectors: list[str], value: str, timeout_ms: int = 1500) -> bool:
     for selector in selectors:
         try:
-            locator = page.locator(selector).first
-            await locator.wait_for(state="visible", timeout=timeout_ms)
-            await locator.click()
-            await locator.fill(value)
-            return True
+            locators = page.locator(selector)
+            count = await locators.count()
         except Exception:
             continue
+        for index in range(max(1, count)):
+            try:
+                locator = locators.nth(index)
+                await locator.wait_for(state="visible", timeout=timeout_ms)
+                await locator.click()
+                await locator.fill(value)
+                return True
+            except Exception:
+                continue
     return False
 
 
 async def open_chat(page, chat_name: str) -> None:
-    search_button_selectors = [
-        'button[aria-label="Search"]',
-        'button[aria-label*="Search"]',
-        '[data-icon="search"]',
-    ]
+    await click_first_visible(page, ['button[aria-label="Chats"]'], timeout_ms=1000)
+
     search_selectors = [
+        '[data-testid="chat-list-search-container"] input[type="text"]',
+        '[data-testid="chat-list-search-container"] input[aria-label="Search or start a new chat"]',
+        '[data-testid="chat-list-search-container"] input[placeholder="Search or start a new chat"]',
+        'input[aria-label="Search or start a new chat"]',
+        'input[placeholder="Search or start a new chat"]',
         'div[contenteditable="true"][aria-label="Search input textbox"]',
-        'div[contenteditable="true"][data-tab="3"]',
         'div[contenteditable="true"][aria-label*="Search"]',
-        'div[contenteditable="true"][role="textbox"]',
     ]
     if not await fill_first_visible(page, search_selectors, chat_name, timeout_ms=2500):
-        await click_first_visible(page, search_button_selectors, timeout_ms=1000)
-        if not await fill_first_visible(page, search_selectors, chat_name, timeout_ms=3000):
-            raise RuntimeError("Could not find WhatsApp search box. Is WhatsApp Web loaded?")
+        debug_dir = Path(".whatsapp-scraper-debug")
+        debug_dir.mkdir(exist_ok=True)
+        await page.screenshot(path=str(debug_dir / "search-box-missing.png"), full_page=True)
+        (debug_dir / "search-box-missing.html").write_text(
+            await page.content(),
+            encoding="utf-8",
+        )
+        raise RuntimeError("Could not find WhatsApp chat-list search box. Is WhatsApp Web loaded?")
 
     await page.wait_for_timeout(1200)
 

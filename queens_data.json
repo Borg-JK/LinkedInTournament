@@ -1411,7 +1411,16 @@
       "time_submitted": "09:35:00",
       "queens_time": "0:36",
       "time_seconds": 36,
-      "points": 8
+      "points": 9
+    },
+    {
+      "queens_num": 768,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:14:00",
+      "queens_time": "1:18",
+      "time_seconds": 78,
+      "points": 6
     }
   ],
   "Borg Knijnenburg": [
@@ -2817,7 +2826,16 @@
       "time_submitted": "09:08:00",
       "queens_time": "0:53",
       "time_seconds": 53,
-      "points": 7
+      "points": 8
+    },
+    {
+      "queens_num": 768,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:21:00",
+      "queens_time": "0:29",
+      "time_seconds": 29,
+      "points": 9
     }
   ],
   "Kaissar": [
@@ -4097,7 +4115,16 @@
       "time_submitted": "12:22:00",
       "queens_time": "0:58",
       "time_seconds": 58,
-      "points": 4
+      "points": 5
+    },
+    {
+      "queens_num": 768,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:45:00",
+      "queens_time": "1:01",
+      "time_seconds": 61,
+      "points": 7
     }
   ],
   "Anna del Pozo": [
@@ -5504,6 +5531,15 @@
       "queens_time": "1:45",
       "time_seconds": 105,
       "points": 3
+    },
+    {
+      "queens_num": 768,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:06:00",
+      "queens_time": "3:33",
+      "time_seconds": 213,
+      "points": 2
     }
   ],
   "Linda": [
@@ -7532,7 +7568,16 @@
       "time_submitted": "12:16:00",
       "queens_time": "0:56",
       "time_seconds": 56,
-      "points": 5
+      "points": 6
+    },
+    {
+      "queens_num": 768,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:59:00",
+      "queens_time": "0:47",
+      "time_seconds": 47,
+      "points": 8
     }
   ],
   "ev": [
@@ -8311,6 +8356,24 @@
       "queens_time": "1:18",
       "time_seconds": 78,
       "points": 2
+    },
+    {
+      "queens_num": 767,
+      "date": "2026-06-06",
+      "day_of_week": "Saturday",
+      "time_submitted": "18:43:00",
+      "queens_time": "1:31",
+      "time_seconds": 91,
+      "points": 4
+    },
+    {
+      "queens_num": 768,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:22:00",
+      "queens_time": "3:05",
+      "time_seconds": 185,
+      "points": 3
     }
   ],
   "Dominik Orkiszewski": [
@@ -8861,6 +8924,15 @@
       "time_submitted": "11:19:00",
       "queens_time": "2:33",
       "time_seconds": 153,
+      "points": 1
+    },
+    {
+      "queens_num": 768,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:44:00",
+      "queens_time": "4:56",
+      "time_seconds": 296,
       "points": 1
     }
   ],
@@ -9531,7 +9603,16 @@
       "time_submitted": "12:17:00",
       "queens_time": "0:26",
       "time_seconds": 26,
-      "points": 9
+      "points": 11
+    },
+    {
+      "queens_num": 768,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:48:00",
+      "queens_time": "2:07",
+      "time_seconds": 127,
+      "points": 5
     }
   ],
   "Evie": [
@@ -10073,7 +10154,16 @@
       "time_submitted": "09:31:00",
       "queens_time": "0:54",
       "time_seconds": 54,
-      "points": 6
+      "points": 7
+    },
+    {
+      "queens_num": 768,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:11:00",
+      "queens_time": "2:59",
+      "time_seconds": 179,
+      "points": 4
     }
   ],
   "+48 730 750 520": [
@@ -10700,6 +10790,15 @@
       "time_submitted": "10:23:00",
       "queens_time": "0:21",
       "time_seconds": 21,
+      "points": 11
+    },
+    {
+      "queens_num": 767,
+      "date": "2026-06-06",
+      "day_of_week": "Saturday",
+      "time_submitted": "20:59:00",
+      "queens_time": "0:26",
+      "time_seconds": 26,
       "points": 11
     }
   ]

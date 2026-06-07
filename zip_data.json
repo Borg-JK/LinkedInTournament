@@ -1411,7 +1411,16 @@
       "time_submitted": "09:33:00",
       "zip_time": "0:12",
       "time_seconds": 12,
-      "points": 9
+      "points": 11
+    },
+    {
+      "zip_num": 447,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:10:00",
+      "zip_time": "1:18",
+      "time_seconds": 78,
+      "points": 6
     }
   ],
   "Borg Knijnenburg": [
@@ -2818,6 +2827,15 @@
       "zip_time": "0:19",
       "time_seconds": 19,
       "points": 6
+    },
+    {
+      "zip_num": 447,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:20:00",
+      "zip_time": "1:50",
+      "time_seconds": 110,
+      "points": 4
     }
   ],
   "Anna del Pozo": [
@@ -4214,7 +4232,16 @@
       "time_submitted": "09:18:00",
       "zip_time": "0:12",
       "time_seconds": 12,
-      "points": 9
+      "points": 11
+    },
+    {
+      "zip_num": 447,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:07:00",
+      "zip_time": "1:43",
+      "time_seconds": 103,
+      "points": 5
     }
   ],
   "Kaissar": [
@@ -5495,6 +5522,15 @@
       "zip_time": "0:21",
       "time_seconds": 21,
       "points": 4
+    },
+    {
+      "zip_num": 447,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:04:00",
+      "zip_time": "5:38",
+      "time_seconds": 338,
+      "points": 1
     }
   ],
   "Linda": [
@@ -7478,6 +7514,15 @@
       "time_submitted": "12:15:00",
       "zip_time": "0:12",
       "time_seconds": 12,
+      "points": 11
+    },
+    {
+      "zip_num": 447,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:40:00",
+      "zip_time": "0:58",
+      "time_seconds": 58,
       "points": 9
     }
   ],
@@ -8457,6 +8502,24 @@
       "zip_time": "0:27",
       "time_seconds": 27,
       "points": 2
+    },
+    {
+      "zip_num": 446,
+      "date": "2026-06-06",
+      "day_of_week": "Saturday",
+      "time_submitted": "18:41:00",
+      "zip_time": "0:15",
+      "time_seconds": 15,
+      "points": 7
+    },
+    {
+      "zip_num": 447,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:17:00",
+      "zip_time": "2:42",
+      "time_seconds": 162,
+      "points": 2
     }
   ],
   "Dominik Orkiszewski": [
@@ -8990,6 +9053,15 @@
       "zip_time": "0:37",
       "time_seconds": 37,
       "points": 2
+    },
+    {
+      "zip_num": 447,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:33:00",
+      "zip_time": "2:41",
+      "time_seconds": 161,
+      "points": 3
     }
   ],
   "Oliwer Wirkus": [
@@ -9678,6 +9750,15 @@
       "zip_time": "0:25",
       "time_seconds": 25,
       "points": 3
+    },
+    {
+      "zip_num": 447,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:41:00",
+      "zip_time": "0:58",
+      "time_seconds": 58,
+      "points": 9
     }
   ],
   "Evie": [
@@ -10220,6 +10301,15 @@
       "zip_time": "0:20",
       "time_seconds": 20,
       "points": 5
+    },
+    {
+      "zip_num": 447,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:05:00",
+      "zip_time": "1:15",
+      "time_seconds": 75,
+      "points": 7
     }
   ],
   "Svetlio": [
@@ -10809,6 +10899,15 @@
       "zip_time": "0:08",
       "time_seconds": 8,
       "points": 11
+    },
+    {
+      "zip_num": 446,
+      "date": "2026-06-06",
+      "day_of_week": "Saturday",
+      "time_submitted": "20:58:00",
+      "zip_time": "0:14",
+      "time_seconds": 14,
+      "points": 8
     }
   ],
   "+48 730 750 520": [

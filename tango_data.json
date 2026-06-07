@@ -1402,6 +1402,15 @@
       "time_submitted": "09:34:00",
       "tango_time": "0:25",
       "time_seconds": 25,
+      "points": 10
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:11:00",
+      "tango_time": "0:46",
+      "time_seconds": 46,
       "points": 8
     }
   ],
@@ -2682,7 +2691,16 @@
       "time_submitted": "12:20:00",
       "tango_time": "0:29",
       "time_seconds": 29,
-      "points": 6
+      "points": 8
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:42:00",
+      "tango_time": "1:36",
+      "time_seconds": 96,
+      "points": 4
     }
   ],
   "Borg Knijnenburg": [
@@ -4052,7 +4070,16 @@
       "time_submitted": "09:09:00",
       "tango_time": "0:42",
       "time_seconds": 42,
-      "points": 2
+      "points": 3
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:24:00",
+      "tango_time": "3:24",
+      "time_seconds": 204,
+      "points": 1
     }
   ],
   "Anna del Pozo": [
@@ -5458,6 +5485,15 @@
       "time_submitted": "09:19:00",
       "tango_time": "0:39",
       "time_seconds": 39,
+      "points": 4
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:32:00",
+      "tango_time": "1:51",
+      "time_seconds": 111,
       "points": 3
     }
   ],
@@ -7469,7 +7505,16 @@
       "time_submitted": "12:14:00",
       "tango_time": "0:21",
       "time_seconds": 21,
-      "points": 9
+      "points": 11
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:56:00",
+      "tango_time": "1:06",
+      "time_seconds": 66,
+      "points": 6
     }
   ],
   "ev": [
@@ -8221,6 +8266,24 @@
       "tango_time": "0:37",
       "time_seconds": 37,
       "points": 3
+    },
+    {
+      "tango_num": 607,
+      "date": "2026-06-06",
+      "day_of_week": "Saturday",
+      "time_submitted": "18:41:00",
+      "tango_time": "0:34",
+      "time_seconds": 34,
+      "points": 5
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:18:00",
+      "tango_time": "0:37",
+      "time_seconds": 37,
+      "points": 9
     }
   ],
   "Dominik Orkiszewski": [
@@ -8781,6 +8844,15 @@
       "tango_time": "2:34",
       "time_seconds": 154,
       "points": 1
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:38:00",
+      "tango_time": "3:07",
+      "time_seconds": 187,
+      "points": 2
     }
   ],
   "Oliwer Wirkus": [
@@ -9133,6 +9205,15 @@
       "time_submitted": "13:34:00",
       "tango_time": "0:29",
       "time_seconds": 29,
+      "points": 8
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:56:00",
+      "tango_time": "1:06",
+      "time_seconds": 66,
       "points": 6
     }
   ],
@@ -9459,7 +9540,16 @@
       "time_submitted": "12:16:00",
       "tango_time": "0:30",
       "time_seconds": 30,
-      "points": 4
+      "points": 6
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:45:00",
+      "tango_time": "1:03",
+      "time_seconds": 63,
+      "points": 7
     }
   ],
   "Evie": [
@@ -10001,7 +10091,16 @@
       "time_submitted": "09:30:00",
       "tango_time": "0:25",
       "time_seconds": 25,
-      "points": 8
+      "points": 10
+    },
+    {
+      "tango_num": 608,
+      "date": "2026-06-07",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:08:00",
+      "tango_time": "0:29",
+      "time_seconds": 29,
+      "points": 10
     }
   ],
   "Svetlio": [
@@ -10465,6 +10564,15 @@
       "tango_time": "1:14",
       "time_seconds": 74,
       "points": 1
+    },
+    {
+      "tango_num": 607,
+      "date": "2026-06-06",
+      "day_of_week": "Saturday",
+      "time_submitted": "20:58:00",
+      "tango_time": "0:53",
+      "time_seconds": 53,
+      "points": 2
     }
   ]
 }
