@@ -1403,6 +1403,15 @@
       "mini_time": "1:57",
       "time_seconds": 117,
       "points": 2
+    },
+    {
+      "mini_num": 301,
+      "date": "2026-06-08",
+      "day_of_week": "Monday",
+      "time_submitted": "11:54:00",
+      "mini_time": "0:32",
+      "time_seconds": 32,
+      "points": 7
     }
   ],
   "Anna del Pozo": [
@@ -2818,6 +2827,15 @@
       "mini_time": "0:51",
       "time_seconds": 51,
       "points": 8
+    },
+    {
+      "mini_num": 301,
+      "date": "2026-06-08",
+      "day_of_week": "Monday",
+      "time_submitted": "11:06:00",
+      "mini_time": "0:32",
+      "time_seconds": 32,
+      "points": 7
     }
   ],
   "Kaissar": [
@@ -4143,6 +4161,15 @@
       "mini_time": "1:12",
       "time_seconds": 72,
       "points": 6
+    },
+    {
+      "mini_num": 301,
+      "date": "2026-06-08",
+      "day_of_week": "Monday",
+      "time_submitted": "11:08:00",
+      "mini_time": "0:32",
+      "time_seconds": 32,
+      "points": 7
     }
   ],
   "Borg Knijnenburg": [
@@ -5513,6 +5540,15 @@
       "mini_time": "1:08",
       "time_seconds": 68,
       "points": 7
+    },
+    {
+      "mini_num": 301,
+      "date": "2026-06-08",
+      "day_of_week": "Monday",
+      "time_submitted": "10:01:00",
+      "mini_time": "0:34",
+      "time_seconds": 34,
+      "points": 3
     }
   ],
   "Adam": [
@@ -7861,6 +7897,15 @@
       "mini_time": "2:56",
       "time_seconds": 176,
       "points": 1
+    },
+    {
+      "mini_num": 301,
+      "date": "2026-06-08",
+      "day_of_week": "Monday",
+      "time_submitted": "11:53:00",
+      "mini_time": "0:44",
+      "time_seconds": 44,
+      "points": 2
     }
   ],
   "Dominik Orkiszewski": [
@@ -8421,6 +8466,15 @@
       "mini_time": "1:28",
       "time_seconds": 88,
       "points": 5
+    },
+    {
+      "mini_num": 301,
+      "date": "2026-06-08",
+      "day_of_week": "Monday",
+      "time_submitted": "11:08:00",
+      "mini_time": "0:58",
+      "time_seconds": 58,
+      "points": 1
     }
   ],
   "Oliwer Wirkus": [
@@ -8866,6 +8920,15 @@
       "mini_time": "1:29",
       "time_seconds": 89,
       "points": 4
+    },
+    {
+      "mini_num": 301,
+      "date": "2026-06-08",
+      "day_of_week": "Monday",
+      "time_submitted": "11:08:00",
+      "mini_time": "0:32",
+      "time_seconds": 32,
+      "points": 7
     }
   ],
   "Evie": [
@@ -9997,6 +10060,15 @@
       "mini_time": "1:00",
       "time_seconds": 60,
       "points": 6
+    },
+    {
+      "mini_num": 301,
+      "date": "2026-06-08",
+      "day_of_week": "Monday",
+      "time_submitted": "11:06:00",
+      "mini_time": "0:21",
+      "time_seconds": 21,
+      "points": 8
     }
   ]
 }
