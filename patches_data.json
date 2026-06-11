@@ -647,6 +647,15 @@
       "patches_time": "0:11",
       "time_seconds": 11,
       "points": 7
+    },
+    {
+      "patches_num": 86,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:27:00",
+      "patches_time": "0:25",
+      "time_seconds": 25,
+      "points": 4
     }
   ],
   "Dominik Orkiszewski": [
@@ -1243,6 +1252,15 @@
       "patches_time": "0:11",
       "time_seconds": 11,
       "points": 7
+    },
+    {
+      "patches_num": 86,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:12:00",
+      "patches_time": "0:39",
+      "time_seconds": 39,
+      "points": 1
     }
   ],
   "Oliwer Wirkus": [
@@ -1622,6 +1640,15 @@
       "time_submitted": "09:54:00",
       "patches_time": "0:15",
       "time_seconds": 15,
+      "points": 2
+    },
+    {
+      "patches_num": 86,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:22:00",
+      "patches_time": "0:33",
+      "time_seconds": 33,
       "points": 2
     }
   ],
@@ -2390,6 +2417,15 @@
       "patches_time": "0:15",
       "time_seconds": 15,
       "points": 2
+    },
+    {
+      "patches_num": 86,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:22:00",
+      "patches_time": "0:21",
+      "time_seconds": 21,
+      "points": 5
     }
   ],
   "Kaissar": [
@@ -3501,6 +3537,15 @@
       "patches_time": "0:12",
       "time_seconds": 12,
       "points": 5
+    },
+    {
+      "patches_num": 86,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:41:00",
+      "patches_time": "0:19",
+      "time_seconds": 19,
+      "points": 6
     }
   ],
   "Adam": [
@@ -5035,6 +5080,15 @@
       "patches_time": "0:06",
       "time_seconds": 6,
       "points": 10
+    },
+    {
+      "patches_num": 86,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:01:00",
+      "patches_time": "0:15",
+      "time_seconds": 15,
+      "points": 7
     }
   ],
   "Anna del Pozo": [
@@ -5802,6 +5856,15 @@
       "patches_time": "0:13",
       "time_seconds": 13,
       "points": 4
+    },
+    {
+      "patches_num": 86,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:18:00",
+      "patches_time": "0:26",
+      "time_seconds": 26,
+      "points": 3
     }
   ],
   "Evie": [

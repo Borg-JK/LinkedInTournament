@@ -1439,6 +1439,15 @@
       "zip_time": "0:07",
       "time_seconds": 7,
       "points": 10
+    },
+    {
+      "zip_num": 451,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:23:00",
+      "zip_time": "0:09",
+      "time_seconds": 9,
+      "points": 4
     }
   ],
   "Borg Knijnenburg": [
@@ -2872,6 +2881,15 @@
       "zip_time": "0:25",
       "time_seconds": 25,
       "points": 1
+    },
+    {
+      "zip_num": 451,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:01:00",
+      "zip_time": "0:17",
+      "time_seconds": 17,
+      "points": 2
     }
   ],
   "Anna del Pozo": [
@@ -4296,6 +4314,24 @@
       "zip_time": "0:08",
       "time_seconds": 8,
       "points": 7
+    },
+    {
+      "zip_num": 450,
+      "date": "2026-06-10",
+      "day_of_week": "Wednesday",
+      "time_submitted": "13:19:00",
+      "zip_time": "0:16",
+      "time_seconds": 16,
+      "points": 1
+    },
+    {
+      "zip_num": 451,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:18:00",
+      "zip_time": "0:07",
+      "time_seconds": 7,
+      "points": 9
     }
   ],
   "Kaissar": [
@@ -5603,6 +5639,24 @@
       "zip_time": "0:13",
       "time_seconds": 13,
       "points": 3
+    },
+    {
+      "zip_num": 450,
+      "date": "2026-06-10",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:18:00",
+      "zip_time": "0:05",
+      "time_seconds": 5,
+      "points": 6
+    },
+    {
+      "zip_num": 451,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:36:00",
+      "zip_time": "0:08",
+      "time_seconds": 8,
+      "points": 8
     }
   ],
   "Linda": [
@@ -7605,6 +7659,15 @@
       "zip_time": "0:08",
       "time_seconds": 8,
       "points": 7
+    },
+    {
+      "zip_num": 450,
+      "date": "2026-06-10",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:18:00",
+      "zip_time": "0:11",
+      "time_seconds": 11,
+      "points": 3
     }
   ],
   "Bogdan Ene": [
@@ -8619,6 +8682,15 @@
       "zip_time": "0:07",
       "time_seconds": 7,
       "points": 10
+    },
+    {
+      "zip_num": 451,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:27:00",
+      "zip_time": "0:08",
+      "time_seconds": 8,
+      "points": 8
     }
   ],
   "Dominik Orkiszewski": [
@@ -9179,6 +9251,24 @@
       "zip_time": "0:18",
       "time_seconds": 18,
       "points": 2
+    },
+    {
+      "zip_num": 450,
+      "date": "2026-06-10",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:16:00",
+      "zip_time": "0:15",
+      "time_seconds": 15,
+      "points": 2
+    },
+    {
+      "zip_num": 451,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:12:00",
+      "zip_time": "0:17",
+      "time_seconds": 17,
+      "points": 2
     }
   ],
   "Oliwer Wirkus": [
@@ -9558,7 +9648,16 @@
       "time_submitted": "14:07:00",
       "zip_time": "0:08",
       "time_seconds": 8,
-      "points": 1
+      "points": 5
+    },
+    {
+      "zip_num": 451,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:21:00",
+      "zip_time": "0:09",
+      "time_seconds": 9,
+      "points": 4
     }
   ],
   "Omar": [
@@ -9921,6 +10020,24 @@
       "zip_time": "0:09",
       "time_seconds": 9,
       "points": 6
+    },
+    {
+      "zip_num": 450,
+      "date": "2026-06-10",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:23:00",
+      "zip_time": "0:10",
+      "time_seconds": 10,
+      "points": 4
+    },
+    {
+      "zip_num": 451,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:25:00",
+      "zip_time": "0:08",
+      "time_seconds": 8,
+      "points": 8
     }
   ],
   "Evie": [
@@ -10490,6 +10607,15 @@
       "zip_time": "0:11",
       "time_seconds": 11,
       "points": 5
+    },
+    {
+      "zip_num": 451,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:00:00",
+      "zip_time": "0:08",
+      "time_seconds": 8,
+      "points": 8
     }
   ],
   "Svetlio": [
