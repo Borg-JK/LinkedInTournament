@@ -1456,7 +1456,16 @@
       "time_submitted": "11:26:00",
       "queens_time": "0:31",
       "time_seconds": 31,
-      "points": 6
+      "points": 7
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "09:12:00",
+      "queens_time": "0:29",
+      "time_seconds": 29,
+      "points": 7
     }
   ],
   "Borg Knijnenburg": [
@@ -2907,7 +2916,16 @@
       "time_submitted": "09:02:00",
       "queens_time": "0:16",
       "time_seconds": 16,
-      "points": 8
+      "points": 9
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "11:35:00",
+      "queens_time": "0:15",
+      "time_seconds": 15,
+      "points": 10
     }
   ],
   "Kaissar": [
@@ -4232,7 +4250,16 @@
       "time_submitted": "14:49:00",
       "queens_time": "0:51",
       "time_seconds": 51,
-      "points": 1
+      "points": 2
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "10:43:00",
+      "queens_time": "0:36",
+      "time_seconds": 36,
+      "points": 6
     }
   ],
   "Anna del Pozo": [
@@ -5683,7 +5710,16 @@
       "time_submitted": "14:20:00",
       "queens_time": "0:23",
       "time_seconds": 23,
-      "points": 7
+      "points": 8
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "10:20:00",
+      "queens_time": "0:24",
+      "time_seconds": 24,
+      "points": 8
     }
   ],
   "Linda": [
@@ -7749,6 +7785,24 @@
       "queens_time": "0:43",
       "time_seconds": 43,
       "points": 2
+    },
+    {
+      "queens_num": 772,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "15:47:00",
+      "queens_time": "1:07",
+      "time_seconds": 67,
+      "points": 1
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "11:01:00",
+      "queens_time": "0:51",
+      "time_seconds": 51,
+      "points": 5
     }
   ],
   "ev": [
@@ -8620,7 +8674,16 @@
       "time_submitted": "12:28:00",
       "queens_time": "0:42",
       "time_seconds": 42,
-      "points": 3
+      "points": 4
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "09:05:00",
+      "queens_time": "2:48",
+      "time_seconds": 168,
+      "points": 2
     }
   ],
   "Sebastiaan Helbing": [
@@ -9605,7 +9668,16 @@
       "time_submitted": "10:23:00",
       "queens_time": "0:12",
       "time_seconds": 12,
-      "points": 9
+      "points": 10
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "11:00:00",
+      "queens_time": "0:15",
+      "time_seconds": 15,
+      "points": 10
     }
   ],
   "Dominik Orkiszewski": [
@@ -10201,7 +10273,16 @@
       "time_submitted": "09:16:00",
       "queens_time": "0:32",
       "time_seconds": 32,
-      "points": 4
+      "points": 5
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "09:39:00",
+      "queens_time": "1:29",
+      "time_seconds": 89,
+      "points": 3
     }
   ],
   "Evie": [
@@ -10788,7 +10869,16 @@
       "time_submitted": "13:04:00",
       "queens_time": "0:45",
       "time_seconds": 45,
-      "points": 2
+      "points": 3
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "09:42:00",
+      "queens_time": "0:57",
+      "time_seconds": 57,
+      "points": 4
     }
   ],
   "Omar": [
@@ -11168,7 +11258,16 @@
       "time_submitted": "11:30:00",
       "queens_time": "0:31",
       "time_seconds": 31,
-      "points": 6
+      "points": 7
+    },
+    {
+      "queens_num": 773,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "10:41:00",
+      "queens_time": "3:08",
+      "time_seconds": 188,
+      "points": 1
     }
   ]
 }

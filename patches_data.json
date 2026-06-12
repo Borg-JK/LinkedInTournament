@@ -764,6 +764,24 @@
       "patches_time": "0:13",
       "time_seconds": 13,
       "points": 4
+    },
+    {
+      "patches_num": 86,
+      "date": "2026-06-11",
+      "day_of_week": "Thursday",
+      "time_submitted": "15:45:00",
+      "patches_time": "0:54",
+      "time_seconds": 54,
+      "points": 1
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "10:59:00",
+      "patches_time": "1:24",
+      "time_seconds": 84,
+      "points": 2
     }
   ],
   "Borg Knijnenburg": [
@@ -1539,7 +1557,16 @@
       "time_submitted": "09:01:00",
       "patches_time": "0:15",
       "time_seconds": 15,
-      "points": 8
+      "points": 9
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "10:11:00",
+      "patches_time": "0:38",
+      "time_seconds": 38,
+      "points": 6
     }
   ],
   "Kaissar": [
@@ -2297,7 +2324,16 @@
       "time_submitted": "14:49:00",
       "patches_time": "0:17",
       "time_seconds": 17,
-      "points": 7
+      "points": 8
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "10:46:00",
+      "patches_time": "0:18",
+      "time_seconds": 18,
+      "points": 10
     }
   ],
   "Igor": [
@@ -3073,7 +3109,16 @@
       "time_submitted": "11:22:00",
       "patches_time": "0:21",
       "time_seconds": 21,
-      "points": 5
+      "points": 6
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "09:09:00",
+      "patches_time": "0:21",
+      "time_seconds": 21,
+      "points": 9
     }
   ],
   "Anna del Pozo": [
@@ -3849,7 +3894,16 @@
       "time_submitted": "14:18:00",
       "patches_time": "0:26",
       "time_seconds": 26,
-      "points": 3
+      "points": 4
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "10:18:00",
+      "patches_time": "2:00",
+      "time_seconds": 120,
+      "points": 1
     }
   ],
   "Kornel Baranowski": [
@@ -4508,7 +4562,16 @@
       "time_submitted": "12:27:00",
       "patches_time": "0:25",
       "time_seconds": 25,
-      "points": 4
+      "points": 5
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "09:01:00",
+      "patches_time": "0:52",
+      "time_seconds": 52,
+      "points": 5
     }
   ],
   "Sebastiaan Helbing": [
@@ -5727,7 +5790,16 @@
       "time_submitted": "09:12:00",
       "patches_time": "0:39",
       "time_seconds": 39,
-      "points": 1
+      "points": 2
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "09:27:00",
+      "patches_time": "0:29",
+      "time_seconds": 29,
+      "points": 7
     }
   ],
   "Oliwer Wirkus": [
@@ -6116,7 +6188,16 @@
       "time_submitted": "10:22:00",
       "patches_time": "0:33",
       "time_seconds": 33,
-      "points": 2
+      "points": 3
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "10:57:00",
+      "patches_time": "1:21",
+      "time_seconds": 81,
+      "points": 3
     }
   ],
   "Evie": [
@@ -6668,6 +6749,15 @@
       "patches_time": "0:06",
       "time_seconds": 6,
       "points": 10
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "09:39:00",
+      "patches_time": "1:00",
+      "time_seconds": 60,
+      "points": 4
     }
   ],
   "Omar": [
@@ -7038,7 +7128,16 @@
       "time_submitted": "11:41:00",
       "patches_time": "0:19",
       "time_seconds": 19,
-      "points": 6
+      "points": 7
+    },
+    {
+      "patches_num": 87,
+      "date": "2026-06-12",
+      "day_of_week": "Friday",
+      "time_submitted": "10:32:00",
+      "patches_time": "0:22",
+      "time_seconds": 22,
+      "points": 8
     }
   ]
 }
