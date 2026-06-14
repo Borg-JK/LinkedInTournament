@@ -3506,16 +3506,6 @@ function computeTournamentScores(gameKey, month) {
   const participants = getTournamentParticipants(gameKey, month);
   if (participants.length === 0) return { participants: [], scores: {}, dailyResults: [] };
 
-  // For each participant, find their first submission day in the month.
-  // A player is "active" on a given date only if they have already submitted
-  // at least once on or before that date — before that they are invisible.
-  const firstDayOf = {};
-  for (const person of participants) {
-    const monthEntries = (cfg.data[person] || []).filter(e => e.date.startsWith(month));
-    const days = monthEntries.map(e => e.date).sort();
-    firstDayOf[person] = days[0]; // earliest date string, e.g. "2026-04-05"
-  }
-
   // Build dayMap: date -> [{person, time_seconds}] for all participant submissions
   const dayMap = {};
   for (const person of participants) {
@@ -3536,16 +3526,13 @@ function computeTournamentScores(gameKey, month) {
   const dailyResults = [];
 
   for (const date of allDates) {
-    // Active players on this date = those whose first submission is on or before this date
-    const active = participants.filter(p => firstDayOf[p] <= date);
-    const N = active.length;
-    if (N === 0) continue;
+    // Once someone qualifies for a month, their slot counts for every day
+    // in that month, including days before their first submission.
+    const N = participants.length;
 
     const submissions = dayMap[date] || [];
-    // Submitters = active players who submitted today
-    const submitters = active.filter(p => submissions.find(s => s.person === p));
-    // Missing = active players who did NOT submit today
-    const missing = active.filter(p => !submitters.includes(p));
+    const submitters = participants.filter(p => submissions.find(s => s.person === p));
+    const missing = participants.filter(p => !submitters.includes(p));
 
     submitters.sort((a, b) => {
       const ta = submissions.find(s => s.person === a).time_seconds;
@@ -3570,7 +3557,7 @@ function computeTournamentScores(gameKey, month) {
       i = j;
     }
 
-    active.forEach(p => { totals[p] = (totals[p] || 0) + (dayPts[p] || 0); });
+    participants.forEach(p => { totals[p] = (totals[p] || 0) + (dayPts[p] || 0); });
     dailyResults.push({ date, dayPts, submitters, missing, submissions, activeCount: N });
   }
 
@@ -3816,8 +3803,7 @@ function renderTournamentPage() {
   if (isOverall) {
     phtml += `<div style="font-size:0.88rem;color:var(--text-soft);margin-bottom:14px;line-height:1.5">Combined points across all games. Players who qualified in at least one game are shown.</div>`;
   } else {
-    const threshold = Math.ceil(effectiveDays * 0.50);
-    phtml += `<div style="font-size:0.88rem;color:var(--text-soft);margin-bottom:14px;line-height:1.5">Qualified by submitting on ≥${threshold} of ${effectiveDays} days (50% of days played so far).</div>`;
+    phtml += `<div style="font-size:0.88rem;color:var(--text-soft);margin-bottom:14px;line-height:1.5">Qualified by submitting on at least 50% of their window from first submission through the latest counted day.</div>`;
   }
   phtml += `<div style="display:flex;flex-wrap:wrap;gap:8px">`;
   participants.forEach(p => {
@@ -3923,7 +3909,7 @@ function renderTournamentDay() {
   });
   thtml += '</tbody></table>';
   if (day.missing.length > 0) {
-    const dayN = day.activeCount || N; thtml += `<div style="font-size:0.78rem;color:var(--text-muted);margin-top:8px">${day.missing.length} player${day.missing.length>1?'s':''} did not submit — last submitter gets ${dayN - day.submitters.length + 1} pts (position ${day.submitters.length} of ${dayN} active players).</div>`;
+    const dayN = day.activeCount || participants.length; thtml += `<div style="font-size:0.78rem;color:var(--text-muted);margin-top:8px">${day.missing.length} player${day.missing.length>1?'s':''} did not submit — last submitter gets ${dayN - day.submitters.length + 1} pts (position ${day.submitters.length} of ${dayN} qualified players).</div>`;
   }
   tableEl.innerHTML = thtml;
 }
@@ -4228,9 +4214,9 @@ init();
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
         <div style="font-size:0.92rem;color:var(--text-soft);line-height:1.8">
           <strong style="color:var(--text);font-family:'Fraunces',serif;font-size:1.02rem;display:block;margin-bottom:4px">Who qualifies?</strong>
-          Players who submit on at least <strong>50% of days elapsed</strong> in the month qualify. Once the month is complete, the full calendar length is used.<br><br>
+          Players who submit on at least <strong>50% of their personal window</strong> qualify, counted from their first submission in the month through the latest counted day. Once qualified, they are part of that month's field.<br><br>
           <strong style="color:var(--text);font-family:'Fraunces',serif;font-size:1.02rem;display:block;margin-bottom:4px">Daily points</strong>
-          Only the qualifying participants count for the tournament. If N players qualify, the daily ranking works exactly like Simple Score among those N players: 1st gets N pts, 2nd gets N−1, …, last gets 1.<br><br>
+          Only the qualifying participants count for the tournament. If N players qualify by the end of the month, every day in that month is scored against those N players, including days before a later qualifier first joined: 1st gets N pts, 2nd gets N−1, …, last gets 1.<br><br>
           <strong style="color:var(--text);font-family:'Fraunces',serif;font-size:1.02rem;display:block;margin-bottom:4px">When someone doesn't submit</strong>
           Non-submitters receive <strong>0 points</strong> for that day. The point allocation for those who did submit is unchanged — the last submitter still receives the points for that finishing position.<br><br>
           <strong style="color:var(--text);font-family:'Fraunces',serif;font-size:1.02rem;display:block;margin-bottom:4px">Draws</strong>
