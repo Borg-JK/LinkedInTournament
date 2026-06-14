@@ -89,6 +89,39 @@ MSG_PAT = re.compile(r'^\[(\d{2}/\d{2}/\d{4}), (\d{2}:\d{2}:\d{2})\] ([^:]+): (.
 # ─────────────────────────────────────────────────────────────────────────────
 # Parsing helpers
 # ─────────────────────────────────────────────────────────────────────────────
+def infer_date_order(date_texts):
+    for date_text in date_texts:
+        parts = date_text.split("/")
+        if len(parts) != 3:
+            continue
+        try:
+            first, second = int(parts[0]), int(parts[1])
+        except ValueError:
+            continue
+        if first > 12 and second <= 12:
+            return "DMY"
+        if second > 12 and first <= 12:
+            return "MDY"
+    return "DMY"
+
+
+def normalise_date(date_text, fallback_order):
+    parts = date_text.split("/")
+    if len(parts) != 3:
+        raise ValueError(f"Unsupported date: {date_text}")
+    first, second, year = [p.strip() for p in parts]
+
+    order = infer_date_order([date_text])
+    if order == "DMY" and int(first) <= 12 and int(second) <= 12:
+        order = fallback_order
+
+    if order == "MDY":
+        month, day = first, second
+    else:
+        day, month = first, second
+    return f"{int(day):02d}/{int(month):02d}/{int(year):04d}"
+
+
 def parse_messages(filepath):
     """Return list of (date_str, time_str, sender, body) from a chat file."""
     if not os.path.exists(filepath):
@@ -96,6 +129,11 @@ def parse_messages(filepath):
         return []
     with open(filepath, "r", encoding="utf-8") as f:
         lines = f.read().split("\n")
+    date_order = infer_date_order(
+        m.group(1)
+        for line in lines
+        if (m := MSG_PAT.match(line.strip()))
+    )
     messages = []
     current = None
 
@@ -105,6 +143,10 @@ def parse_messages(filepath):
             if current is not None:
                 messages.append(current)
             date_str, time_str, sender, body = m.groups()
+            try:
+                date_str = normalise_date(date_str, date_order)
+            except ValueError:
+                continue
             current = [date_str, time_str, sender.strip(), body]
         elif current is not None:
             current[3] += "\n" + line.strip()
@@ -113,6 +155,45 @@ def parse_messages(filepath):
         messages.append(current)
 
     return messages
+
+
+def clean_sender_name(sender):
+    """Normalize WhatsApp sender names before using them as player keys."""
+    return (
+        sender
+        .replace("\u202f", " ")
+        .replace("\u202a", "")
+        .replace("\u202c", "")
+        .replace("\xa0", " ")
+        .strip()
+        .lstrip("~ ")
+        .strip()
+    )
+
+
+def has_quoted_player_prefix(body, match_start, known_names):
+    """
+    WhatsApp replies can expose quoted score text as:
+      Other Player
+      Patches #89 | 0:21
+
+    If we parse that inside the sender's message, the quoted player's score
+    gets incorrectly assigned to the sender. Reject matches whose previous
+    non-empty line is a known player name.
+    """
+    previous_lines = [line.strip() for line in body[:match_start].splitlines() if line.strip()]
+    if not previous_lines:
+        return False
+    return previous_lines[-1] in known_names
+
+
+def find_score_match(body, patterns, known_names):
+    for pat in patterns:
+        for match in pat.finditer(body):
+            if has_quoted_player_prefix(body, match.start(), known_names):
+                continue
+            return match
+    return None
 
 
 def compute_points(by_day_entries):
@@ -139,6 +220,12 @@ def compute_points(by_day_entries):
     return points
 
 
+def entry_preference_key(entry):
+    seconds = entry["time_submitted"].rsplit(":", 1)[-1]
+    rounded_timestamp_penalty = 1 if seconds == "00" else 0
+    return entry["time_seconds"], rounded_timestamp_penalty, entry["time_submitted"]
+
+
 def parse_game(game_cfg):
     """Parse a single game txt file and return { person: [entries] }."""
     filepath = game_cfg["file"]
@@ -150,6 +237,7 @@ def parse_game(game_cfg):
     pat2     = game_cfg["pattern2"]
 
     messages = parse_messages(filepath)
+    known_names = {clean_sender_name(sender) for _, _, sender, _ in messages}
     data_by_person = defaultdict(list)
 
     for date_str, time_str, sender, body in messages:
@@ -160,7 +248,7 @@ def parse_game(game_cfg):
         if msg_date < START_DATE:
             continue
 
-        m = pat.search(body) or pat2.search(body)
+        m = find_score_match(body, (pat, pat2), known_names)
         if not m:
             continue
 
@@ -169,8 +257,7 @@ def parse_game(game_cfg):
         correct_date = base_date + timedelta(days=(game_num - base_num))
         if correct_date < START_DATE:
             continue
-        # Strip WhatsApp unicode formatting characters from phone numbers
-        clean_name = sender.replace("\u202f", " ").replace("\u202a", "").replace("\u202c", "").replace("\xa0", " ").strip().lstrip("~ ").strip()
+        clean_name = clean_sender_name(sender)
 
         data_by_person[clean_name].append({
             num_key:          game_num,
@@ -191,7 +278,7 @@ def parse_game(game_cfg):
         for e in entries:
             game_num = e[num_key]
             current = best_by_game.get(game_num)
-            if current is None or (e["time_seconds"], e["time_submitted"]) < (current["time_seconds"], current["time_submitted"]):
+            if current is None or entry_preference_key(e) < entry_preference_key(current):
                 best_by_game[game_num] = e
         deduped_by_person[person] = list(best_by_game.values())
     data_by_person = deduped_by_person
