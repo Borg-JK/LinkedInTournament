@@ -1511,6 +1511,33 @@
       "tango_time": "0:27",
       "time_seconds": 27,
       "points": 6
+    },
+    {
+      "tango_num": 623,
+      "date": "2026-06-22",
+      "day_of_week": "Monday",
+      "time_submitted": "09:35:00",
+      "tango_time": "0:12",
+      "time_seconds": 12,
+      "points": 9
+    },
+    {
+      "tango_num": 624,
+      "date": "2026-06-23",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:13:00",
+      "tango_time": "0:38",
+      "time_seconds": 38,
+      "points": 3
+    },
+    {
+      "tango_num": 625,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:51:00",
+      "tango_time": "0:15",
+      "time_seconds": 15,
+      "points": 7
     }
   ],
   "Kaissar": [
@@ -2899,6 +2926,42 @@
       "tango_time": "0:26",
       "time_seconds": 26,
       "points": 7
+    },
+    {
+      "tango_num": 622,
+      "date": "2026-06-21",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:40:00",
+      "tango_time": "0:44",
+      "time_seconds": 44,
+      "points": 3
+    },
+    {
+      "tango_num": 623,
+      "date": "2026-06-22",
+      "day_of_week": "Monday",
+      "time_submitted": "12:29:00",
+      "tango_time": "0:27",
+      "time_seconds": 27,
+      "points": 2
+    },
+    {
+      "tango_num": 624,
+      "date": "2026-06-23",
+      "day_of_week": "Tuesday",
+      "time_submitted": "12:45:00",
+      "tango_time": "0:24",
+      "time_seconds": 24,
+      "points": 6
+    },
+    {
+      "tango_num": 625,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:01:00",
+      "tango_time": "0:20",
+      "time_seconds": 20,
+      "points": 3
     }
   ],
   "Borg Knijnenburg": [
@@ -4377,6 +4440,33 @@
       "tango_time": "0:31",
       "time_seconds": 31,
       "points": 4
+    },
+    {
+      "tango_num": 623,
+      "date": "2026-06-22",
+      "day_of_week": "Monday",
+      "time_submitted": "10:28:00",
+      "tango_time": "0:12",
+      "time_seconds": 12,
+      "points": 9
+    },
+    {
+      "tango_num": 624,
+      "date": "2026-06-23",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:14:00",
+      "tango_time": "1:34",
+      "time_seconds": 94,
+      "points": 1
+    },
+    {
+      "tango_num": 625,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:16:00",
+      "tango_time": "0:15",
+      "time_seconds": 15,
+      "points": 7
     }
   ],
   "Anna del Pozo": [
@@ -5891,6 +5981,33 @@
       "tango_time": "0:18",
       "time_seconds": 18,
       "points": 11
+    },
+    {
+      "tango_num": 623,
+      "date": "2026-06-22",
+      "day_of_week": "Monday",
+      "time_submitted": "10:32:00",
+      "tango_time": "0:12",
+      "time_seconds": 12,
+      "points": 9
+    },
+    {
+      "tango_num": 624,
+      "date": "2026-06-23",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:48:00",
+      "tango_time": "0:22",
+      "time_seconds": 22,
+      "points": 7
+    },
+    {
+      "tango_num": 625,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:36:00",
+      "tango_time": "0:15",
+      "time_seconds": 15,
+      "points": 7
     }
   ],
   "Linda": [
@@ -8010,6 +8127,42 @@
       "tango_time": "0:25",
       "time_seconds": 25,
       "points": 10
+    },
+    {
+      "tango_num": 622,
+      "date": "2026-06-21",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:10:00",
+      "tango_time": "0:48",
+      "time_seconds": 48,
+      "points": 2
+    },
+    {
+      "tango_num": 623,
+      "date": "2026-06-22",
+      "day_of_week": "Monday",
+      "time_submitted": "09:01:00",
+      "tango_time": "0:19",
+      "time_seconds": 19,
+      "points": 5
+    },
+    {
+      "tango_num": 624,
+      "date": "2026-06-23",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:25:00",
+      "tango_time": "0:17",
+      "time_seconds": 17,
+      "points": 9
+    },
+    {
+      "tango_num": 625,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:48:00",
+      "tango_time": "0:18",
+      "time_seconds": 18,
+      "points": 4
     }
   ],
   "ev": [
@@ -8889,6 +9042,24 @@
       "tango_time": "0:30",
       "time_seconds": 30,
       "points": 5
+    },
+    {
+      "tango_num": 623,
+      "date": "2026-06-22",
+      "day_of_week": "Monday",
+      "time_submitted": "17:08:00",
+      "tango_time": "0:19",
+      "time_seconds": 19,
+      "points": 5
+    },
+    {
+      "tango_num": 624,
+      "date": "2026-06-23",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:18:00",
+      "tango_time": "0:35",
+      "time_seconds": 35,
+      "points": 4
     }
   ],
   "Sebastiaan Helbing": [
@@ -10045,6 +10216,42 @@
       "tango_time": "0:48",
       "time_seconds": 48,
       "points": 2
+    },
+    {
+      "tango_num": 622,
+      "date": "2026-06-21",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:20:00",
+      "tango_time": "1:11",
+      "time_seconds": 71,
+      "points": 1
+    },
+    {
+      "tango_num": 623,
+      "date": "2026-06-22",
+      "day_of_week": "Monday",
+      "time_submitted": "10:44:00",
+      "tango_time": "0:27",
+      "time_seconds": 27,
+      "points": 2
+    },
+    {
+      "tango_num": 624,
+      "date": "2026-06-23",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:39:00",
+      "tango_time": "0:45",
+      "time_seconds": 45,
+      "points": 2
+    },
+    {
+      "tango_num": 625,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:06:00",
+      "tango_time": "0:35",
+      "time_seconds": 35,
+      "points": 1
     }
   ],
   "Oliwer Wirkus": [
@@ -11156,6 +11363,24 @@
       "tango_time": "0:25",
       "time_seconds": 25,
       "points": 10
+    },
+    {
+      "tango_num": 623,
+      "date": "2026-06-22",
+      "day_of_week": "Monday",
+      "time_submitted": "10:02:00",
+      "tango_time": "0:14",
+      "time_seconds": 14,
+      "points": 6
+    },
+    {
+      "tango_num": 624,
+      "date": "2026-06-23",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:16:00",
+      "tango_time": "0:21",
+      "time_seconds": 21,
+      "points": 8
     }
   ],
   "Omar": [
@@ -11590,6 +11815,42 @@
       "tango_time": "1:01",
       "time_seconds": 61,
       "points": 1
+    },
+    {
+      "tango_num": 622,
+      "date": "2026-06-21",
+      "day_of_week": "Sunday",
+      "time_submitted": "15:24:00",
+      "tango_time": "0:28",
+      "time_seconds": 28,
+      "points": 4
+    },
+    {
+      "tango_num": 623,
+      "date": "2026-06-22",
+      "day_of_week": "Monday",
+      "time_submitted": "13:35:00",
+      "tango_time": "0:20",
+      "time_seconds": 20,
+      "points": 3
+    },
+    {
+      "tango_num": 624,
+      "date": "2026-06-23",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:24:00",
+      "tango_time": "0:27",
+      "time_seconds": 27,
+      "points": 5
+    },
+    {
+      "tango_num": 625,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:57:00",
+      "tango_time": "0:20",
+      "time_seconds": 20,
+      "points": 3
     }
   ]
 }
