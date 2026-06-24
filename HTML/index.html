@@ -1207,7 +1207,7 @@
 </head>
 <body class="theme-queens">
 
-<nav class="topnav">
+<nav class="topnav" style="display:none">
   <div class="logo">
     <span class="logo-mark">L</span>
     <span style="display:flex;flex-direction:column;line-height:1;gap:3px">
@@ -1216,7 +1216,7 @@
     </span>
   </div>
   <div class="game-tabs">
-    <div class="game-tab active" id="tab-queens" onclick="switchGame('queens')">Queens</div>
+    <div class="game-tab" id="tab-queens" onclick="switchGame('queens')">Queens</div>
     <div class="game-tab" id="tab-mini" onclick="switchGame('mini')">Mini</div>
     <div class="game-tab" id="tab-zip" onclick="switchGame('zip')">Zip</div>
     <div class="game-tab" id="tab-tango" onclick="switchGame('tango')">Tango</div>
@@ -1228,7 +1228,7 @@
   </div>
 </nav>
 
-<div id="main-page">
+<div id="main-page" style="display:none">
 <div class="main">
   <!-- Queens hero -->
   <div class="game-hero">
@@ -3940,7 +3940,7 @@ init();
 <!-- ═══════════════════════════════════════════════════════════════════════
      TOURNAMENT PAGE
 ════════════════════════════════════════════════════════════════════════════ -->
-<div id="tournament-page" style="display:none;min-height:100vh;background:var(--bg-queens)">
+<div id="tournament-page" style="min-height:100vh;background:var(--bg-queens)">
 <div class="main">
 
   <!-- Top bar: TOURNAMENT title + Back button -->
@@ -5268,9 +5268,8 @@ function switchTournamentGame(gameKey) {
   renderTournamentPage();
 }
 
-// Wire up: when entering the tournament page, default to standings section
-const _origSwitchGame = window.switchGame;
-// (No override — switchGame already calls renderTournamentPage)
+// Start on the tournament page
+switchGame('tournament');
 </script>
 
 </body>
