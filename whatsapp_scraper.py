@@ -35,9 +35,12 @@ import sys
 import tempfile
 import unittest
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Literal
+
+
+DateOrder = Literal["DMY", "MDY"]
 
 
 DEFAULT_CONFIG = "whatsapp_scraper_config.json"
@@ -49,6 +52,34 @@ OUTPUT_GAME_PATTERNS = {
     "mini.txt": re.compile(r"\bMini\s+Sudoku\b", re.IGNORECASE),
     "zip.txt": re.compile(r"\bZip\b", re.IGNORECASE),
     "patches.txt": re.compile(r"\bPatches\b", re.IGNORECASE),
+}
+
+OUTPUT_GAME_DATE_RULES = {
+    "queens.txt": (
+        re.compile(r"Queens\s+(?:#|[Nn][r.]\.?|n\.\u00ba)\s*(\d+)", re.IGNORECASE),
+        611,
+        date(2026, 1, 1),
+    ),
+    "tango.txt": (
+        re.compile(r"Tango\s+(?:#|[Nn][r.]\.?|n\.\u00ba)\s*(\d+)", re.IGNORECASE),
+        451,
+        date(2026, 1, 1),
+    ),
+    "mini.txt": (
+        re.compile(r"Mini Sudoku\s+(?:#|[Nn][r.]\.?|n\.\u00ba)\s*(\d+)", re.IGNORECASE),
+        143,
+        date(2026, 1, 1),
+    ),
+    "zip.txt": (
+        re.compile(r"Zip\s+(?:#|[Nn][r.]\.?|n\.\u00ba)\s*(\d+)", re.IGNORECASE),
+        290,
+        date(2026, 1, 1),
+    ),
+    "patches.txt": (
+        re.compile(r"Patches\s+(?:#|[Nn][r.]\.?|n\.\u00ba)\s*(\d+)", re.IGNORECASE),
+        1,
+        date(2026, 3, 18),
+    ),
 }
 
 EXPORT_LINE_RE = re.compile(
@@ -115,17 +146,52 @@ def load_config(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def normalise_date(date_text: str) -> str:
+def configured_date_order(config: dict, output_path: Path) -> DateOrder:
+    raw_order = (
+        config.get("date_order")
+        or config.get("date_format")
+        or infer_existing_date_order(output_path)
+        or "DMY"
+    )
+    normalized = str(raw_order).upper().replace("/", "")
+    if normalized in {"MDY", "MMDDYYYY", "MMDDYY"}:
+        return "MDY"
+    if normalized in {"DMY", "DDMMYYYY", "DDMMYY"}:
+        return "DMY"
+    raise SystemExit("date_order must be either 'DMY' or 'MDY'")
+
+
+def infer_date_order_from_texts(date_texts: Iterable[str]) -> DateOrder | None:
+    for date_text in date_texts:
+        parts = date_text.split("/")
+        if len(parts) != 3:
+            continue
+        try:
+            first, second = int(parts[0].strip()), int(parts[1].strip())
+        except ValueError:
+            continue
+        if first > 12 and second <= 12:
+            return "DMY"
+        if second > 12 and first <= 12:
+            return "MDY"
+    return None
+
+
+def normalise_date(date_text: str, date_order: DateOrder = "DMY") -> str:
     parts = date_text.split("/")
     if len(parts) != 3:
         raise ValueError(f"Unsupported date: {date_text}")
-    day, month, year = [p.strip() for p in parts]
+    first, second, year = [p.strip() for p in parts]
+    if date_order == "MDY":
+        month, day = first, second
+    else:
+        day, month = first, second
     if len(year) == 2:
         year = f"20{year}"
     return f"{int(day):02d}/{int(month):02d}/{int(year):04d}"
 
 
-def parse_web_message(pre_text: str, body: str) -> Message | None:
+def parse_web_message(pre_text: str, body: str, date_order: DateOrder = "DMY") -> Message | None:
     pre_text = pre_text.strip()
     for pattern in WEB_PRE_PATTERNS:
         match = pattern.match(pre_text)
@@ -146,7 +212,7 @@ def parse_web_message(pre_text: str, body: str) -> Message | None:
         if not clean_body:
             return None
         return Message(
-            date=normalise_date(groups["date"]),
+            date=normalise_date(groups["date"], date_order=date_order),
             time=time_text,
             sender=cleanup_sender(groups["sender"]),
             body=clean_body,
@@ -196,10 +262,27 @@ def normalise_clock_text(value: str) -> str | None:
     return f"{hour:02d}:{int(match.group(2)):02d}"
 
 
+def infer_existing_date_order(path: Path) -> DateOrder | None:
+    if not path.exists():
+        return None
+    date_texts = []
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        match = EXPORT_LINE_RE.match(raw_line)
+        if match:
+            date_texts.append(match.group(1))
+    return infer_date_order_from_texts(date_texts)
+
+
+def normalise_existing_date(date_text: str, fallback_order: DateOrder) -> str:
+    order = infer_date_order_from_texts([date_text]) or fallback_order
+    return normalise_date(date_text, date_order=order)
+
+
 def read_existing_messages(path: Path) -> list[Message]:
     if not path.exists():
         return []
 
+    fallback_order = infer_existing_date_order(path) or "DMY"
     messages: list[Message] = []
     current: Message | None = None
     continuation: list[str] = []
@@ -212,6 +295,7 @@ def read_existing_messages(path: Path) -> list[Message]:
                     Message(current.date, current.time, current.sender, "\n".join(continuation))
                 )
             date, time_text, sender, body = match.groups()
+            date = normalise_existing_date(date, fallback_order)
             current = Message(date, time_text, cleanup_sender(sender), body)
             continuation = [body]
         elif current is not None:
@@ -220,7 +304,48 @@ def read_existing_messages(path: Path) -> list[Message]:
     if current is not None:
         messages.append(Message(current.date, current.time, current.sender, "\n".join(continuation)))
 
-    return messages
+    return [with_game_date(path, message) for message in messages]
+
+
+def with_game_date(path: Path, message: Message) -> Message:
+    game_date = date_from_game_number(path, message.body)
+    if game_date is None:
+        return message
+    return Message(
+        game_date.strftime("%d/%m/%Y"),
+        message.time,
+        message.sender,
+        message.body,
+    )
+
+
+def game_number_from_body(path: Path, body: str) -> int | None:
+    rule = OUTPUT_GAME_DATE_RULES.get(path.name)
+    if rule is None:
+        return None
+    pattern, _base_num, _base_date = rule
+    match = pattern.search(body)
+    if not match:
+        return None
+    return int(match.group(1))
+
+
+def date_from_game_number(path: Path, body: str) -> date | None:
+    rule = OUTPUT_GAME_DATE_RULES.get(path.name)
+    if rule is None:
+        return None
+    game_number = game_number_from_body(path, body)
+    if game_number is None:
+        return None
+    return date_from_game_number_value(path, game_number)
+
+
+def date_from_game_number_value(path: Path, game_number: int) -> date | None:
+    rule = OUTPUT_GAME_DATE_RULES.get(path.name)
+    if rule is None:
+        return None
+    _pattern, base_num, base_date = rule
+    return base_date + timedelta(days=game_number - base_num)
 
 
 def output_pattern_for(path: Path) -> re.Pattern | None:
@@ -241,9 +366,44 @@ def message_date(message: Message) -> date | None:
 
 
 def latest_existing_game_date(path: Path) -> date | None:
-    messages = filter_game_messages(read_existing_messages(path), output_pattern_for(path))
-    dates = [parsed for message in messages if (parsed := message_date(message)) is not None]
+    messages = score_messages_for(path, read_existing_messages(path))
+    dates = [
+        parsed
+        for message in messages
+        if (parsed := date_from_game_number(path, message.body) or message_date(message)) is not None
+    ]
     return max(dates) if dates else None
+
+
+def scrape_checkpoint_date(path: Path) -> date | None:
+    """
+    Stop after the latest contiguous export history.
+
+    If existing exports have a puzzle-number gap, keep scrolling until just
+    before the earliest missing number. This lets a later sync repair cases
+    where WhatsApp Web skipped one loaded day while newer days were saved.
+    """
+    messages = score_messages_for(path, read_existing_messages(path))
+    numbers = sorted({
+        game_number
+        for message in messages
+        if (game_number := game_number_from_body(path, message.body)) is not None
+    })
+    if not numbers:
+        return None
+
+    existing = set(numbers)
+    missing = [num for num in range(numbers[0], numbers[-1] + 1) if num not in existing]
+    if missing:
+        missing_date = date_from_game_number_value(path, missing[0])
+        if missing_date is not None:
+            return missing_date - timedelta(days=1)
+
+    return latest_existing_game_date(path)
+
+
+def score_messages_for(path: Path, messages: Iterable[Message]) -> list[Message]:
+    return [message for message in messages if date_from_game_number(path, message.body) is not None]
 
 
 def write_merged_export(path: Path, scraped: Iterable[Message], prune_existing: bool = False) -> tuple[int, int, int]:
@@ -390,7 +550,7 @@ async def open_chat(page, chat_name: str) -> None:
         raise RuntimeError(f"Opened '{chat_name}', but no readable message rows were visible.")
 
 
-async def scrape_visible_messages(page) -> list[Message]:
+async def scrape_visible_messages(page, date_order: DateOrder = "DMY") -> list[Message]:
     rows = await page.evaluate(
         """
         () => Array.from(document.querySelectorAll('[data-pre-plain-text]')).map((node) => ({
@@ -401,7 +561,7 @@ async def scrape_visible_messages(page) -> list[Message]:
     )
     messages = []
     for row in rows:
-        message = parse_web_message(row.get("pre", ""), row.get("text", ""))
+        message = parse_web_message(row.get("pre", ""), row.get("text", ""), date_order=date_order)
         if message:
             messages.append(message)
     return messages
@@ -438,9 +598,11 @@ async def scroll_chat_up(page) -> None:
 async def scrape_chat(
     page,
     chat_name: str,
+    output_path: Path,
     scrolls: int,
     stop_at_date: date | None = None,
     expected_pattern: re.Pattern | None = None,
+    date_order: DateOrder = "DMY",
 ) -> list[Message]:
     await open_chat(page, chat_name)
 
@@ -448,18 +610,18 @@ async def scrape_chat(
     stale_rounds = 0
 
     for _ in range(max(1, scrolls)):
-        visible = await scrape_visible_messages(page)
+        visible = await scrape_visible_messages(page, date_order=date_order)
         for message in visible:
             by_key[message.key] = message
-        if has_reached_checkpoint(visible, stop_at_date, expected_pattern):
+        if has_reached_checkpoint(visible, stop_at_date, output_path):
             break
 
         before = len(by_key)
         await scroll_chat_up(page)
-        visible = await scrape_visible_messages(page)
+        visible = await scrape_visible_messages(page, date_order=date_order)
         for message in visible:
             by_key[message.key] = message
-        if has_reached_checkpoint(visible, stop_at_date, expected_pattern):
+        if has_reached_checkpoint(visible, stop_at_date, output_path):
             break
 
         if len(by_key) == before:
@@ -475,12 +637,12 @@ async def scrape_chat(
 def has_reached_checkpoint(
     messages: Iterable[Message],
     stop_at_date: date | None,
-    expected_pattern: re.Pattern | None,
+    output_path: Path,
 ) -> bool:
     if stop_at_date is None:
         return False
-    for message in filter_game_messages(messages, expected_pattern):
-        parsed = message_date(message)
+    for message in score_messages_for(output_path, messages):
+        parsed = date_from_game_number(output_path, message.body) or message_date(message)
         if parsed is not None and parsed <= stop_at_date:
             return True
     return False
@@ -519,15 +681,19 @@ async def run_scrape(config: dict, profile_dir: Path, headless: bool, prune_exis
             print(f"Scraping: {chat_name}")
             output_path = Path(output_file)
             expected_pattern = output_pattern_for(output_path)
-            checkpoint = latest_existing_game_date(output_path)
+            date_order = configured_date_order(config, output_path)
+            checkpoint = scrape_checkpoint_date(output_path)
             if checkpoint:
                 print(f"  stopping once visible history reaches {checkpoint:%Y-%m-%d}")
+            print(f"  reading WhatsApp dates as {date_order}")
             messages = await scrape_chat(
                 page,
                 chat_name,
+                output_path=output_path,
                 scrolls=scrolls,
                 stop_at_date=checkpoint,
                 expected_pattern=expected_pattern,
+                date_order=date_order,
             )
             added, total, skipped = write_merged_export(output_path, messages, prune_existing=prune_existing)
             skipped_note = f", skipped {skipped} non-game message(s)" if skipped else ""
@@ -569,6 +735,14 @@ class ScraperSelfTests(unittest.TestCase):
         message = parse_web_message("[06/06/2026, 09:05:07] Evie:", "Zip #447\n0:59")
         self.assertEqual(message, Message("06/06/2026", "09:05:07", "Evie", "Zip #447\n0:59"))
 
+    def test_parse_web_message_supports_mdy_dates(self):
+        message = parse_web_message(
+            "[9:42 AM, 6/10/26] Evie:",
+            "Mini Sudoku #303 | 0:32\n9:42 AM",
+            date_order="MDY",
+        )
+        self.assertEqual(message, Message("10/06/2026", "09:42:00", "Evie", "Mini Sudoku #303 | 0:32"))
+
     def test_empty_body_is_ignored(self):
         self.assertIsNone(parse_web_message("[09:05, 06/06/2026] Evie:", "\n09:05"))
 
@@ -584,6 +758,19 @@ class ScraperSelfTests(unittest.TestCase):
             messages = read_existing_messages(path)
             self.assertEqual(messages[0].body, "Zip #447\n0:59")
             self.assertEqual(messages[1].body, "Zip #447 | 0:48")
+
+    def test_existing_mdy_file_normalises_ambiguous_dates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "mini.txt"
+            path.write_text(
+                "[05/19/2026, 09:02:00] Anna: Mini Sudoku #281 | 0:43\n"
+                "[06/10/2026, 09:42:00] Evie: Mini Sudoku #303 | 0:32\n",
+                encoding="utf-8",
+            )
+            messages = read_existing_messages(path)
+            self.assertEqual(messages[0].date, "19/05/2026")
+            self.assertEqual(messages[1].date, "10/06/2026")
+            self.assertEqual(latest_existing_game_date(path), date(2026, 6, 10))
 
     def test_write_merged_export_deduplicates_and_sorts(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -627,19 +814,46 @@ class ScraperSelfTests(unittest.TestCase):
             )
             self.assertEqual(latest_existing_game_date(path), date(2026, 6, 6))
 
+    def test_game_number_sets_canonical_date(self):
+        self.assertEqual(
+            date_from_game_number(Path("zip.txt"), "Zip #465 | 0:23"),
+            date(2026, 6, 25),
+        )
+        self.assertEqual(
+            date_from_game_number(Path("tango.txt"), "Tango nr. 620 | 0:31"),
+            date(2026, 6, 19),
+        )
+
+    def test_scrape_checkpoint_scrolls_past_missing_game_number(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "zip.txt"
+            path.write_text(
+                "[24/06/2026, 09:06:00] Adam: Zip #464 | 0:11\n"
+                "[26/06/2026, 09:07:00] Evie: Zip #466 | 0:12\n"
+                "[30/06/2026, 09:08:00] Igor: Zip #470 | 0:09\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(scrape_checkpoint_date(path), date(2026, 6, 24))
+
     def test_checkpoint_reached_on_or_before_existing_date(self):
         messages = [
             Message("07/06/2026", "09:06:00", "Adam", "Mini Sudoku #300 | 0:48"),
             Message("06/06/2026", "09:07:00", "Evie", "Mini Sudoku #299 | 0:59"),
         ]
         self.assertTrue(
-            has_reached_checkpoint(messages, date(2026, 6, 6), OUTPUT_GAME_PATTERNS["mini.txt"])
+            has_reached_checkpoint(messages, date(2026, 6, 6), Path("mini.txt"))
         )
 
     def test_checkpoint_ignores_newer_visible_messages(self):
         messages = [Message("07/06/2026", "09:06:00", "Adam", "Mini Sudoku #300 | 0:48")]
         self.assertFalse(
-            has_reached_checkpoint(messages, date(2026, 6, 6), OUTPUT_GAME_PATTERNS["mini.txt"])
+            has_reached_checkpoint(messages, date(2026, 6, 6), Path("mini.txt"))
+        )
+
+    def test_checkpoint_ignores_game_banter_without_score_number(self):
+        messages = [Message("05/12/2026", "09:06:00", "Adam", "I WON QUEENS")]
+        self.assertFalse(
+            has_reached_checkpoint(messages, date(2026, 6, 11), Path("queens.txt"))
         )
 
 

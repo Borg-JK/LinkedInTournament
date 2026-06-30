@@ -6,6 +6,7 @@
     "Zip Tournament": "zip.txt",
     "Patches Tournament": "patches.txt"
   },
+  "date_order": "MDY",
   "dashboard": "HTML/index.html",
   "scrolls": 25,
   "interval_seconds": 300,
