@@ -1573,7 +1573,61 @@
       "time_submitted": "09:52:00",
       "queens_time": "0:17",
       "time_seconds": 17,
+      "points": 5
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:14:00",
+      "queens_time": "0:19",
+      "time_seconds": 19,
+      "points": 7
+    },
+    {
+      "queens_num": 787,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "11:21:00",
+      "queens_time": "0:53",
+      "time_seconds": 53,
       "points": 4
+    },
+    {
+      "queens_num": 788,
+      "date": "2026-06-27",
+      "day_of_week": "Saturday",
+      "time_submitted": "11:20:00",
+      "queens_time": "0:12",
+      "time_seconds": 12,
+      "points": 8
+    },
+    {
+      "queens_num": 789,
+      "date": "2026-06-28",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:10:00",
+      "queens_time": "1:20",
+      "time_seconds": 80,
+      "points": 7
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "09:12:00",
+      "queens_time": "0:05",
+      "time_seconds": 5,
+      "points": 10
+    },
+    {
+      "queens_num": 791,
+      "date": "2026-06-30",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:57:00",
+      "queens_time": "0:08",
+      "time_seconds": 8,
+      "points": 9
     }
   ],
   "Borg Knijnenburg": [
@@ -3141,7 +3195,61 @@
       "time_submitted": "09:15:00",
       "queens_time": "0:10",
       "time_seconds": 10,
+      "points": 9
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:04:00",
+      "queens_time": "0:10",
+      "time_seconds": 10,
+      "points": 9
+    },
+    {
+      "queens_num": 787,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "09:06:00",
+      "queens_time": "0:28",
+      "time_seconds": 28,
       "points": 7
+    },
+    {
+      "queens_num": 788,
+      "date": "2026-06-27",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:52:00",
+      "queens_time": "0:12",
+      "time_seconds": 12,
+      "points": 8
+    },
+    {
+      "queens_num": 789,
+      "date": "2026-06-28",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:40:00",
+      "queens_time": "0:46",
+      "time_seconds": 46,
+      "points": 8
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "10:44:00",
+      "queens_time": "0:06",
+      "time_seconds": 6,
+      "points": 9
+    },
+    {
+      "queens_num": 791,
+      "date": "2026-06-30",
+      "day_of_week": "Tuesday",
+      "time_submitted": "14:47:00",
+      "queens_time": "0:10",
+      "time_seconds": 10,
+      "points": 8
     }
   ],
   "Kaissar": [
@@ -4583,7 +4691,61 @@
       "time_submitted": "11:03:00",
       "queens_time": "0:16",
       "time_seconds": 16,
+      "points": 7
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:58:00",
+      "queens_time": "0:24",
+      "time_seconds": 24,
       "points": 5
+    },
+    {
+      "queens_num": 787,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "13:09:00",
+      "queens_time": "0:24",
+      "time_seconds": 24,
+      "points": 8
+    },
+    {
+      "queens_num": 788,
+      "date": "2026-06-27",
+      "day_of_week": "Saturday",
+      "time_submitted": "19:57:00",
+      "queens_time": "1:01",
+      "time_seconds": 61,
+      "points": 5
+    },
+    {
+      "queens_num": 789,
+      "date": "2026-06-28",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:58:00",
+      "queens_time": "2:58",
+      "time_seconds": 178,
+      "points": 3
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "13:02:00",
+      "queens_time": "0:31",
+      "time_seconds": 31,
+      "points": 2
+    },
+    {
+      "queens_num": 791,
+      "date": "2026-06-30",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:30:00",
+      "queens_time": "0:12",
+      "time_seconds": 12,
+      "points": 7
     }
   ],
   "Anna del Pozo": [
@@ -6151,7 +6313,61 @@
       "time_submitted": "09:36:00",
       "queens_time": "0:14",
       "time_seconds": 14,
+      "points": 8
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:17:00",
+      "queens_time": "0:09",
+      "time_seconds": 9,
+      "points": 10
+    },
+    {
+      "queens_num": 787,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "11:38:00",
+      "queens_time": "0:41",
+      "time_seconds": 41,
+      "points": 5
+    },
+    {
+      "queens_num": 788,
+      "date": "2026-06-27",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:57:00",
+      "queens_time": "0:24",
+      "time_seconds": 24,
       "points": 6
+    },
+    {
+      "queens_num": 789,
+      "date": "2026-06-28",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:11:00",
+      "queens_time": "0:24",
+      "time_seconds": 24,
+      "points": 9
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "13:50:00",
+      "queens_time": "0:09",
+      "time_seconds": 9,
+      "points": 7
+    },
+    {
+      "queens_num": 791,
+      "date": "2026-06-30",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:56:00",
+      "queens_time": "0:21",
+      "time_seconds": 21,
+      "points": 4
     }
   ],
   "Linda": [
@@ -8333,6 +8549,60 @@
       "time_submitted": "09:50:00",
       "queens_time": "0:20",
       "time_seconds": 20,
+      "points": 4
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:59:00",
+      "queens_time": "0:20",
+      "time_seconds": 20,
+      "points": 6
+    },
+    {
+      "queens_num": 787,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "23:02:00",
+      "queens_time": "0:35",
+      "time_seconds": 35,
+      "points": 6
+    },
+    {
+      "queens_num": 788,
+      "date": "2026-06-27",
+      "day_of_week": "Saturday",
+      "time_submitted": "13:13:00",
+      "queens_time": "1:04",
+      "time_seconds": 64,
+      "points": 4
+    },
+    {
+      "queens_num": 789,
+      "date": "2026-06-28",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:53:00",
+      "queens_time": "1:29",
+      "time_seconds": 89,
+      "points": 6
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "09:10:00",
+      "queens_time": "0:18",
+      "time_seconds": 18,
+      "points": 4
+    },
+    {
+      "queens_num": 791,
+      "date": "2026-06-30",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:57:00",
+      "queens_time": "0:31",
+      "time_seconds": 31,
       "points": 3
     }
   ],
@@ -9314,6 +9584,69 @@
       "queens_time": "0:28",
       "time_seconds": 28,
       "points": 5
+    },
+    {
+      "queens_num": 785,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "22:47:00",
+      "queens_time": "0:32",
+      "time_seconds": 32,
+      "points": 2
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "22:19:00",
+      "queens_time": "0:26",
+      "time_seconds": 26,
+      "points": 4
+    },
+    {
+      "queens_num": 787,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "09:31:00",
+      "queens_time": "1:53",
+      "time_seconds": 113,
+      "points": 2
+    },
+    {
+      "queens_num": 788,
+      "date": "2026-06-27",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:24:00",
+      "queens_time": "1:37",
+      "time_seconds": 97,
+      "points": 2
+    },
+    {
+      "queens_num": 789,
+      "date": "2026-06-28",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:07:00",
+      "queens_time": "3:40",
+      "time_seconds": 220,
+      "points": 2
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "12:06:00",
+      "queens_time": "0:21",
+      "time_seconds": 21,
+      "points": 3
+    },
+    {
+      "queens_num": 791,
+      "date": "2026-06-30",
+      "day_of_week": "Tuesday",
+      "time_submitted": "18:32:00",
+      "queens_time": "0:38",
+      "time_seconds": 38,
+      "points": 2
     }
   ],
   "Sebastiaan Helbing": [
@@ -10389,6 +10722,24 @@
       "queens_time": "0:39",
       "time_seconds": 39,
       "points": 9
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:32:00",
+      "queens_time": "0:34",
+      "time_seconds": 34,
+      "points": 3
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "12:46:00",
+      "queens_time": "0:06",
+      "time_seconds": 6,
+      "points": 9
     }
   ],
   "Dominik Orkiszewski": [
@@ -11102,6 +11453,60 @@
       "queens_time": "0:39",
       "time_seconds": 39,
       "points": 1
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:13:00",
+      "queens_time": "0:44",
+      "time_seconds": 44,
+      "points": 2
+    },
+    {
+      "queens_num": 787,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "12:20:00",
+      "queens_time": "2:14",
+      "time_seconds": 134,
+      "points": 1
+    },
+    {
+      "queens_num": 788,
+      "date": "2026-06-27",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:15:00",
+      "queens_time": "4:09",
+      "time_seconds": 249,
+      "points": 1
+    },
+    {
+      "queens_num": 789,
+      "date": "2026-06-28",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:15:00",
+      "queens_time": "4:01",
+      "time_seconds": 241,
+      "points": 1
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "11:25:00",
+      "queens_time": "0:45",
+      "time_seconds": 45,
+      "points": 1
+    },
+    {
+      "queens_num": 791,
+      "date": "2026-06-30",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:36:00",
+      "queens_time": "0:39",
+      "time_seconds": 39,
+      "points": 1
     }
   ],
   "Evie": [
@@ -11797,6 +12202,69 @@
       "queens_time": "0:29",
       "time_seconds": 29,
       "points": 4
+    },
+    {
+      "queens_num": 785,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "15:27:00",
+      "queens_time": "0:16",
+      "time_seconds": 16,
+      "points": 7
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:33:00",
+      "queens_time": "0:55",
+      "time_seconds": 55,
+      "points": 1
+    },
+    {
+      "queens_num": 787,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "10:11:00",
+      "queens_time": "1:04",
+      "time_seconds": 64,
+      "points": 3
+    },
+    {
+      "queens_num": 788,
+      "date": "2026-06-27",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:29:00",
+      "queens_time": "1:24",
+      "time_seconds": 84,
+      "points": 3
+    },
+    {
+      "queens_num": 789,
+      "date": "2026-06-28",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:39:00",
+      "queens_time": "1:57",
+      "time_seconds": 117,
+      "points": 5
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "13:31:00",
+      "queens_time": "0:11",
+      "time_seconds": 11,
+      "points": 6
+    },
+    {
+      "queens_num": 791,
+      "date": "2026-06-30",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:27:00",
+      "queens_time": "0:16",
+      "time_seconds": 16,
+      "points": 5
     }
   ],
   "Omar": [
@@ -12293,7 +12761,61 @@
       "time_submitted": "11:58:00",
       "queens_time": "0:24",
       "time_seconds": 24,
-      "points": 2
+      "points": 3
+    },
+    {
+      "queens_num": 786,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "15:34:00",
+      "queens_time": "0:12",
+      "time_seconds": 12,
+      "points": 8
+    },
+    {
+      "queens_num": 787,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "15:00:00",
+      "queens_time": "0:16",
+      "time_seconds": 16,
+      "points": 9
+    },
+    {
+      "queens_num": 788,
+      "date": "2026-06-27",
+      "day_of_week": "Saturday",
+      "time_submitted": "14:31:00",
+      "queens_time": "0:10",
+      "time_seconds": 10,
+      "points": 9
+    },
+    {
+      "queens_num": 789,
+      "date": "2026-06-28",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:40:00",
+      "queens_time": "2:26",
+      "time_seconds": 146,
+      "points": 4
+    },
+    {
+      "queens_num": 790,
+      "date": "2026-06-29",
+      "day_of_week": "Monday",
+      "time_submitted": "12:45:00",
+      "queens_time": "0:12",
+      "time_seconds": 12,
+      "points": 5
+    },
+    {
+      "queens_num": 791,
+      "date": "2026-06-30",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:49:00",
+      "queens_time": "0:13",
+      "time_seconds": 13,
+      "points": 6
     }
   ]
 }
