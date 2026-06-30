@@ -1573,7 +1573,16 @@
       "time_submitted": "09:51:00",
       "zip_time": "0:11",
       "time_seconds": 11,
-      "points": 7
+      "points": 9
+    },
+    {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:13:00",
+      "zip_time": "0:18",
+      "time_seconds": 18,
+      "points": 5
     },
     {
       "zip_num": 466,
@@ -3186,7 +3195,25 @@
       "time_submitted": "09:15:00",
       "zip_time": "0:11",
       "time_seconds": 11,
-      "points": 7
+      "points": 9
+    },
+    {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:04:00",
+      "zip_time": "0:23",
+      "time_seconds": 23,
+      "points": 3
+    },
+    {
+      "zip_num": 466,
+      "date": "2026-06-26",
+      "day_of_week": "Friday",
+      "time_submitted": "09:05:00",
+      "zip_time": "0:15",
+      "time_seconds": 15,
+      "points": 6
     },
     {
       "zip_num": 467,
@@ -4784,13 +4811,22 @@
       "points": 3
     },
     {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:15:00",
+      "zip_time": "0:11",
+      "time_seconds": 11,
+      "points": 10
+    },
+    {
       "zip_num": 466,
       "date": "2026-06-26",
       "day_of_week": "Friday",
       "time_submitted": "11:36:00",
       "zip_time": "0:13",
       "time_seconds": 13,
-      "points": 7
+      "points": 8
     },
     {
       "zip_num": 467,
@@ -6271,13 +6307,22 @@
       "points": 2
     },
     {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:58:00",
+      "zip_time": "0:17",
+      "time_seconds": 17,
+      "points": 6
+    },
+    {
       "zip_num": 466,
       "date": "2026-06-26",
       "day_of_week": "Friday",
       "time_submitted": "13:08:00",
       "zip_time": "0:11",
       "time_seconds": 11,
-      "points": 8
+      "points": 9
     },
     {
       "zip_num": 467,
@@ -8453,6 +8498,15 @@
       "points": 4
     },
     {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:58:00",
+      "zip_time": "0:27",
+      "time_seconds": 27,
+      "points": 2
+    },
+    {
       "zip_num": 466,
       "date": "2026-06-26",
       "day_of_week": "Friday",
@@ -9669,13 +9723,31 @@
       "points": 8
     },
     {
+      "zip_num": 464,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "17:39:00",
+      "zip_time": "0:16",
+      "time_seconds": 16,
+      "points": 5
+    },
+    {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "22:17:00",
+      "zip_time": "0:19",
+      "time_seconds": 19,
+      "points": 4
+    },
+    {
       "zip_num": 466,
       "date": "2026-06-26",
       "day_of_week": "Friday",
       "time_submitted": "09:23:00",
       "zip_time": "0:14",
       "time_seconds": 14,
-      "points": 6
+      "points": 7
     },
     {
       "zip_num": 467,
@@ -11041,6 +11113,15 @@
       "points": 1
     },
     {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:09:00",
+      "zip_time": "0:47",
+      "time_seconds": 47,
+      "points": 1
+    },
+    {
       "zip_num": 466,
       "date": "2026-06-26",
       "day_of_week": "Friday",
@@ -11545,6 +11626,15 @@
       "zip_time": "0:17",
       "time_seconds": 17,
       "points": 8
+    },
+    {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:30:00",
+      "zip_time": "0:13",
+      "time_seconds": 13,
+      "points": 9
     },
     {
       "zip_num": 469,
@@ -12251,13 +12341,31 @@
       "points": 6
     },
     {
+      "zip_num": 464,
+      "date": "2026-06-24",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:37:00",
+      "zip_time": "0:12",
+      "time_seconds": 12,
+      "points": 7
+    },
+    {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:29:00",
+      "zip_time": "0:16",
+      "time_seconds": 16,
+      "points": 8
+    },
+    {
       "zip_num": 466,
       "date": "2026-06-26",
       "day_of_week": "Friday",
       "time_submitted": "10:07:00",
       "zip_time": "0:15",
       "time_seconds": 15,
-      "points": 5
+      "points": 6
     },
     {
       "zip_num": 467,
@@ -12790,7 +12898,16 @@
       "time_submitted": "11:55:00",
       "zip_time": "0:12",
       "time_seconds": 12,
-      "points": 5
+      "points": 7
+    },
+    {
+      "zip_num": 465,
+      "date": "2026-06-25",
+      "day_of_week": "Thursday",
+      "time_submitted": "15:31:00",
+      "zip_time": "0:16",
+      "time_seconds": 16,
+      "points": 8
     },
     {
       "zip_num": 466,
@@ -12799,7 +12916,7 @@
       "time_submitted": "14:58:00",
       "zip_time": "0:15",
       "time_seconds": 15,
-      "points": 5
+      "points": 6
     },
     {
       "zip_num": 467,
