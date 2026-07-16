@@ -935,6 +935,150 @@
       "patches_time": "0:06",
       "time_seconds": 6,
       "points": 8
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:22:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 10
+    },
+    {
+      "patches_num": 107,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:18:00",
+      "patches_time": "0:24",
+      "time_seconds": 24,
+      "points": 3
+    },
+    {
+      "patches_num": 108,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:11:00",
+      "patches_time": "0:21",
+      "time_seconds": 21,
+      "points": 5
+    },
+    {
+      "patches_num": 109,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:05:00",
+      "patches_time": "1:10",
+      "time_seconds": 70,
+      "points": 3
+    },
+    {
+      "patches_num": 110,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:34:00",
+      "patches_time": "0:13",
+      "time_seconds": 13,
+      "points": 9
+    },
+    {
+      "patches_num": 111,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "15:40:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 4
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:15:00",
+      "patches_time": "0:04",
+      "time_seconds": 4,
+      "points": 10
+    },
+    {
+      "patches_num": 113,
+      "date": "2026-07-08",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:36:00",
+      "patches_time": "0:19",
+      "time_seconds": 19,
+      "points": 8
+    },
+    {
+      "patches_num": 114,
+      "date": "2026-07-09",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:10:00",
+      "patches_time": "0:20",
+      "time_seconds": 20,
+      "points": 4
+    },
+    {
+      "patches_num": 115,
+      "date": "2026-07-10",
+      "day_of_week": "Friday",
+      "time_submitted": "20:51:00",
+      "patches_time": "0:43",
+      "time_seconds": 43,
+      "points": 5
+    },
+    {
+      "patches_num": 116,
+      "date": "2026-07-11",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:14:00",
+      "patches_time": "0:15",
+      "time_seconds": 15,
+      "points": 5
+    },
+    {
+      "patches_num": 117,
+      "date": "2026-07-12",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:44:00",
+      "patches_time": "0:25",
+      "time_seconds": 25,
+      "points": 8
+    },
+    {
+      "patches_num": 118,
+      "date": "2026-07-13",
+      "day_of_week": "Monday",
+      "time_submitted": "09:29:00",
+      "patches_time": "0:11",
+      "time_seconds": 11,
+      "points": 6
+    },
+    {
+      "patches_num": 119,
+      "date": "2026-07-14",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:16:00",
+      "patches_time": "0:13",
+      "time_seconds": 13,
+      "points": 4
+    },
+    {
+      "patches_num": 120,
+      "date": "2026-07-15",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:56:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 8
+    },
+    {
+      "patches_num": 121,
+      "date": "2026-07-16",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:31:00",
+      "patches_time": "0:05",
+      "time_seconds": 5,
+      "points": 3
     }
   ],
   "Borg Knijnenburg": [
@@ -1882,6 +2026,150 @@
       "patches_time": "0:09",
       "time_seconds": 9,
       "points": 4
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:00:00",
+      "patches_time": "0:13",
+      "time_seconds": 13,
+      "points": 4
+    },
+    {
+      "patches_num": 107,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:25:00",
+      "patches_time": "0:17",
+      "time_seconds": 17,
+      "points": 4
+    },
+    {
+      "patches_num": 108,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:43:00",
+      "patches_time": "0:12",
+      "time_seconds": 12,
+      "points": 9
+    },
+    {
+      "patches_num": 109,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:54:00",
+      "patches_time": "0:19",
+      "time_seconds": 19,
+      "points": 9
+    },
+    {
+      "patches_num": 110,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:06:00",
+      "patches_time": "0:21",
+      "time_seconds": 21,
+      "points": 7
+    },
+    {
+      "patches_num": 111,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "11:52:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 9
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:02:00",
+      "patches_time": "0:04",
+      "time_seconds": 4,
+      "points": 10
+    },
+    {
+      "patches_num": 113,
+      "date": "2026-07-08",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:34:00",
+      "patches_time": "0:20",
+      "time_seconds": 20,
+      "points": 7
+    },
+    {
+      "patches_num": 114,
+      "date": "2026-07-09",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:48:00",
+      "patches_time": "0:20",
+      "time_seconds": 20,
+      "points": 4
+    },
+    {
+      "patches_num": 115,
+      "date": "2026-07-10",
+      "day_of_week": "Friday",
+      "time_submitted": "09:14:00",
+      "patches_time": "0:36",
+      "time_seconds": 36,
+      "points": 8
+    },
+    {
+      "patches_num": 116,
+      "date": "2026-07-11",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:06:00",
+      "patches_time": "0:11",
+      "time_seconds": 11,
+      "points": 8
+    },
+    {
+      "patches_num": 117,
+      "date": "2026-07-12",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:30:00",
+      "patches_time": "0:33",
+      "time_seconds": 33,
+      "points": 6
+    },
+    {
+      "patches_num": 118,
+      "date": "2026-07-13",
+      "day_of_week": "Monday",
+      "time_submitted": "09:00:00",
+      "patches_time": "0:16",
+      "time_seconds": 16,
+      "points": 4
+    },
+    {
+      "patches_num": 119,
+      "date": "2026-07-14",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:11:00",
+      "patches_time": "0:10",
+      "time_seconds": 10,
+      "points": 8
+    },
+    {
+      "patches_num": 120,
+      "date": "2026-07-15",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:38:00",
+      "patches_time": "0:05",
+      "time_seconds": 5,
+      "points": 9
+    },
+    {
+      "patches_num": 121,
+      "date": "2026-07-16",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:31:00",
+      "patches_time": "0:07",
+      "time_seconds": 7,
+      "points": 2
     }
   ],
   "Kaissar": [
@@ -2811,6 +3099,141 @@
       "patches_time": "0:09",
       "time_seconds": 9,
       "points": 4
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "23:05:00",
+      "patches_time": "0:12",
+      "time_seconds": 12,
+      "points": 6
+    },
+    {
+      "patches_num": 107,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:22:00",
+      "patches_time": "0:13",
+      "time_seconds": 13,
+      "points": 7
+    },
+    {
+      "patches_num": 108,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "11:23:00",
+      "patches_time": "2:25",
+      "time_seconds": 145,
+      "points": 1
+    },
+    {
+      "patches_num": 109,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "15:00:00",
+      "patches_time": "0:42",
+      "time_seconds": 42,
+      "points": 5
+    },
+    {
+      "patches_num": 110,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:22:00",
+      "patches_time": "2:23",
+      "time_seconds": 143,
+      "points": 1
+    },
+    {
+      "patches_num": 111,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "14:26:00",
+      "patches_time": "0:16",
+      "time_seconds": 16,
+      "points": 1
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:43:00",
+      "patches_time": "0:04",
+      "time_seconds": 4,
+      "points": 10
+    },
+    {
+      "patches_num": 113,
+      "date": "2026-07-08",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:49:00",
+      "patches_time": "0:23",
+      "time_seconds": 23,
+      "points": 5
+    },
+    {
+      "patches_num": 114,
+      "date": "2026-07-09",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:13:00",
+      "patches_time": "0:07",
+      "time_seconds": 7,
+      "points": 9
+    },
+    {
+      "patches_num": 115,
+      "date": "2026-07-10",
+      "day_of_week": "Friday",
+      "time_submitted": "12:23:00",
+      "patches_time": "0:38",
+      "time_seconds": 38,
+      "points": 6
+    },
+    {
+      "patches_num": 116,
+      "date": "2026-07-11",
+      "day_of_week": "Saturday",
+      "time_submitted": "08:12:00",
+      "patches_time": "0:14",
+      "time_seconds": 14,
+      "points": 6
+    },
+    {
+      "patches_num": 117,
+      "date": "2026-07-12",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:26:00",
+      "patches_time": "0:39",
+      "time_seconds": 39,
+      "points": 4
+    },
+    {
+      "patches_num": 118,
+      "date": "2026-07-13",
+      "day_of_week": "Monday",
+      "time_submitted": "11:36:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 9
+    },
+    {
+      "patches_num": 119,
+      "date": "2026-07-14",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:23:00",
+      "patches_time": "0:10",
+      "time_seconds": 10,
+      "points": 8
+    },
+    {
+      "patches_num": 120,
+      "date": "2026-07-15",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:47:00",
+      "patches_time": "0:07",
+      "time_seconds": 7,
+      "points": 5
     }
   ],
   "Igor": [
@@ -3758,6 +4181,150 @@
       "patches_time": "0:08",
       "time_seconds": 8,
       "points": 6
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "21:32:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 10
+    },
+    {
+      "patches_num": 107,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:47:00",
+      "patches_time": "0:16",
+      "time_seconds": 16,
+      "points": 5
+    },
+    {
+      "patches_num": 108,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:12:00",
+      "patches_time": "0:18",
+      "time_seconds": 18,
+      "points": 7
+    },
+    {
+      "patches_num": 109,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "11:06:00",
+      "patches_time": "0:22",
+      "time_seconds": 22,
+      "points": 7
+    },
+    {
+      "patches_num": 110,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:05:00",
+      "patches_time": "0:14",
+      "time_seconds": 14,
+      "points": 8
+    },
+    {
+      "patches_num": 111,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "14:34:00",
+      "patches_time": "0:07",
+      "time_seconds": 7,
+      "points": 6
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:17:00",
+      "patches_time": "0:05",
+      "time_seconds": 5,
+      "points": 6
+    },
+    {
+      "patches_num": 113,
+      "date": "2026-07-08",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:07:00",
+      "patches_time": "0:30",
+      "time_seconds": 30,
+      "points": 3
+    },
+    {
+      "patches_num": 114,
+      "date": "2026-07-09",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:58:00",
+      "patches_time": "0:20",
+      "time_seconds": 20,
+      "points": 4
+    },
+    {
+      "patches_num": 115,
+      "date": "2026-07-10",
+      "day_of_week": "Friday",
+      "time_submitted": "09:57:00",
+      "patches_time": "1:44",
+      "time_seconds": 104,
+      "points": 2
+    },
+    {
+      "patches_num": 116,
+      "date": "2026-07-11",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:50:00",
+      "patches_time": "0:12",
+      "time_seconds": 12,
+      "points": 7
+    },
+    {
+      "patches_num": 117,
+      "date": "2026-07-12",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:00:00",
+      "patches_time": "0:38",
+      "time_seconds": 38,
+      "points": 5
+    },
+    {
+      "patches_num": 118,
+      "date": "2026-07-13",
+      "day_of_week": "Monday",
+      "time_submitted": "10:57:00",
+      "patches_time": "0:21",
+      "time_seconds": 21,
+      "points": 2
+    },
+    {
+      "patches_num": 119,
+      "date": "2026-07-14",
+      "day_of_week": "Tuesday",
+      "time_submitted": "12:53:00",
+      "patches_time": "0:23",
+      "time_seconds": 23,
+      "points": 1
+    },
+    {
+      "patches_num": 120,
+      "date": "2026-07-15",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:39:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 8
+    },
+    {
+      "patches_num": 121,
+      "date": "2026-07-16",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:38:00",
+      "patches_time": "0:20",
+      "time_seconds": 20,
+      "points": 1
     }
   ],
   "Anna del Pozo": [
@@ -4705,6 +5272,141 @@
       "patches_time": "0:07",
       "time_seconds": 7,
       "points": 7
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:45:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 10
+    },
+    {
+      "patches_num": 107,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:25:00",
+      "patches_time": "0:10",
+      "time_seconds": 10,
+      "points": 9
+    },
+    {
+      "patches_num": 108,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:57:00",
+      "patches_time": "0:12",
+      "time_seconds": 12,
+      "points": 9
+    },
+    {
+      "patches_num": 109,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:54:00",
+      "patches_time": "0:46",
+      "time_seconds": 46,
+      "points": 4
+    },
+    {
+      "patches_num": 110,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:14:00",
+      "patches_time": "0:36",
+      "time_seconds": 36,
+      "points": 4
+    },
+    {
+      "patches_num": 111,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "11:53:00",
+      "patches_time": "0:12",
+      "time_seconds": 12,
+      "points": 2
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:45:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 5
+    },
+    {
+      "patches_num": 113,
+      "date": "2026-07-08",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:10:00",
+      "patches_time": "0:46",
+      "time_seconds": 46,
+      "points": 1
+    },
+    {
+      "patches_num": 114,
+      "date": "2026-07-09",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:43:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 8
+    },
+    {
+      "patches_num": 115,
+      "date": "2026-07-10",
+      "day_of_week": "Friday",
+      "time_submitted": "10:07:00",
+      "patches_time": "0:34",
+      "time_seconds": 34,
+      "points": 9
+    },
+    {
+      "patches_num": 116,
+      "date": "2026-07-11",
+      "day_of_week": "Saturday",
+      "time_submitted": "11:00:00",
+      "patches_time": "0:24",
+      "time_seconds": 24,
+      "points": 3
+    },
+    {
+      "patches_num": 117,
+      "date": "2026-07-12",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:22:00",
+      "patches_time": "0:49",
+      "time_seconds": 49,
+      "points": 3
+    },
+    {
+      "patches_num": 118,
+      "date": "2026-07-13",
+      "day_of_week": "Monday",
+      "time_submitted": "13:55:00",
+      "patches_time": "0:09",
+      "time_seconds": 9,
+      "points": 8
+    },
+    {
+      "patches_num": 119,
+      "date": "2026-07-14",
+      "day_of_week": "Tuesday",
+      "time_submitted": "14:23:00",
+      "patches_time": "0:10",
+      "time_seconds": 10,
+      "points": 8
+    },
+    {
+      "patches_num": 120,
+      "date": "2026-07-15",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:13:00",
+      "patches_time": "0:23",
+      "time_seconds": 23,
+      "points": 2
     }
   ],
   "Kornel Baranowski": [
@@ -5535,6 +6237,141 @@
       "patches_time": "0:13",
       "time_seconds": 13,
       "points": 2
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "18:00:00",
+      "patches_time": "0:11",
+      "time_seconds": 11,
+      "points": 7
+    },
+    {
+      "patches_num": 107,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "17:50:00",
+      "patches_time": "0:11",
+      "time_seconds": 11,
+      "points": 8
+    },
+    {
+      "patches_num": 108,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:47:00",
+      "patches_time": "0:18",
+      "time_seconds": 18,
+      "points": 7
+    },
+    {
+      "patches_num": 109,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:58:00",
+      "patches_time": "1:10",
+      "time_seconds": 70,
+      "points": 3
+    },
+    {
+      "patches_num": 110,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:12:00",
+      "patches_time": "0:25",
+      "time_seconds": 25,
+      "points": 6
+    },
+    {
+      "patches_num": 111,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "17:12:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 9
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:49:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 2
+    },
+    {
+      "patches_num": 113,
+      "date": "2026-07-08",
+      "day_of_week": "Wednesday",
+      "time_submitted": "17:29:00",
+      "patches_time": "0:26",
+      "time_seconds": 26,
+      "points": 4
+    },
+    {
+      "patches_num": 114,
+      "date": "2026-07-09",
+      "day_of_week": "Thursday",
+      "time_submitted": "17:14:00",
+      "patches_time": "0:11",
+      "time_seconds": 11,
+      "points": 7
+    },
+    {
+      "patches_num": 115,
+      "date": "2026-07-10",
+      "day_of_week": "Friday",
+      "time_submitted": "17:24:00",
+      "patches_time": "2:25",
+      "time_seconds": 145,
+      "points": 1
+    },
+    {
+      "patches_num": 116,
+      "date": "2026-07-11",
+      "day_of_week": "Saturday",
+      "time_submitted": "11:11:00",
+      "patches_time": "0:41",
+      "time_seconds": 41,
+      "points": 1
+    },
+    {
+      "patches_num": 117,
+      "date": "2026-07-12",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:04:00",
+      "patches_time": "0:25",
+      "time_seconds": 25,
+      "points": 8
+    },
+    {
+      "patches_num": 118,
+      "date": "2026-07-13",
+      "day_of_week": "Monday",
+      "time_submitted": "18:05:00",
+      "patches_time": "0:14",
+      "time_seconds": 14,
+      "points": 5
+    },
+    {
+      "patches_num": 119,
+      "date": "2026-07-14",
+      "day_of_week": "Tuesday",
+      "time_submitted": "20:23:00",
+      "patches_time": "0:15",
+      "time_seconds": 15,
+      "points": 3
+    },
+    {
+      "patches_num": 120,
+      "date": "2026-07-15",
+      "day_of_week": "Wednesday",
+      "time_submitted": "16:54:00",
+      "patches_time": "0:09",
+      "time_seconds": 9,
+      "points": 4
     }
   ],
   "Sebastiaan Helbing": [
@@ -6934,6 +7771,141 @@
       "patches_time": "0:27",
       "time_seconds": 27,
       "points": 1
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:03:00",
+      "patches_time": "1:10",
+      "time_seconds": 70,
+      "points": 1
+    },
+    {
+      "patches_num": 107,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:18:00",
+      "patches_time": "0:28",
+      "time_seconds": 28,
+      "points": 1
+    },
+    {
+      "patches_num": 108,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "13:19:00",
+      "patches_time": "0:55",
+      "time_seconds": 55,
+      "points": 2
+    },
+    {
+      "patches_num": 109,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "11:42:00",
+      "patches_time": "1:14",
+      "time_seconds": 74,
+      "points": 1
+    },
+    {
+      "patches_num": 110,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "18:01:00",
+      "patches_time": "0:39",
+      "time_seconds": 39,
+      "points": 3
+    },
+    {
+      "patches_num": 111,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "11:37:00",
+      "patches_time": "0:07",
+      "time_seconds": 7,
+      "points": 6
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:19:00",
+      "patches_time": "0:10",
+      "time_seconds": 10,
+      "points": 1
+    },
+    {
+      "patches_num": 113,
+      "date": "2026-07-08",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:01:00",
+      "patches_time": "0:38",
+      "time_seconds": 38,
+      "points": 2
+    },
+    {
+      "patches_num": 114,
+      "date": "2026-07-09",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:30:00",
+      "patches_time": "0:18",
+      "time_seconds": 18,
+      "points": 5
+    },
+    {
+      "patches_num": 115,
+      "date": "2026-07-10",
+      "day_of_week": "Friday",
+      "time_submitted": "10:23:00",
+      "patches_time": "1:11",
+      "time_seconds": 71,
+      "points": 3
+    },
+    {
+      "patches_num": 116,
+      "date": "2026-07-11",
+      "day_of_week": "Saturday",
+      "time_submitted": "11:39:00",
+      "patches_time": "0:33",
+      "time_seconds": 33,
+      "points": 2
+    },
+    {
+      "patches_num": 117,
+      "date": "2026-07-12",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:31:00",
+      "patches_time": "1:29",
+      "time_seconds": 89,
+      "points": 2
+    },
+    {
+      "patches_num": 118,
+      "date": "2026-07-13",
+      "day_of_week": "Monday",
+      "time_submitted": "13:08:00",
+      "patches_time": "0:21",
+      "time_seconds": 21,
+      "points": 2
+    },
+    {
+      "patches_num": 119,
+      "date": "2026-07-14",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:46:00",
+      "patches_time": "0:22",
+      "time_seconds": 22,
+      "points": 2
+    },
+    {
+      "patches_num": 120,
+      "date": "2026-07-15",
+      "day_of_week": "Wednesday",
+      "time_submitted": "13:06:00",
+      "patches_time": "0:24",
+      "time_seconds": 24,
+      "points": 1
     }
   ],
   "Oliwer Wirkus": [
@@ -7413,6 +8385,24 @@
       "patches_time": "0:06",
       "time_seconds": 6,
       "points": 9
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "21:30:00",
+      "patches_time": "0:12",
+      "time_seconds": 12,
+      "points": 6
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:15:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 5
     }
   ],
   "Evie": [
@@ -8126,6 +9116,123 @@
       "patches_time": "0:08",
       "time_seconds": 8,
       "points": 6
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:53:00",
+      "patches_time": "0:21",
+      "time_seconds": 21,
+      "points": 2
+    },
+    {
+      "patches_num": 107,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:52:00",
+      "patches_time": "0:15",
+      "time_seconds": 15,
+      "points": 6
+    },
+    {
+      "patches_num": 108,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:46:00",
+      "patches_time": "0:27",
+      "time_seconds": 27,
+      "points": 4
+    },
+    {
+      "patches_num": 109,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:56:00",
+      "patches_time": "0:31",
+      "time_seconds": 31,
+      "points": 6
+    },
+    {
+      "patches_num": 110,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:18:00",
+      "patches_time": "1:49",
+      "time_seconds": 109,
+      "points": 2
+    },
+    {
+      "patches_num": 111,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "11:55:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 4
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:51:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 5
+    },
+    {
+      "patches_num": 113,
+      "date": "2026-07-08",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:26:00",
+      "patches_time": "0:21",
+      "time_seconds": 21,
+      "points": 6
+    },
+    {
+      "patches_num": 114,
+      "date": "2026-07-09",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:22:00",
+      "patches_time": "0:17",
+      "time_seconds": 17,
+      "points": 6
+    },
+    {
+      "patches_num": 115,
+      "date": "2026-07-10",
+      "day_of_week": "Friday",
+      "time_submitted": "12:15:00",
+      "patches_time": "0:36",
+      "time_seconds": 36,
+      "points": 8
+    },
+    {
+      "patches_num": 116,
+      "date": "2026-07-11",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:52:00",
+      "patches_time": "0:20",
+      "time_seconds": 20,
+      "points": 4
+    },
+    {
+      "patches_num": 118,
+      "date": "2026-07-13",
+      "day_of_week": "Monday",
+      "time_submitted": "10:30:00",
+      "patches_time": "0:17",
+      "time_seconds": 17,
+      "points": 3
+    },
+    {
+      "patches_num": 120,
+      "date": "2026-07-15",
+      "day_of_week": "Wednesday",
+      "time_submitted": "14:24:00",
+      "patches_time": "0:09",
+      "time_seconds": 9,
+      "points": 4
     }
   ],
   "Omar": [
@@ -8668,6 +9775,132 @@
       "patches_time": "0:04",
       "time_seconds": 4,
       "points": 9
+    },
+    {
+      "patches_num": 106,
+      "date": "2026-07-01",
+      "day_of_week": "Wednesday",
+      "time_submitted": "23:05:00",
+      "patches_time": "0:15",
+      "time_seconds": 15,
+      "points": 3
+    },
+    {
+      "patches_num": 107,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:42:00",
+      "patches_time": "0:25",
+      "time_seconds": 25,
+      "points": 2
+    },
+    {
+      "patches_num": 108,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "11:43:00",
+      "patches_time": "0:31",
+      "time_seconds": 31,
+      "points": 3
+    },
+    {
+      "patches_num": 109,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "15:06:00",
+      "patches_time": "0:21",
+      "time_seconds": 21,
+      "points": 8
+    },
+    {
+      "patches_num": 110,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "17:38:00",
+      "patches_time": "0:25",
+      "time_seconds": 25,
+      "points": 6
+    },
+    {
+      "patches_num": 111,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "15:12:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 9
+    },
+    {
+      "patches_num": 112,
+      "date": "2026-07-07",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:45:00",
+      "patches_time": "0:04",
+      "time_seconds": 4,
+      "points": 10
+    },
+    {
+      "patches_num": 113,
+      "date": "2026-07-08",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:14:00",
+      "patches_time": "0:13",
+      "time_seconds": 13,
+      "points": 9
+    },
+    {
+      "patches_num": 114,
+      "date": "2026-07-09",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:04:00",
+      "patches_time": "0:32",
+      "time_seconds": 32,
+      "points": 1
+    },
+    {
+      "patches_num": 115,
+      "date": "2026-07-10",
+      "day_of_week": "Friday",
+      "time_submitted": "15:23:00",
+      "patches_time": "0:56",
+      "time_seconds": 56,
+      "points": 4
+    },
+    {
+      "patches_num": 117,
+      "date": "2026-07-12",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:13:00",
+      "patches_time": "2:02",
+      "time_seconds": 122,
+      "points": 1
+    },
+    {
+      "patches_num": 118,
+      "date": "2026-07-13",
+      "day_of_week": "Monday",
+      "time_submitted": "11:57:00",
+      "patches_time": "0:10",
+      "time_seconds": 10,
+      "points": 7
+    },
+    {
+      "patches_num": 119,
+      "date": "2026-07-14",
+      "day_of_week": "Tuesday",
+      "time_submitted": "12:57:00",
+      "patches_time": "0:11",
+      "time_seconds": 11,
+      "points": 5
+    },
+    {
+      "patches_num": 120,
+      "date": "2026-07-15",
+      "day_of_week": "Wednesday",
+      "time_submitted": "15:20:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 8
     }
   ]
 }
