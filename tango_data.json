@@ -1612,13 +1612,40 @@
       "points": 7
     },
     {
+      "tango_num": 634,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:13:00",
+      "tango_time": "0:33",
+      "time_seconds": 33,
+      "points": 5
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "11:08:00",
+      "tango_time": "0:29",
+      "time_seconds": 29,
+      "points": 8
+    },
+    {
+      "tango_num": 636,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:06:00",
+      "tango_time": "0:33",
+      "time_seconds": 33,
+      "points": 4
+    },
+    {
       "tango_num": 637,
       "date": "2026-07-06",
       "day_of_week": "Monday",
       "time_submitted": "14:36:00",
       "tango_time": "0:19",
       "time_seconds": 19,
-      "points": 4
+      "points": 5
     },
     {
       "tango_num": 638,
@@ -3207,13 +3234,49 @@
       "points": 7
     },
     {
+      "tango_num": 633,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:20:00",
+      "tango_time": "0:17",
+      "time_seconds": 17,
+      "points": 5
+    },
+    {
+      "tango_num": 634,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "11:18:00",
+      "tango_time": "0:32",
+      "time_seconds": 32,
+      "points": 6
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "14:57:00",
+      "tango_time": "0:23",
+      "time_seconds": 23,
+      "points": 10
+    },
+    {
+      "tango_num": 636,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:16:00",
+      "tango_time": "0:23",
+      "time_seconds": 23,
+      "points": 8
+    },
+    {
       "tango_num": 637,
       "date": "2026-07-06",
       "day_of_week": "Monday",
       "time_submitted": "14:25:00",
       "tango_time": "0:21",
       "time_seconds": 21,
-      "points": 1
+      "points": 2
     },
     {
       "tango_num": 638,
@@ -4872,6 +4935,51 @@
       "tango_time": "0:23",
       "time_seconds": 23,
       "points": 3
+    },
+    {
+      "tango_num": 633,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:27:00",
+      "tango_time": "0:14",
+      "time_seconds": 14,
+      "points": 6
+    },
+    {
+      "tango_num": 634,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:46:00",
+      "tango_time": "1:03",
+      "time_seconds": 63,
+      "points": 1
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:57:00",
+      "tango_time": "0:23",
+      "time_seconds": 23,
+      "points": 10
+    },
+    {
+      "tango_num": 636,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:11:00",
+      "tango_time": "1:35",
+      "time_seconds": 95,
+      "points": 1
+    },
+    {
+      "tango_num": 637,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "11:56:00",
+      "tango_time": "0:17",
+      "time_seconds": 17,
+      "points": 8
     },
     {
       "tango_num": 638,
@@ -6572,6 +6680,51 @@
       "date": "2026-06-30",
       "day_of_week": "Tuesday",
       "time_submitted": "11:55:00",
+      "tango_time": "0:17",
+      "time_seconds": 17,
+      "points": 8
+    },
+    {
+      "tango_num": 633,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:27:00",
+      "tango_time": "0:29",
+      "time_seconds": 29,
+      "points": 1
+    },
+    {
+      "tango_num": 634,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:58:00",
+      "tango_time": "0:34",
+      "time_seconds": 34,
+      "points": 4
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:56:00",
+      "tango_time": "0:33",
+      "time_seconds": 33,
+      "points": 6
+    },
+    {
+      "tango_num": 636,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:17:00",
+      "tango_time": "0:19",
+      "time_seconds": 19,
+      "points": 9
+    },
+    {
+      "tango_num": 637,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "11:57:00",
       "tango_time": "0:17",
       "time_seconds": 17,
       "points": 8
@@ -8867,13 +9020,49 @@
       "points": 5
     },
     {
+      "tango_num": 633,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:17:00",
+      "tango_time": "0:21",
+      "time_seconds": 21,
+      "points": 4
+    },
+    {
+      "tango_num": 634,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:10:00",
+      "tango_time": "0:26",
+      "time_seconds": 26,
+      "points": 8
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:03:00",
+      "tango_time": "0:47",
+      "time_seconds": 47,
+      "points": 1
+    },
+    {
+      "tango_num": 636,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:33:00",
+      "tango_time": "0:26",
+      "time_seconds": 26,
+      "points": 7
+    },
+    {
       "tango_num": 637,
       "date": "2026-07-06",
       "day_of_week": "Monday",
       "time_submitted": "15:40:00",
       "tango_time": "0:17",
       "time_seconds": 17,
-      "points": 5
+      "points": 8
     },
     {
       "tango_num": 638,
@@ -9953,13 +10142,49 @@
       "points": 5
     },
     {
+      "tango_num": 633,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "17:52:00",
+      "tango_time": "0:21",
+      "time_seconds": 21,
+      "points": 4
+    },
+    {
+      "tango_num": 634,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:49:00",
+      "tango_time": "0:41",
+      "time_seconds": 41,
+      "points": 2
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:00:00",
+      "tango_time": "0:44",
+      "time_seconds": 44,
+      "points": 2
+    },
+    {
+      "tango_num": 636,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:14:00",
+      "tango_time": "0:31",
+      "time_seconds": 31,
+      "points": 5
+    },
+    {
       "tango_num": 637,
       "date": "2026-07-06",
       "day_of_week": "Monday",
       "time_submitted": "17:13:00",
       "tango_time": "0:19",
       "time_seconds": 19,
-      "points": 4
+      "points": 5
     },
     {
       "tango_num": 638,
@@ -11307,6 +11532,51 @@
       "points": 2
     },
     {
+      "tango_num": 633,
+      "date": "2026-07-02",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:21:00",
+      "tango_time": "0:26",
+      "time_seconds": 26,
+      "points": 2
+    },
+    {
+      "tango_num": 634,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "13:23:00",
+      "tango_time": "0:39",
+      "time_seconds": 39,
+      "points": 3
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "14:29:00",
+      "tango_time": "0:43",
+      "time_seconds": 43,
+      "points": 3
+    },
+    {
+      "tango_num": 636,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "16:32:00",
+      "tango_time": "1:15",
+      "time_seconds": 75,
+      "points": 2
+    },
+    {
+      "tango_num": 637,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "11:43:00",
+      "tango_time": "0:27",
+      "time_seconds": 27,
+      "points": 1
+    },
+    {
       "tango_num": 638,
       "date": "2026-07-07",
       "day_of_week": "Tuesday",
@@ -11874,6 +12144,15 @@
       "tango_time": "0:17",
       "time_seconds": 17,
       "points": 5
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "13:38:00",
+      "tango_time": "0:33",
+      "time_seconds": 33,
+      "points": 6
     },
     {
       "tango_num": 638,
@@ -12643,6 +12922,42 @@
       "points": 9
     },
     {
+      "tango_num": 634,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "09:49:00",
+      "tango_time": "0:29",
+      "time_seconds": 29,
+      "points": 7
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:58:00",
+      "tango_time": "0:31",
+      "time_seconds": 31,
+      "points": 7
+    },
+    {
+      "tango_num": 636,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:21:00",
+      "tango_time": "0:26",
+      "time_seconds": 26,
+      "points": 7
+    },
+    {
+      "tango_num": 637,
+      "date": "2026-07-06",
+      "day_of_week": "Monday",
+      "time_submitted": "11:57:00",
+      "tango_time": "0:15",
+      "time_seconds": 15,
+      "points": 9
+    },
+    {
       "tango_num": 638,
       "date": "2026-07-07",
       "day_of_week": "Tuesday",
@@ -13257,13 +13572,40 @@
       "points": 1
     },
     {
+      "tango_num": 634,
+      "date": "2026-07-03",
+      "day_of_week": "Friday",
+      "time_submitted": "11:48:00",
+      "tango_time": "0:23",
+      "time_seconds": 23,
+      "points": 9
+    },
+    {
+      "tango_num": 635,
+      "date": "2026-07-04",
+      "day_of_week": "Saturday",
+      "time_submitted": "16:06:00",
+      "tango_time": "0:36",
+      "time_seconds": 36,
+      "points": 4
+    },
+    {
+      "tango_num": 636,
+      "date": "2026-07-05",
+      "day_of_week": "Sunday",
+      "time_submitted": "17:40:00",
+      "tango_time": "0:43",
+      "time_seconds": 43,
+      "points": 3
+    },
+    {
       "tango_num": 637,
       "date": "2026-07-06",
       "day_of_week": "Monday",
       "time_submitted": "15:15:00",
       "tango_time": "0:19",
       "time_seconds": 19,
-      "points": 4
+      "points": 5
     },
     {
       "tango_num": 638,
