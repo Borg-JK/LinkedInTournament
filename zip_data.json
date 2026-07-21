@@ -1799,6 +1799,24 @@
       "zip_time": "0:13",
       "time_seconds": 13,
       "points": 9
+    },
+    {
+      "zip_num": 490,
+      "date": "2026-07-20",
+      "day_of_week": "Monday",
+      "time_submitted": "12:26:00",
+      "zip_time": "0:05",
+      "time_seconds": 5,
+      "points": 6
+    },
+    {
+      "zip_num": 491,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:01:00",
+      "zip_time": "0:05",
+      "time_seconds": 5,
+      "points": 7
     }
   ],
   "Borg Knijnenburg": [
@@ -3600,7 +3618,16 @@
       "time_submitted": "11:04:00",
       "zip_time": "0:06",
       "time_seconds": 6,
-      "points": 3
+      "points": 4
+    },
+    {
+      "zip_num": 491,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:22:00",
+      "zip_time": "0:06",
+      "time_seconds": 6,
+      "points": 5
     }
   ],
   "Anna del Pozo": [
@@ -5384,7 +5411,16 @@
       "time_submitted": "09:53:00",
       "zip_time": "0:04",
       "time_seconds": 4,
-      "points": 5
+      "points": 9
+    },
+    {
+      "zip_num": 491,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:31:00",
+      "zip_time": "0:04",
+      "time_seconds": 4,
+      "points": 9
     }
   ],
   "Kaissar": [
@@ -7043,6 +7079,24 @@
       "zip_time": "4:41",
       "time_seconds": 281,
       "points": 1
+    },
+    {
+      "zip_num": 490,
+      "date": "2026-07-20",
+      "day_of_week": "Monday",
+      "time_submitted": "16:29:00",
+      "zip_time": "0:04",
+      "time_seconds": 4,
+      "points": 9
+    },
+    {
+      "zip_num": 491,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:05:00",
+      "zip_time": "0:04",
+      "time_seconds": 4,
+      "points": 9
     }
   ],
   "Linda": [
@@ -9413,7 +9467,16 @@
       "time_submitted": "10:01:00",
       "zip_time": "0:07",
       "time_seconds": 7,
-      "points": 1
+      "points": 2
+    },
+    {
+      "zip_num": 491,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:42:00",
+      "zip_time": "0:12",
+      "time_seconds": 12,
+      "points": 2
     }
   ],
   "Bogdan Ene": [
@@ -10827,7 +10890,16 @@
       "time_submitted": "09:00:00",
       "zip_time": "0:06",
       "time_seconds": 6,
-      "points": 3
+      "points": 4
+    },
+    {
+      "zip_num": 491,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:34:00",
+      "zip_time": "0:09",
+      "time_seconds": 9,
+      "points": 4
     }
   ],
   "Sebastiaan Helbing": [
@@ -12371,6 +12443,24 @@
       "zip_time": "3:26",
       "time_seconds": 206,
       "points": 3
+    },
+    {
+      "zip_num": 490,
+      "date": "2026-07-20",
+      "day_of_week": "Monday",
+      "time_submitted": "14:33:00",
+      "zip_time": "0:09",
+      "time_seconds": 9,
+      "points": 1
+    },
+    {
+      "zip_num": 491,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:47:00",
+      "zip_time": "0:16",
+      "time_seconds": 16,
+      "points": 1
     }
   ],
   "Oliwer Wirkus": [
@@ -13814,7 +13904,16 @@
       "time_submitted": "09:37:00",
       "zip_time": "0:04",
       "time_seconds": 4,
-      "points": 5
+      "points": 9
+    },
+    {
+      "zip_num": 491,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "16:04:00",
+      "zip_time": "0:10",
+      "time_seconds": 10,
+      "points": 3
     }
   ],
   "Omar": [
@@ -14519,6 +14618,24 @@
       "zip_time": "1:08",
       "time_seconds": 68,
       "points": 6
+    },
+    {
+      "zip_num": 490,
+      "date": "2026-07-20",
+      "day_of_week": "Monday",
+      "time_submitted": "15:29:00",
+      "zip_time": "0:05",
+      "time_seconds": 5,
+      "points": 6
+    },
+    {
+      "zip_num": 491,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:16:00",
+      "zip_time": "0:05",
+      "time_seconds": 5,
+      "points": 7
     }
   ]
 }

@@ -1114,7 +1114,16 @@
       "time_submitted": "10:01:00",
       "patches_time": "0:08",
       "time_seconds": 8,
-      "points": 4
+      "points": 7
+    },
+    {
+      "patches_num": 126,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:43:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 7
     }
   ],
   "Borg Knijnenburg": [
@@ -2241,7 +2250,16 @@
       "time_submitted": "11:04:00",
       "patches_time": "0:14",
       "time_seconds": 14,
-      "points": 1
+      "points": 4
+    },
+    {
+      "patches_num": 126,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:21:00",
+      "patches_time": "0:12",
+      "time_seconds": 12,
+      "points": 3
     }
   ],
   "Kaissar": [
@@ -3342,6 +3360,24 @@
       "patches_time": "8:22",
       "time_seconds": 502,
       "points": 1
+    },
+    {
+      "patches_num": 125,
+      "date": "2026-07-20",
+      "day_of_week": "Monday",
+      "time_submitted": "16:30:00",
+      "patches_time": "0:14",
+      "time_seconds": 14,
+      "points": 4
+    },
+    {
+      "patches_num": 126,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:06:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 9
     }
   ],
   "Igor": [
@@ -4460,6 +4496,24 @@
       "patches_time": "0:25",
       "time_seconds": 25,
       "points": 8
+    },
+    {
+      "patches_num": 125,
+      "date": "2026-07-20",
+      "day_of_week": "Monday",
+      "time_submitted": "12:26:00",
+      "patches_time": "0:17",
+      "time_seconds": 17,
+      "points": 1
+    },
+    {
+      "patches_num": 126,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:01:00",
+      "patches_time": "0:12",
+      "time_seconds": 12,
+      "points": 3
     }
   ],
   "Anna del Pozo": [
@@ -5586,7 +5640,16 @@
       "time_submitted": "09:53:00",
       "patches_time": "0:11",
       "time_seconds": 11,
-      "points": 2
+      "points": 5
+    },
+    {
+      "patches_num": 126,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:30:00",
+      "patches_time": "0:08",
+      "time_seconds": 8,
+      "points": 7
     }
   ],
   "Kornel Baranowski": [
@@ -6596,6 +6659,15 @@
       "time_submitted": "09:01:00",
       "patches_time": "0:08",
       "time_seconds": 8,
+      "points": 7
+    },
+    {
+      "patches_num": 126,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:34:00",
+      "patches_time": "0:11",
+      "time_seconds": 11,
       "points": 4
     }
   ],
@@ -8167,6 +8239,24 @@
       "patches_time": "4:48",
       "time_seconds": 288,
       "points": 2
+    },
+    {
+      "patches_num": 125,
+      "date": "2026-07-20",
+      "day_of_week": "Monday",
+      "time_submitted": "14:33:00",
+      "patches_time": "0:14",
+      "time_seconds": 14,
+      "points": 4
+    },
+    {
+      "patches_num": 126,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:47:00",
+      "patches_time": "0:17",
+      "time_seconds": 17,
+      "points": 1
     }
   ],
   "Oliwer Wirkus": [
@@ -9529,6 +9619,15 @@
       "time_submitted": "09:37:00",
       "patches_time": "0:07",
       "time_seconds": 7,
+      "points": 8
+    },
+    {
+      "patches_num": 126,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "16:05:00",
+      "patches_time": "0:09",
+      "time_seconds": 9,
       "points": 5
     }
   ],
@@ -10225,6 +10324,24 @@
       "patches_time": "0:13",
       "time_seconds": 13,
       "points": 9
+    },
+    {
+      "patches_num": 125,
+      "date": "2026-07-20",
+      "day_of_week": "Monday",
+      "time_submitted": "15:28:00",
+      "patches_time": "0:06",
+      "time_seconds": 6,
+      "points": 9
+    },
+    {
+      "patches_num": 126,
+      "date": "2026-07-21",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:17:00",
+      "patches_time": "0:07",
+      "time_seconds": 7,
+      "points": 8
     }
   ]
 }
