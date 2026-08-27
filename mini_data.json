@@ -1774,6 +1774,186 @@
       "points": 7
     },
     {
+      "mini_num": 360,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:12:00",
+      "mini_time": "0:57",
+      "time_seconds": 57,
+      "points": 6
+    },
+    {
+      "mini_num": 361,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "17:58:00",
+      "mini_time": "0:54",
+      "time_seconds": 54,
+      "points": 3
+    },
+    {
+      "mini_num": 362,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:46:00",
+      "mini_time": "2:00",
+      "time_seconds": 120,
+      "points": 3
+    },
+    {
+      "mini_num": 363,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "14:13:00",
+      "mini_time": "1:07",
+      "time_seconds": 67,
+      "points": 3
+    },
+    {
+      "mini_num": 364,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "09:59:00",
+      "mini_time": "0:49",
+      "time_seconds": 49,
+      "points": 2
+    },
+    {
+      "mini_num": 365,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:58:00",
+      "mini_time": "0:38",
+      "time_seconds": 38,
+      "points": 5
+    },
+    {
+      "mini_num": 366,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:28:00",
+      "mini_time": "0:37",
+      "time_seconds": 37,
+      "points": 6
+    },
+    {
+      "mini_num": 367,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:08:00",
+      "mini_time": "0:48",
+      "time_seconds": 48,
+      "points": 4
+    },
+    {
+      "mini_num": 368,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "10:16:00",
+      "mini_time": "1:04",
+      "time_seconds": 64,
+      "points": 4
+    },
+    {
+      "mini_num": 369,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:37:00",
+      "mini_time": "1:06",
+      "time_seconds": 66,
+      "points": 5
+    },
+    {
+      "mini_num": 370,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:00:00",
+      "mini_time": "1:03",
+      "time_seconds": 63,
+      "points": 3
+    },
+    {
+      "mini_num": 371,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "15:04:00",
+      "mini_time": "0:31",
+      "time_seconds": 31,
+      "points": 5
+    },
+    {
+      "mini_num": 372,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:18:00",
+      "mini_time": "0:36",
+      "time_seconds": 36,
+      "points": 7
+    },
+    {
+      "mini_num": 373,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "17:51:00",
+      "mini_time": "0:29",
+      "time_seconds": 29,
+      "points": 7
+    },
+    {
+      "mini_num": 374,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:52:00",
+      "mini_time": "1:51",
+      "time_seconds": 111,
+      "points": 2
+    },
+    {
+      "mini_num": 375,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "17:00:00",
+      "mini_time": "0:58",
+      "time_seconds": 58,
+      "points": 4
+    },
+    {
+      "mini_num": 376,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "17:13:00",
+      "mini_time": "1:32",
+      "time_seconds": 92,
+      "points": 3
+    },
+    {
+      "mini_num": 377,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "16:19:00",
+      "mini_time": "1:54",
+      "time_seconds": 114,
+      "points": 3
+    },
+    {
+      "mini_num": 378,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "12:38:00",
+      "mini_time": "0:56",
+      "time_seconds": 56,
+      "points": 3
+    },
+    {
+      "mini_num": 379,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:06:00",
+      "mini_time": "0:36",
+      "time_seconds": 36,
+      "points": 8
+    },
+    {
       "mini_num": 380,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
@@ -3594,6 +3774,186 @@
       "points": 3
     },
     {
+      "mini_num": 360,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:02:00",
+      "mini_time": "1:07",
+      "time_seconds": 67,
+      "points": 3
+    },
+    {
+      "mini_num": 361,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "09:57:00",
+      "mini_time": "0:43",
+      "time_seconds": 43,
+      "points": 5
+    },
+    {
+      "mini_num": 362,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:52:00",
+      "mini_time": "1:13",
+      "time_seconds": 73,
+      "points": 6
+    },
+    {
+      "mini_num": 363,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:31:00",
+      "mini_time": "0:50",
+      "time_seconds": 50,
+      "points": 7
+    },
+    {
+      "mini_num": 364,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "19:43:00",
+      "mini_time": "0:40",
+      "time_seconds": 40,
+      "points": 4
+    },
+    {
+      "mini_num": 365,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:17:00",
+      "mini_time": "0:38",
+      "time_seconds": 38,
+      "points": 5
+    },
+    {
+      "mini_num": 366,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:58:00",
+      "mini_time": "0:38",
+      "time_seconds": 38,
+      "points": 5
+    },
+    {
+      "mini_num": 367,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:20:00",
+      "mini_time": "0:46",
+      "time_seconds": 46,
+      "points": 6
+    },
+    {
+      "mini_num": 368,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "09:37:00",
+      "mini_time": "0:56",
+      "time_seconds": 56,
+      "points": 5
+    },
+    {
+      "mini_num": 369,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:59:00",
+      "mini_time": "0:57",
+      "time_seconds": 57,
+      "points": 6
+    },
+    {
+      "mini_num": 370,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:48:00",
+      "mini_time": "0:56",
+      "time_seconds": 56,
+      "points": 4
+    },
+    {
+      "mini_num": 371,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "11:00:00",
+      "mini_time": "0:27",
+      "time_seconds": 27,
+      "points": 8
+    },
+    {
+      "mini_num": 372,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:41:00",
+      "mini_time": "0:42",
+      "time_seconds": 42,
+      "points": 6
+    },
+    {
+      "mini_num": 373,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:01:00",
+      "mini_time": "0:38",
+      "time_seconds": 38,
+      "points": 3
+    },
+    {
+      "mini_num": 374,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:02:00",
+      "mini_time": "1:55",
+      "time_seconds": 115,
+      "points": 1
+    },
+    {
+      "mini_num": 375,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "15:00:00",
+      "mini_time": "1:01",
+      "time_seconds": 61,
+      "points": 3
+    },
+    {
+      "mini_num": 376,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:12:00",
+      "mini_time": "0:46",
+      "time_seconds": 46,
+      "points": 7
+    },
+    {
+      "mini_num": 377,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "16:18:00",
+      "mini_time": "0:56",
+      "time_seconds": 56,
+      "points": 5
+    },
+    {
+      "mini_num": 378,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "19:57:00",
+      "mini_time": "0:41",
+      "time_seconds": 41,
+      "points": 5
+    },
+    {
+      "mini_num": 379,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:59:00",
+      "mini_time": "1:46",
+      "time_seconds": 106,
+      "points": 2
+    },
+    {
       "mini_num": 380,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
@@ -5322,6 +5682,195 @@
       "mini_time": "0:36",
       "time_seconds": 36,
       "points": 5
+    },
+    {
+      "mini_num": 359,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:56:00",
+      "mini_time": "0:31",
+      "time_seconds": 31,
+      "points": 5
+    },
+    {
+      "mini_num": 360,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:15:00",
+      "mini_time": "0:38",
+      "time_seconds": 38,
+      "points": 8
+    },
+    {
+      "mini_num": 361,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "15:22:00",
+      "mini_time": "0:37",
+      "time_seconds": 37,
+      "points": 6
+    },
+    {
+      "mini_num": 362,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "11:26:00",
+      "mini_time": "0:48",
+      "time_seconds": 48,
+      "points": 8
+    },
+    {
+      "mini_num": 363,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:34:00",
+      "mini_time": "0:48",
+      "time_seconds": 48,
+      "points": 8
+    },
+    {
+      "mini_num": 364,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "11:53:00",
+      "mini_time": "0:36",
+      "time_seconds": 36,
+      "points": 6
+    },
+    {
+      "mini_num": 365,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "12:07:00",
+      "mini_time": "0:29",
+      "time_seconds": 29,
+      "points": 8
+    },
+    {
+      "mini_num": 366,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:56:00",
+      "mini_time": "0:28",
+      "time_seconds": 28,
+      "points": 7
+    },
+    {
+      "mini_num": 367,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:34:00",
+      "mini_time": "0:36",
+      "time_seconds": 36,
+      "points": 8
+    },
+    {
+      "mini_num": 368,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "13:21:00",
+      "mini_time": "0:38",
+      "time_seconds": 38,
+      "points": 8
+    },
+    {
+      "mini_num": 369,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "13:08:00",
+      "mini_time": "1:10",
+      "time_seconds": 70,
+      "points": 4
+    },
+    {
+      "mini_num": 370,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "14:37:00",
+      "mini_time": "0:34",
+      "time_seconds": 34,
+      "points": 8
+    },
+    {
+      "mini_num": 371,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "11:57:00",
+      "mini_time": "0:29",
+      "time_seconds": 29,
+      "points": 7
+    },
+    {
+      "mini_num": 372,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:27:00",
+      "mini_time": "0:28",
+      "time_seconds": 28,
+      "points": 8
+    },
+    {
+      "mini_num": 373,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:26:00",
+      "mini_time": "0:27",
+      "time_seconds": 27,
+      "points": 8
+    },
+    {
+      "mini_num": 374,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:21:00",
+      "mini_time": "0:43",
+      "time_seconds": 43,
+      "points": 8
+    },
+    {
+      "mini_num": 375,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "12:13:00",
+      "mini_time": "0:45",
+      "time_seconds": 45,
+      "points": 7
+    },
+    {
+      "mini_num": 376,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:52:00",
+      "mini_time": "0:37",
+      "time_seconds": 37,
+      "points": 8
+    },
+    {
+      "mini_num": 377,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:37:00",
+      "mini_time": "0:52",
+      "time_seconds": 52,
+      "points": 6
+    },
+    {
+      "mini_num": 378,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "13:36:00",
+      "mini_time": "0:39",
+      "time_seconds": 39,
+      "points": 6
+    },
+    {
+      "mini_num": 379,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:51:00",
+      "mini_time": "1:56",
+      "time_seconds": 116,
+      "points": 1
     },
     {
       "mini_num": 380,
@@ -7099,6 +7648,186 @@
       "points": 4
     },
     {
+      "mini_num": 360,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:02:00",
+      "mini_time": "0:42",
+      "time_seconds": 42,
+      "points": 7
+    },
+    {
+      "mini_num": 361,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "10:21:00",
+      "mini_time": "0:33",
+      "time_seconds": 33,
+      "points": 7
+    },
+    {
+      "mini_num": 362,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:46:00",
+      "mini_time": "1:26",
+      "time_seconds": 86,
+      "points": 5
+    },
+    {
+      "mini_num": 363,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:12:00",
+      "mini_time": "0:58",
+      "time_seconds": 58,
+      "points": 4
+    },
+    {
+      "mini_num": 364,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "23:29:00",
+      "mini_time": "0:28",
+      "time_seconds": 28,
+      "points": 8
+    },
+    {
+      "mini_num": 365,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:15:00",
+      "mini_time": "0:37",
+      "time_seconds": 37,
+      "points": 6
+    },
+    {
+      "mini_num": 366,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:33:00",
+      "mini_time": "0:41",
+      "time_seconds": 41,
+      "points": 4
+    },
+    {
+      "mini_num": 367,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:09:00",
+      "mini_time": "0:37",
+      "time_seconds": 37,
+      "points": 7
+    },
+    {
+      "mini_num": 368,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "09:26:00",
+      "mini_time": "0:50",
+      "time_seconds": 50,
+      "points": 6
+    },
+    {
+      "mini_num": 369,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:51:00",
+      "mini_time": "0:35",
+      "time_seconds": 35,
+      "points": 8
+    },
+    {
+      "mini_num": 370,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:44:00",
+      "mini_time": "0:48",
+      "time_seconds": 48,
+      "points": 6
+    },
+    {
+      "mini_num": 371,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "10:58:00",
+      "mini_time": "0:32",
+      "time_seconds": 32,
+      "points": 4
+    },
+    {
+      "mini_num": 372,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "15:46:00",
+      "mini_time": "0:51",
+      "time_seconds": 51,
+      "points": 5
+    },
+    {
+      "mini_num": 373,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:24:00",
+      "mini_time": "0:34",
+      "time_seconds": 34,
+      "points": 4
+    },
+    {
+      "mini_num": 374,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:58:00",
+      "mini_time": "0:48",
+      "time_seconds": 48,
+      "points": 7
+    },
+    {
+      "mini_num": 375,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "14:35:00",
+      "mini_time": "0:40",
+      "time_seconds": 40,
+      "points": 8
+    },
+    {
+      "mini_num": 376,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:05:00",
+      "mini_time": "0:49",
+      "time_seconds": 49,
+      "points": 6
+    },
+    {
+      "mini_num": 377,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:56:00",
+      "mini_time": "0:43",
+      "time_seconds": 43,
+      "points": 7
+    },
+    {
+      "mini_num": 378,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "20:05:00",
+      "mini_time": "0:32",
+      "time_seconds": 32,
+      "points": 9
+    },
+    {
+      "mini_num": 379,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "20:49:00",
+      "mini_time": "0:29",
+      "time_seconds": 29,
+      "points": 9
+    },
+    {
       "mini_num": 380,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
@@ -7114,7 +7843,7 @@
       "time_submitted": "12:48:00",
       "mini_time": "0:39",
       "time_seconds": 39,
-      "points": 3
+      "points": 4
     }
   ],
   "Adam": [
@@ -9863,6 +10592,195 @@
       "points": 2
     },
     {
+      "mini_num": 359,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "21:59:00",
+      "mini_time": "0:51",
+      "time_seconds": 51,
+      "points": 3
+    },
+    {
+      "mini_num": 360,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "18:39:00",
+      "mini_time": "1:20",
+      "time_seconds": 80,
+      "points": 2
+    },
+    {
+      "mini_num": 361,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "18:04:00",
+      "mini_time": "1:25",
+      "time_seconds": 85,
+      "points": 1
+    },
+    {
+      "mini_num": 362,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:57:00",
+      "mini_time": "2:38",
+      "time_seconds": 158,
+      "points": 1
+    },
+    {
+      "mini_num": 363,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:19:00",
+      "mini_time": "5:30",
+      "time_seconds": 330,
+      "points": 1
+    },
+    {
+      "mini_num": 364,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "16:53:00",
+      "mini_time": "1:08",
+      "time_seconds": 68,
+      "points": 1
+    },
+    {
+      "mini_num": 365,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "18:36:00",
+      "mini_time": "1:00",
+      "time_seconds": 60,
+      "points": 1
+    },
+    {
+      "mini_num": 366,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "17:03:00",
+      "mini_time": "1:09",
+      "time_seconds": 69,
+      "points": 2
+    },
+    {
+      "mini_num": 367,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "21:08:00",
+      "mini_time": "1:10",
+      "time_seconds": 70,
+      "points": 2
+    },
+    {
+      "mini_num": 368,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "21:39:00",
+      "mini_time": "1:41",
+      "time_seconds": 101,
+      "points": 1
+    },
+    {
+      "mini_num": 369,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "16:15:00",
+      "mini_time": "1:19",
+      "time_seconds": 79,
+      "points": 3
+    },
+    {
+      "mini_num": 370,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:39:00",
+      "mini_time": "2:01",
+      "time_seconds": 121,
+      "points": 1
+    },
+    {
+      "mini_num": 371,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "17:44:00",
+      "mini_time": "1:06",
+      "time_seconds": 66,
+      "points": 1
+    },
+    {
+      "mini_num": 372,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "22:16:00",
+      "mini_time": "0:53",
+      "time_seconds": 53,
+      "points": 4
+    },
+    {
+      "mini_num": 373,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "20:02:00",
+      "mini_time": "1:04",
+      "time_seconds": 64,
+      "points": 1
+    },
+    {
+      "mini_num": 374,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "21:20:00",
+      "mini_time": "1:18",
+      "time_seconds": 78,
+      "points": 4
+    },
+    {
+      "mini_num": 375,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "07:07:00",
+      "mini_time": "1:48",
+      "time_seconds": 108,
+      "points": 1
+    },
+    {
+      "mini_num": 376,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "16:09:00",
+      "mini_time": "1:50",
+      "time_seconds": 110,
+      "points": 2
+    },
+    {
+      "mini_num": 377,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "14:59:00",
+      "mini_time": "3:01",
+      "time_seconds": 181,
+      "points": 1
+    },
+    {
+      "mini_num": 378,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "22:00:00",
+      "mini_time": "1:11",
+      "time_seconds": 71,
+      "points": 2
+    },
+    {
+      "mini_num": 379,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "20:35:00",
+      "mini_time": "1:03",
+      "time_seconds": 63,
+      "points": 4
+    },
+    {
       "mini_num": 380,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
@@ -10511,6 +11429,15 @@
       "mini_time": "0:43",
       "time_seconds": 43,
       "points": 9
+    },
+    {
+      "mini_num": 359,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "22:54:00",
+      "mini_time": "0:32",
+      "time_seconds": 32,
+      "points": 4
     }
   ],
   "Dominik Orkiszewski": [
@@ -11467,6 +12394,195 @@
       "mini_time": "1:13",
       "time_seconds": 73,
       "points": 1
+    },
+    {
+      "mini_num": 359,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "15:10:00",
+      "mini_time": "1:00",
+      "time_seconds": 60,
+      "points": 1
+    },
+    {
+      "mini_num": 360,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "20:20:00",
+      "mini_time": "2:05",
+      "time_seconds": 125,
+      "points": 1
+    },
+    {
+      "mini_num": 361,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "13:06:00",
+      "mini_time": "1:09",
+      "time_seconds": 69,
+      "points": 2
+    },
+    {
+      "mini_num": 362,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "16:50:00",
+      "mini_time": "2:29",
+      "time_seconds": 149,
+      "points": 2
+    },
+    {
+      "mini_num": 363,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:19:00",
+      "mini_time": "1:41",
+      "time_seconds": 101,
+      "points": 2
+    },
+    {
+      "mini_num": 364,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "19:39:00",
+      "mini_time": "0:47",
+      "time_seconds": 47,
+      "points": 3
+    },
+    {
+      "mini_num": 365,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:19:00",
+      "mini_time": "0:51",
+      "time_seconds": 51,
+      "points": 2
+    },
+    {
+      "mini_num": 366,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:52:00",
+      "mini_time": "1:35",
+      "time_seconds": 95,
+      "points": 1
+    },
+    {
+      "mini_num": 367,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:48:00",
+      "mini_time": "1:30",
+      "time_seconds": 90,
+      "points": 1
+    },
+    {
+      "mini_num": 368,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "16:27:00",
+      "mini_time": "1:20",
+      "time_seconds": 80,
+      "points": 3
+    },
+    {
+      "mini_num": 369,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:09:00",
+      "mini_time": "2:01",
+      "time_seconds": 121,
+      "points": 1
+    },
+    {
+      "mini_num": 370,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:00:00",
+      "mini_time": "1:42",
+      "time_seconds": 102,
+      "points": 2
+    },
+    {
+      "mini_num": 371,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "13:26:00",
+      "mini_time": "1:04",
+      "time_seconds": 64,
+      "points": 2
+    },
+    {
+      "mini_num": 372,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "14:17:00",
+      "mini_time": "0:57",
+      "time_seconds": 57,
+      "points": 1
+    },
+    {
+      "mini_num": 373,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:56:00",
+      "mini_time": "0:59",
+      "time_seconds": 59,
+      "points": 2
+    },
+    {
+      "mini_num": 374,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:31:00",
+      "mini_time": "1:30",
+      "time_seconds": 90,
+      "points": 3
+    },
+    {
+      "mini_num": 375,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "13:47:00",
+      "mini_time": "0:56",
+      "time_seconds": 56,
+      "points": 5
+    },
+    {
+      "mini_num": 376,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "13:24:00",
+      "mini_time": "1:55",
+      "time_seconds": 115,
+      "points": 1
+    },
+    {
+      "mini_num": 377,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "18:47:00",
+      "mini_time": "2:08",
+      "time_seconds": 128,
+      "points": 2
+    },
+    {
+      "mini_num": 378,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "14:29:00",
+      "mini_time": "0:44",
+      "time_seconds": 44,
+      "points": 4
+    },
+    {
+      "mini_num": 379,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "12:59:00",
+      "mini_time": "1:24",
+      "time_seconds": 84,
+      "points": 3
     },
     {
       "mini_num": 380,
@@ -12470,6 +13586,186 @@
       "mini_time": "0:34",
       "time_seconds": 34,
       "points": 6
+    },
+    {
+      "mini_num": 360,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:56:00",
+      "mini_time": "1:02",
+      "time_seconds": 62,
+      "points": 4
+    },
+    {
+      "mini_num": 362,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:55:00",
+      "mini_time": "1:50",
+      "time_seconds": 110,
+      "points": 4
+    },
+    {
+      "mini_num": 363,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:25:00",
+      "mini_time": "0:54",
+      "time_seconds": 54,
+      "points": 5
+    },
+    {
+      "mini_num": 364,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "10:49:00",
+      "mini_time": "0:37",
+      "time_seconds": 37,
+      "points": 5
+    },
+    {
+      "mini_num": 365,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "15:45:00",
+      "mini_time": "0:39",
+      "time_seconds": 39,
+      "points": 3
+    },
+    {
+      "mini_num": 366,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:55:00",
+      "mini_time": "0:41",
+      "time_seconds": 41,
+      "points": 4
+    },
+    {
+      "mini_num": 367,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:26:00",
+      "mini_time": "1:03",
+      "time_seconds": 63,
+      "points": 3
+    },
+    {
+      "mini_num": 368,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "11:30:00",
+      "mini_time": "1:22",
+      "time_seconds": 82,
+      "points": 2
+    },
+    {
+      "mini_num": 369,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:49:00",
+      "mini_time": "1:20",
+      "time_seconds": 80,
+      "points": 2
+    },
+    {
+      "mini_num": 370,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:02:00",
+      "mini_time": "0:51",
+      "time_seconds": 51,
+      "points": 5
+    },
+    {
+      "mini_num": 371,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "10:31:00",
+      "mini_time": "0:33",
+      "time_seconds": 33,
+      "points": 3
+    },
+    {
+      "mini_num": 372,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:40:00",
+      "mini_time": "0:53",
+      "time_seconds": 53,
+      "points": 4
+    },
+    {
+      "mini_num": 373,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:20:00",
+      "mini_time": "0:31",
+      "time_seconds": 31,
+      "points": 6
+    },
+    {
+      "mini_num": 374,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "17:41:00",
+      "mini_time": "1:05",
+      "time_seconds": 65,
+      "points": 6
+    },
+    {
+      "mini_num": 375,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "14:10:00",
+      "mini_time": "1:20",
+      "time_seconds": 80,
+      "points": 2
+    },
+    {
+      "mini_num": 376,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:57:00",
+      "mini_time": "1:01",
+      "time_seconds": 61,
+      "points": 5
+    },
+    {
+      "mini_num": 377,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:00:00",
+      "mini_time": "1:38",
+      "time_seconds": 98,
+      "points": 4
+    },
+    {
+      "mini_num": 378,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "12:50:00",
+      "mini_time": "0:34",
+      "time_seconds": 34,
+      "points": 8
+    },
+    {
+      "mini_num": 379,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:02:00",
+      "mini_time": "0:44",
+      "time_seconds": 44,
+      "points": 7
+    },
+    {
+      "mini_num": 381,
+      "date": "2026-08-27",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:51:00",
+      "mini_time": "0:55",
+      "time_seconds": 55,
+      "points": 2
     }
   ],
   "Omar": [
@@ -13185,6 +14481,177 @@
       "points": 8
     },
     {
+      "mini_num": 359,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "15:40:00",
+      "mini_time": "0:55",
+      "time_seconds": 55,
+      "points": 2
+    },
+    {
+      "mini_num": 360,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:30:00",
+      "mini_time": "1:01",
+      "time_seconds": 61,
+      "points": 5
+    },
+    {
+      "mini_num": 361,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "15:58:00",
+      "mini_time": "0:46",
+      "time_seconds": 46,
+      "points": 4
+    },
+    {
+      "mini_num": 362,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "14:10:00",
+      "mini_time": "0:57",
+      "time_seconds": 57,
+      "points": 7
+    },
+    {
+      "mini_num": 363,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "14:15:00",
+      "mini_time": "0:50",
+      "time_seconds": 50,
+      "points": 7
+    },
+    {
+      "mini_num": 364,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "15:16:00",
+      "mini_time": "0:28",
+      "time_seconds": 28,
+      "points": 8
+    },
+    {
+      "mini_num": 365,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "14:21:00",
+      "mini_time": "0:35",
+      "time_seconds": 35,
+      "points": 7
+    },
+    {
+      "mini_num": 367,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "00:10:00",
+      "mini_time": "0:46",
+      "time_seconds": 46,
+      "points": 6
+    },
+    {
+      "mini_num": 368,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "15:30:00",
+      "mini_time": "0:43",
+      "time_seconds": 43,
+      "points": 7
+    },
+    {
+      "mini_num": 369,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "17:25:00",
+      "mini_time": "0:49",
+      "time_seconds": 49,
+      "points": 7
+    },
+    {
+      "mini_num": 370,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "15:17:00",
+      "mini_time": "0:45",
+      "time_seconds": 45,
+      "points": 7
+    },
+    {
+      "mini_num": 371,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "16:07:00",
+      "mini_time": "0:29",
+      "time_seconds": 29,
+      "points": 7
+    },
+    {
+      "mini_num": 372,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:54:00",
+      "mini_time": "0:56",
+      "time_seconds": 56,
+      "points": 2
+    },
+    {
+      "mini_num": 373,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "17:00:00",
+      "mini_time": "0:33",
+      "time_seconds": 33,
+      "points": 5
+    },
+    {
+      "mini_num": 374,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "00:09:00",
+      "mini_time": "0:36",
+      "time_seconds": 36,
+      "points": 9
+    },
+    {
+      "mini_num": 375,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "15:30:00",
+      "mini_time": "0:47",
+      "time_seconds": 47,
+      "points": 6
+    },
+    {
+      "mini_num": 376,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "14:40:00",
+      "mini_time": "1:09",
+      "time_seconds": 69,
+      "points": 4
+    },
+    {
+      "mini_num": 378,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "12:40:00",
+      "mini_time": "0:35",
+      "time_seconds": 35,
+      "points": 7
+    },
+    {
+      "mini_num": 379,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "14:32:00",
+      "mini_time": "0:44",
+      "time_seconds": 44,
+      "points": 7
+    },
+    {
       "mini_num": 380,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
@@ -13200,10 +14667,37 @@
       "time_submitted": "11:41:00",
       "mini_time": "0:47",
       "time_seconds": 47,
-      "points": 2
+      "points": 3
     }
   ],
   "Reka": [
+    {
+      "mini_num": 374,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:53:00",
+      "mini_time": "1:06",
+      "time_seconds": 66,
+      "points": 5
+    },
+    {
+      "mini_num": 378,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "22:15:00",
+      "mini_time": "1:37",
+      "time_seconds": 97,
+      "points": 1
+    },
+    {
+      "mini_num": 379,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:03:00",
+      "mini_time": "0:48",
+      "time_seconds": 48,
+      "points": 5
+    },
     {
       "mini_num": 380,
       "date": "2026-08-26",

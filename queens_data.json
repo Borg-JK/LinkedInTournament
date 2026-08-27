@@ -1819,13 +1819,202 @@
       "points": 8
     },
     {
+      "queens_num": 828,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:11:00",
+      "queens_time": "0:11",
+      "time_seconds": 11,
+      "points": 9
+    },
+    {
+      "queens_num": 829,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "11:16:00",
+      "queens_time": "0:53",
+      "time_seconds": 53,
+      "points": 6
+    },
+    {
+      "queens_num": 830,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:43:00",
+      "queens_time": "0:30",
+      "time_seconds": 30,
+      "points": 7
+    },
+    {
+      "queens_num": 831,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "14:11:00",
+      "queens_time": "0:35",
+      "time_seconds": 35,
+      "points": 9
+    },
+    {
+      "queens_num": 832,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "09:58:00",
+      "queens_time": "0:06",
+      "time_seconds": 6,
+      "points": 9
+    },
+    {
+      "queens_num": 833,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:57:00",
+      "queens_time": "0:25",
+      "time_seconds": 25,
+      "points": 3
+    },
+    {
+      "queens_num": 834,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:28:00",
+      "queens_time": "0:09",
+      "time_seconds": 9,
+      "points": 8
+    },
+    {
+      "queens_num": 835,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:06:00",
+      "queens_time": "0:55",
+      "time_seconds": 55,
+      "points": 4
+    },
+    {
+      "queens_num": 836,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "10:15:00",
+      "queens_time": "1:40",
+      "time_seconds": 100,
+      "points": 1
+    },
+    {
+      "queens_num": 837,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:34:00",
+      "queens_time": "0:36",
+      "time_seconds": 36,
+      "points": 8
+    },
+    {
+      "queens_num": 838,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:59:00",
+      "queens_time": "2:35",
+      "time_seconds": 155,
+      "points": 5
+    },
+    {
+      "queens_num": 839,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "15:03:00",
+      "queens_time": "0:09",
+      "time_seconds": 9,
+      "points": 5
+    },
+    {
+      "queens_num": 840,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:17:00",
+      "queens_time": "0:05",
+      "time_seconds": 5,
+      "points": 9
+    },
+    {
+      "queens_num": 841,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "17:50:00",
+      "queens_time": "0:32",
+      "time_seconds": 32,
+      "points": 6
+    },
+    {
+      "queens_num": 842,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:45:00",
+      "queens_time": "0:32",
+      "time_seconds": 32,
+      "points": 7
+    },
+    {
+      "queens_num": 843,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "14:54:00",
+      "queens_time": "0:30",
+      "time_seconds": 30,
+      "points": 6
+    },
+    {
+      "queens_num": 844,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "16:39:00",
+      "queens_time": "0:39",
+      "time_seconds": 39,
+      "points": 7
+    },
+    {
+      "queens_num": 845,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "16:16:00",
+      "queens_time": "0:56",
+      "time_seconds": 56,
+      "points": 7
+    },
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "12:37:00",
+      "queens_time": "0:06",
+      "time_seconds": 6,
+      "points": 10
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:05:00",
+      "queens_time": "0:12",
+      "time_seconds": 12,
+      "points": 10
+    },
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:15:00",
+      "queens_time": "0:15",
+      "time_seconds": 15,
+      "points": 6
+    },
+    {
       "queens_num": 849,
       "date": "2026-08-27",
       "day_of_week": "Thursday",
       "time_submitted": "10:52:00",
       "queens_time": "0:29",
       "time_seconds": 29,
-      "points": 3
+      "points": 4
     }
   ],
   "Borg Knijnenburg": [
@@ -3639,13 +3828,202 @@
       "points": 4
     },
     {
+      "queens_num": 827,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:37:00",
+      "queens_time": "0:13",
+      "time_seconds": 13,
+      "points": 7
+    },
+    {
+      "queens_num": 828,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:59:00",
+      "queens_time": "0:17",
+      "time_seconds": 17,
+      "points": 5
+    },
+    {
+      "queens_num": 829,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "10:19:00",
+      "queens_time": "0:24",
+      "time_seconds": 24,
+      "points": 7
+    },
+    {
+      "queens_num": 830,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:42:00",
+      "queens_time": "0:28",
+      "time_seconds": 28,
+      "points": 8
+    },
+    {
+      "queens_num": 831,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:07:00",
+      "queens_time": "0:57",
+      "time_seconds": 57,
+      "points": 7
+    },
+    {
+      "queens_num": 832,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "23:27:00",
+      "queens_time": "0:11",
+      "time_seconds": 11,
+      "points": 8
+    },
+    {
+      "queens_num": 833,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:12:00",
+      "queens_time": "0:15",
+      "time_seconds": 15,
+      "points": 6
+    },
+    {
+      "queens_num": 834,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:31:00",
+      "queens_time": "0:17",
+      "time_seconds": 17,
+      "points": 6
+    },
+    {
+      "queens_num": 835,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:07:00",
+      "queens_time": "0:22",
+      "time_seconds": 22,
+      "points": 9
+    },
+    {
+      "queens_num": 836,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "09:24:00",
+      "queens_time": "0:16",
+      "time_seconds": 16,
+      "points": 9
+    },
+    {
+      "queens_num": 837,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:44:00",
+      "queens_time": "0:35",
+      "time_seconds": 35,
+      "points": 9
+    },
+    {
+      "queens_num": 838,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:42:00",
+      "queens_time": "1:10",
+      "time_seconds": 70,
+      "points": 7
+    },
+    {
+      "queens_num": 839,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "10:56:00",
+      "queens_time": "0:08",
+      "time_seconds": 8,
+      "points": 7
+    },
+    {
+      "queens_num": 840,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "15:44:00",
+      "queens_time": "0:10",
+      "time_seconds": 10,
+      "points": 6
+    },
+    {
+      "queens_num": 841,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:22:00",
+      "queens_time": "0:21",
+      "time_seconds": 21,
+      "points": 9
+    },
+    {
+      "queens_num": 842,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:55:00",
+      "queens_time": "0:33",
+      "time_seconds": 33,
+      "points": 6
+    },
+    {
+      "queens_num": 843,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "14:33:00",
+      "queens_time": "0:23",
+      "time_seconds": 23,
+      "points": 9
+    },
+    {
+      "queens_num": 844,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:03:00",
+      "queens_time": "0:38",
+      "time_seconds": 38,
+      "points": 8
+    },
+    {
+      "queens_num": 845,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:54:00",
+      "queens_time": "2:48",
+      "time_seconds": 168,
+      "points": 3
+    },
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "20:03:00",
+      "queens_time": "0:10",
+      "time_seconds": 10,
+      "points": 9
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "20:47:00",
+      "queens_time": "0:43",
+      "time_seconds": 43,
+      "points": 4
+    },
+    {
       "queens_num": 848,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
       "time_submitted": "12:11:00",
       "queens_time": "0:10",
       "time_seconds": 10,
-      "points": 6
+      "points": 8
     },
     {
       "queens_num": 849,
@@ -3654,7 +4032,7 @@
       "time_submitted": "10:19:00",
       "queens_time": "0:30",
       "time_seconds": 30,
-      "points": 2
+      "points": 3
     }
   ],
   "Kaissar": [
@@ -5342,13 +5720,202 @@
       "points": 6
     },
     {
+      "queens_num": 827,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:54:00",
+      "queens_time": "0:26",
+      "time_seconds": 26,
+      "points": 5
+    },
+    {
+      "queens_num": 828,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:13:00",
+      "queens_time": "0:13",
+      "time_seconds": 13,
+      "points": 7
+    },
+    {
+      "queens_num": 829,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "15:19:00",
+      "queens_time": "1:05",
+      "time_seconds": 65,
+      "points": 4
+    },
+    {
+      "queens_num": 830,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "11:23:00",
+      "queens_time": "0:37",
+      "time_seconds": 37,
+      "points": 6
+    },
+    {
+      "queens_num": 831,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "12:32:00",
+      "queens_time": "0:42",
+      "time_seconds": 42,
+      "points": 8
+    },
+    {
+      "queens_num": 832,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "11:52:00",
+      "queens_time": "0:12",
+      "time_seconds": 12,
+      "points": 7
+    },
+    {
+      "queens_num": 833,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "12:06:00",
+      "queens_time": "1:10",
+      "time_seconds": 70,
+      "points": 1
+    },
+    {
+      "queens_num": 834,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:55:00",
+      "queens_time": "0:22",
+      "time_seconds": 22,
+      "points": 4
+    },
+    {
+      "queens_num": 835,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:33:00",
+      "queens_time": "1:32",
+      "time_seconds": 92,
+      "points": 2
+    },
+    {
+      "queens_num": 836,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "13:19:00",
+      "queens_time": "0:16",
+      "time_seconds": 16,
+      "points": 9
+    },
+    {
+      "queens_num": 837,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "13:06:00",
+      "queens_time": "1:09",
+      "time_seconds": 69,
+      "points": 5
+    },
+    {
+      "queens_num": 838,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "14:35:00",
+      "queens_time": "3:44",
+      "time_seconds": 224,
+      "points": 3
+    },
+    {
+      "queens_num": 839,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "11:56:00",
+      "queens_time": "0:09",
+      "time_seconds": 9,
+      "points": 5
+    },
+    {
+      "queens_num": 840,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:26:00",
+      "queens_time": "0:19",
+      "time_seconds": 19,
+      "points": 4
+    },
+    {
+      "queens_num": 841,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:25:00",
+      "queens_time": "0:22",
+      "time_seconds": 22,
+      "points": 8
+    },
+    {
+      "queens_num": 842,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:20:00",
+      "queens_time": "0:40",
+      "time_seconds": 40,
+      "points": 5
+    },
+    {
+      "queens_num": 843,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "14:34:00",
+      "queens_time": "0:23",
+      "time_seconds": 23,
+      "points": 9
+    },
+    {
+      "queens_num": 844,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:51:00",
+      "queens_time": "1:40",
+      "time_seconds": 100,
+      "points": 2
+    },
+    {
+      "queens_num": 845,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:35:00",
+      "queens_time": "1:56",
+      "time_seconds": 116,
+      "points": 5
+    },
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "13:35:00",
+      "queens_time": "0:16",
+      "time_seconds": 16,
+      "points": 8
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:49:00",
+      "queens_time": "0:14",
+      "time_seconds": 14,
+      "points": 9
+    },
+    {
       "queens_num": 848,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
       "time_submitted": "11:31:00",
       "queens_time": "0:14",
       "time_seconds": 14,
-      "points": 5
+      "points": 7
     }
   ],
   "Anna del Pozo": [
@@ -7162,13 +7729,202 @@
       "points": 9
     },
     {
+      "queens_num": 827,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:39:00",
+      "queens_time": "0:08",
+      "time_seconds": 8,
+      "points": 8
+    },
+    {
+      "queens_num": 828,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:00:00",
+      "queens_time": "0:12",
+      "time_seconds": 12,
+      "points": 8
+    },
+    {
+      "queens_num": 829,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "09:51:00",
+      "queens_time": "2:15",
+      "time_seconds": 135,
+      "points": 1
+    },
+    {
+      "queens_num": 830,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:50:00",
+      "queens_time": "2:32",
+      "time_seconds": 152,
+      "points": 1
+    },
+    {
+      "queens_num": 831,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:29:00",
+      "queens_time": "1:04",
+      "time_seconds": 64,
+      "points": 5
+    },
+    {
+      "queens_num": 832,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "12:25:00",
+      "queens_time": "0:29",
+      "time_seconds": 29,
+      "points": 2
+    },
+    {
+      "queens_num": 833,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:21:00",
+      "queens_time": "0:07",
+      "time_seconds": 7,
+      "points": 9
+    },
+    {
+      "queens_num": 834,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:56:00",
+      "queens_time": "0:16",
+      "time_seconds": 16,
+      "points": 7
+    },
+    {
+      "queens_num": 835,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:19:00",
+      "queens_time": "0:25",
+      "time_seconds": 25,
+      "points": 8
+    },
+    {
+      "queens_num": 836,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "09:36:00",
+      "queens_time": "1:05",
+      "time_seconds": 65,
+      "points": 4
+    },
+    {
+      "queens_num": 837,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:56:00",
+      "queens_time": "1:10",
+      "time_seconds": 70,
+      "points": 4
+    },
+    {
+      "queens_num": 838,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "11:44:00",
+      "queens_time": "0:21",
+      "time_seconds": 21,
+      "points": 9
+    },
+    {
+      "queens_num": 839,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "10:58:00",
+      "queens_time": "0:04",
+      "time_seconds": 4,
+      "points": 9
+    },
+    {
+      "queens_num": 840,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:40:00",
+      "queens_time": "0:07",
+      "time_seconds": 7,
+      "points": 8
+    },
+    {
+      "queens_num": 841,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:00:00",
+      "queens_time": "0:32",
+      "time_seconds": 32,
+      "points": 6
+    },
+    {
+      "queens_num": 842,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:59:00",
+      "queens_time": "1:00",
+      "time_seconds": 60,
+      "points": 3
+    },
+    {
+      "queens_num": 843,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "14:54:00",
+      "queens_time": "0:26",
+      "time_seconds": 26,
+      "points": 7
+    },
+    {
+      "queens_num": 844,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:10:00",
+      "queens_time": "0:32",
+      "time_seconds": 32,
+      "points": 9
+    },
+    {
+      "queens_num": 845,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:57:00",
+      "queens_time": "4:03",
+      "time_seconds": 243,
+      "points": 2
+    },
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "19:55:00",
+      "queens_time": "0:21",
+      "time_seconds": 21,
+      "points": 6
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:56:00",
+      "queens_time": "0:58",
+      "time_seconds": 58,
+      "points": 3
+    },
+    {
       "queens_num": 848,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
       "time_submitted": "12:15:00",
       "queens_time": "0:09",
       "time_seconds": 9,
-      "points": 8
+      "points": 10
     }
   ],
   "Linda": [
@@ -9596,6 +10352,186 @@
       "points": 7
     },
     {
+      "queens_num": 827,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:50:00",
+      "queens_time": "0:36",
+      "time_seconds": 36,
+      "points": 4
+    },
+    {
+      "queens_num": 828,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:42:00",
+      "queens_time": "0:19",
+      "time_seconds": 19,
+      "points": 4
+    },
+    {
+      "queens_num": 830,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "14:09:00",
+      "queens_time": "1:45",
+      "time_seconds": 105,
+      "points": 2
+    },
+    {
+      "queens_num": 831,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "14:50:00",
+      "queens_time": "1:22",
+      "time_seconds": 82,
+      "points": 3
+    },
+    {
+      "queens_num": 832,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "09:45:00",
+      "queens_time": "0:14",
+      "time_seconds": 14,
+      "points": 6
+    },
+    {
+      "queens_num": 833,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:57:00",
+      "queens_time": "0:11",
+      "time_seconds": 11,
+      "points": 7
+    },
+    {
+      "queens_num": 834,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "16:20:00",
+      "queens_time": "0:20",
+      "time_seconds": 20,
+      "points": 5
+    },
+    {
+      "queens_num": 835,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:29:00",
+      "queens_time": "0:30",
+      "time_seconds": 30,
+      "points": 6
+    },
+    {
+      "queens_num": 836,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "10:13:00",
+      "queens_time": "1:07",
+      "time_seconds": 67,
+      "points": 3
+    },
+    {
+      "queens_num": 837,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:07:00",
+      "queens_time": "0:50",
+      "time_seconds": 50,
+      "points": 7
+    },
+    {
+      "queens_num": 838,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:39:00",
+      "queens_time": "2:53",
+      "time_seconds": 173,
+      "points": 4
+    },
+    {
+      "queens_num": 839,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "09:13:00",
+      "queens_time": "0:06",
+      "time_seconds": 6,
+      "points": 8
+    },
+    {
+      "queens_num": 840,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:05:00",
+      "queens_time": "0:13",
+      "time_seconds": 13,
+      "points": 5
+    },
+    {
+      "queens_num": 841,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:38:00",
+      "queens_time": "0:46",
+      "time_seconds": 46,
+      "points": 3
+    },
+    {
+      "queens_num": 842,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:21:00",
+      "queens_time": "0:25",
+      "time_seconds": 25,
+      "points": 8
+    },
+    {
+      "queens_num": 843,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "11:34:00",
+      "queens_time": "0:43",
+      "time_seconds": 43,
+      "points": 5
+    },
+    {
+      "queens_num": 844,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "00:16:00",
+      "queens_time": "1:11",
+      "time_seconds": 71,
+      "points": 5
+    },
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "09:52:00",
+      "queens_time": "0:20",
+      "time_seconds": 20,
+      "points": 7
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:47:00",
+      "queens_time": "0:17",
+      "time_seconds": 17,
+      "points": 7
+    },
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:39:00",
+      "queens_time": "0:47",
+      "time_seconds": 47,
+      "points": 2
+    },
+    {
       "queens_num": 849,
       "date": "2026-08-27",
       "day_of_week": "Thursday",
@@ -10837,6 +11773,195 @@
       "points": 3
     },
     {
+      "queens_num": 827,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "21:58:00",
+      "queens_time": "0:36",
+      "time_seconds": 36,
+      "points": 4
+    },
+    {
+      "queens_num": 828,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "18:37:00",
+      "queens_time": "0:31",
+      "time_seconds": 31,
+      "points": 2
+    },
+    {
+      "queens_num": 829,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "18:06:00",
+      "queens_time": "2:08",
+      "time_seconds": 128,
+      "points": 2
+    },
+    {
+      "queens_num": 830,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "09:51:00",
+      "queens_time": "0:49",
+      "time_seconds": 49,
+      "points": 4
+    },
+    {
+      "queens_num": 831,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:13:00",
+      "queens_time": "2:01",
+      "time_seconds": 121,
+      "points": 1
+    },
+    {
+      "queens_num": 832,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "16:52:00",
+      "queens_time": "0:21",
+      "time_seconds": 21,
+      "points": 3
+    },
+    {
+      "queens_num": 833,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "18:34:00",
+      "queens_time": "0:18",
+      "time_seconds": 18,
+      "points": 5
+    },
+    {
+      "queens_num": 834,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "17:02:00",
+      "queens_time": "0:40",
+      "time_seconds": 40,
+      "points": 2
+    },
+    {
+      "queens_num": 835,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "21:06:00",
+      "queens_time": "1:18",
+      "time_seconds": 78,
+      "points": 3
+    },
+    {
+      "queens_num": 836,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "21:37:00",
+      "queens_time": "1:18",
+      "time_seconds": 78,
+      "points": 2
+    },
+    {
+      "queens_num": 837,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "16:12:00",
+      "queens_time": "1:32",
+      "time_seconds": 92,
+      "points": 3
+    },
+    {
+      "queens_num": 838,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "09:41:00",
+      "queens_time": "4:04",
+      "time_seconds": 244,
+      "points": 2
+    },
+    {
+      "queens_num": 839,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "17:42:00",
+      "queens_time": "0:31",
+      "time_seconds": 31,
+      "points": 2
+    },
+    {
+      "queens_num": 840,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "22:14:00",
+      "queens_time": "0:22",
+      "time_seconds": 22,
+      "points": 2
+    },
+    {
+      "queens_num": 841,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "17:53:00",
+      "queens_time": "0:55",
+      "time_seconds": 55,
+      "points": 2
+    },
+    {
+      "queens_num": 842,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "21:19:00",
+      "queens_time": "1:07",
+      "time_seconds": 67,
+      "points": 2
+    },
+    {
+      "queens_num": 843,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "07:08:00",
+      "queens_time": "1:17",
+      "time_seconds": 77,
+      "points": 3
+    },
+    {
+      "queens_num": 844,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "16:07:00",
+      "queens_time": "3:02",
+      "time_seconds": 182,
+      "points": 1
+    },
+    {
+      "queens_num": 845,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "14:56:00",
+      "queens_time": "4:35",
+      "time_seconds": 275,
+      "points": 1
+    },
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "21:58:00",
+      "queens_time": "0:33",
+      "time_seconds": 33,
+      "points": 3
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "20:33:00",
+      "queens_time": "0:28",
+      "time_seconds": 28,
+      "points": 5
+    },
+    {
       "queens_num": 848,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
@@ -11485,6 +12610,15 @@
       "queens_time": "0:33",
       "time_seconds": 33,
       "points": 7
+    },
+    {
+      "queens_num": 827,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "22:54:00",
+      "queens_time": "0:07",
+      "time_seconds": 7,
+      "points": 9
     }
   ],
   "Oliwer Wirkus": [
@@ -12886,13 +14020,202 @@
       "points": 1
     },
     {
+      "queens_num": 827,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "15:14:00",
+      "queens_time": "1:04",
+      "time_seconds": 64,
+      "points": 1
+    },
+    {
+      "queens_num": 828,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "20:23:00",
+      "queens_time": "0:34",
+      "time_seconds": 34,
+      "points": 1
+    },
+    {
+      "queens_num": 829,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "14:24:00",
+      "queens_time": "1:57",
+      "time_seconds": 117,
+      "points": 3
+    },
+    {
+      "queens_num": 830,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "16:57:00",
+      "queens_time": "1:14",
+      "time_seconds": 74,
+      "points": 3
+    },
+    {
+      "queens_num": 831,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:26:00",
+      "queens_time": "1:23",
+      "time_seconds": 83,
+      "points": 2
+    },
+    {
+      "queens_num": 832,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "19:42:00",
+      "queens_time": "0:57",
+      "time_seconds": 57,
+      "points": 1
+    },
+    {
+      "queens_num": 833,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:22:00",
+      "queens_time": "0:43",
+      "time_seconds": 43,
+      "points": 2
+    },
+    {
+      "queens_num": 834,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:55:00",
+      "queens_time": "0:47",
+      "time_seconds": 47,
+      "points": 1
+    },
+    {
+      "queens_num": 835,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "14:51:00",
+      "queens_time": "1:43",
+      "time_seconds": 103,
+      "points": 1
+    },
+    {
+      "queens_num": 836,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "16:34:00",
+      "queens_time": "0:16",
+      "time_seconds": 16,
+      "points": 9
+    },
+    {
+      "queens_num": 837,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "12:13:00",
+      "queens_time": "1:45",
+      "time_seconds": 105,
+      "points": 2
+    },
+    {
+      "queens_num": 838,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:10:00",
+      "queens_time": "6:56",
+      "time_seconds": 416,
+      "points": 1
+    },
+    {
+      "queens_num": 839,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "13:28:00",
+      "queens_time": "0:41",
+      "time_seconds": 41,
+      "points": 1
+    },
+    {
+      "queens_num": 840,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "14:19:00",
+      "queens_time": "0:46",
+      "time_seconds": 46,
+      "points": 1
+    },
+    {
+      "queens_num": 841,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "13:00:00",
+      "queens_time": "1:12",
+      "time_seconds": 72,
+      "points": 1
+    },
+    {
+      "queens_num": 842,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:39:00",
+      "queens_time": "4:25",
+      "time_seconds": 265,
+      "points": 1
+    },
+    {
+      "queens_num": 843,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "13:51:00",
+      "queens_time": "1:32",
+      "time_seconds": 92,
+      "points": 1
+    },
+    {
+      "queens_num": 844,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "13:22:00",
+      "queens_time": "1:32",
+      "time_seconds": 92,
+      "points": 3
+    },
+    {
+      "queens_num": 845,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "18:55:00",
+      "queens_time": "2:01",
+      "time_seconds": 121,
+      "points": 4
+    },
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "14:31:00",
+      "queens_time": "1:15",
+      "time_seconds": 75,
+      "points": 2
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:02:00",
+      "queens_time": "1:46",
+      "time_seconds": 106,
+      "points": 1
+    },
+    {
       "queens_num": 848,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
       "time_submitted": "12:55:00",
       "queens_time": "0:39",
       "time_seconds": 39,
-      "points": 3
+      "points": 4
     }
   ],
   "Evie": [
@@ -13842,13 +15165,211 @@
       "points": 2
     },
     {
+      "queens_num": 827,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:59:00",
+      "queens_time": "0:43",
+      "time_seconds": 43,
+      "points": 2
+    },
+    {
+      "queens_num": 828,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:57:00",
+      "queens_time": "0:22",
+      "time_seconds": 22,
+      "points": 3
+    },
+    {
+      "queens_num": 829,
+      "date": "2026-08-07",
+      "day_of_week": "Friday",
+      "time_submitted": "14:14:00",
+      "queens_time": "1:04",
+      "time_seconds": 64,
+      "points": 5
+    },
+    {
+      "queens_num": 830,
+      "date": "2026-08-08",
+      "day_of_week": "Saturday",
+      "time_submitted": "13:08:00",
+      "queens_time": "0:41",
+      "time_seconds": 41,
+      "points": 5
+    },
+    {
+      "queens_num": 831,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:28:00",
+      "queens_time": "1:01",
+      "time_seconds": 61,
+      "points": 6
+    },
+    {
+      "queens_num": 832,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "10:50:00",
+      "queens_time": "0:15",
+      "time_seconds": 15,
+      "points": 5
+    },
+    {
+      "queens_num": 833,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "15:48:00",
+      "queens_time": "0:22",
+      "time_seconds": 22,
+      "points": 4
+    },
+    {
+      "queens_num": 834,
+      "date": "2026-08-12",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:56:00",
+      "queens_time": "0:30",
+      "time_seconds": 30,
+      "points": 3
+    },
+    {
+      "queens_num": 835,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:28:00",
+      "queens_time": "0:26",
+      "time_seconds": 26,
+      "points": 7
+    },
+    {
+      "queens_num": 836,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "11:32:00",
+      "queens_time": "0:55",
+      "time_seconds": 55,
+      "points": 6
+    },
+    {
+      "queens_num": 837,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:51:00",
+      "queens_time": "0:50",
+      "time_seconds": 50,
+      "points": 7
+    },
+    {
+      "queens_num": 838,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "13:04:00",
+      "queens_time": "1:17",
+      "time_seconds": 77,
+      "points": 6
+    },
+    {
+      "queens_num": 839,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "10:30:00",
+      "queens_time": "0:17",
+      "time_seconds": 17,
+      "points": 3
+    },
+    {
+      "queens_num": 840,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:42:00",
+      "queens_time": "0:20",
+      "time_seconds": 20,
+      "points": 3
+    },
+    {
+      "queens_num": 841,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:22:00",
+      "queens_time": "0:32",
+      "time_seconds": 32,
+      "points": 6
+    },
+    {
+      "queens_num": 842,
+      "date": "2026-08-20",
+      "day_of_week": "Thursday",
+      "time_submitted": "17:42:00",
+      "queens_time": "0:47",
+      "time_seconds": 47,
+      "points": 4
+    },
+    {
+      "queens_num": 843,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "14:12:00",
+      "queens_time": "1:19",
+      "time_seconds": 79,
+      "points": 2
+    },
+    {
+      "queens_num": 844,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "10:47:00",
+      "queens_time": "1:28",
+      "time_seconds": 88,
+      "points": 4
+    },
+    {
+      "queens_num": 845,
+      "date": "2026-08-23",
+      "day_of_week": "Sunday",
+      "time_submitted": "10:03:00",
+      "queens_time": "1:21",
+      "time_seconds": 81,
+      "points": 6
+    },
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "12:55:00",
+      "queens_time": "0:27",
+      "time_seconds": 27,
+      "points": 5
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:04:00",
+      "queens_time": "0:24",
+      "time_seconds": 24,
+      "points": 6
+    },
+    {
       "queens_num": 848,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
       "time_submitted": "13:20:00",
       "queens_time": "0:29",
       "time_seconds": 29,
-      "points": 4
+      "points": 5
+    },
+    {
+      "queens_num": 849,
+      "date": "2026-08-27",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:53:00",
+      "queens_time": "0:56",
+      "time_seconds": 56,
+      "points": 2
     }
   ],
   "Omar": [
@@ -14573,13 +16094,157 @@
       "points": 5
     },
     {
+      "queens_num": 827,
+      "date": "2026-08-05",
+      "day_of_week": "Wednesday",
+      "time_submitted": "15:41:00",
+      "queens_time": "0:18",
+      "time_seconds": 18,
+      "points": 6
+    },
+    {
+      "queens_num": 828,
+      "date": "2026-08-06",
+      "day_of_week": "Thursday",
+      "time_submitted": "13:31:00",
+      "queens_time": "0:15",
+      "time_seconds": 15,
+      "points": 6
+    },
+    {
+      "queens_num": 831,
+      "date": "2026-08-09",
+      "day_of_week": "Sunday",
+      "time_submitted": "14:20:00",
+      "queens_time": "1:04",
+      "time_seconds": 64,
+      "points": 5
+    },
+    {
+      "queens_num": 832,
+      "date": "2026-08-10",
+      "day_of_week": "Monday",
+      "time_submitted": "15:18:00",
+      "queens_time": "0:16",
+      "time_seconds": 16,
+      "points": 4
+    },
+    {
+      "queens_num": 833,
+      "date": "2026-08-11",
+      "day_of_week": "Tuesday",
+      "time_submitted": "14:22:00",
+      "queens_time": "0:10",
+      "time_seconds": 10,
+      "points": 8
+    },
+    {
+      "queens_num": 835,
+      "date": "2026-08-13",
+      "day_of_week": "Thursday",
+      "time_submitted": "00:13:00",
+      "queens_time": "0:38",
+      "time_seconds": 38,
+      "points": 5
+    },
+    {
+      "queens_num": 836,
+      "date": "2026-08-14",
+      "day_of_week": "Friday",
+      "time_submitted": "15:32:00",
+      "queens_time": "0:58",
+      "time_seconds": 58,
+      "points": 5
+    },
+    {
+      "queens_num": 837,
+      "date": "2026-08-15",
+      "day_of_week": "Saturday",
+      "time_submitted": "17:29:00",
+      "queens_time": "2:13",
+      "time_seconds": 133,
+      "points": 1
+    },
+    {
+      "queens_num": 838,
+      "date": "2026-08-16",
+      "day_of_week": "Sunday",
+      "time_submitted": "15:21:00",
+      "queens_time": "0:27",
+      "time_seconds": 27,
+      "points": 8
+    },
+    {
+      "queens_num": 839,
+      "date": "2026-08-17",
+      "day_of_week": "Monday",
+      "time_submitted": "16:05:00",
+      "queens_time": "0:08",
+      "time_seconds": 8,
+      "points": 7
+    },
+    {
+      "queens_num": 840,
+      "date": "2026-08-18",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:55:00",
+      "queens_time": "0:07",
+      "time_seconds": 7,
+      "points": 8
+    },
+    {
+      "queens_num": 841,
+      "date": "2026-08-19",
+      "day_of_week": "Wednesday",
+      "time_submitted": "17:01:00",
+      "queens_time": "0:23",
+      "time_seconds": 23,
+      "points": 7
+    },
+    {
+      "queens_num": 843,
+      "date": "2026-08-21",
+      "day_of_week": "Friday",
+      "time_submitted": "15:32:00",
+      "queens_time": "1:08",
+      "time_seconds": 68,
+      "points": 4
+    },
+    {
+      "queens_num": 844,
+      "date": "2026-08-22",
+      "day_of_week": "Saturday",
+      "time_submitted": "14:38:00",
+      "queens_time": "0:48",
+      "time_seconds": 48,
+      "points": 6
+    },
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "12:43:00",
+      "queens_time": "1:37",
+      "time_seconds": 97,
+      "points": 1
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "14:33:00",
+      "queens_time": "0:14",
+      "time_seconds": 14,
+      "points": 9
+    },
+    {
       "queens_num": 848,
       "date": "2026-08-26",
       "day_of_week": "Wednesday",
       "time_submitted": "16:39:00",
       "queens_time": "0:09",
       "time_seconds": 9,
-      "points": 8
+      "points": 10
     },
     {
       "queens_num": 849,
@@ -14588,10 +16253,28 @@
       "time_submitted": "11:42:00",
       "queens_time": "0:12",
       "time_seconds": 12,
-      "points": 4
+      "points": 5
     }
   ],
   "Reka": [
+    {
+      "queens_num": 846,
+      "date": "2026-08-24",
+      "day_of_week": "Monday",
+      "time_submitted": "22:16:00",
+      "queens_time": "0:28",
+      "time_seconds": 28,
+      "points": 4
+    },
+    {
+      "queens_num": 847,
+      "date": "2026-08-25",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:04:00",
+      "queens_time": "1:29",
+      "time_seconds": 89,
+      "points": 2
+    },
     {
       "queens_num": 848,
       "date": "2026-08-26",
@@ -14599,7 +16282,7 @@
       "time_submitted": "12:15:00",
       "queens_time": "0:40",
       "time_seconds": 40,
-      "points": 2
+      "points": 3
     }
   ]
 }
