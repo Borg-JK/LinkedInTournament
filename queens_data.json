@@ -1817,6 +1817,15 @@
       "queens_time": "0:06",
       "time_seconds": 6,
       "points": 8
+    },
+    {
+      "queens_num": 849,
+      "date": "2026-08-27",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:52:00",
+      "queens_time": "0:29",
+      "time_seconds": 29,
+      "points": 3
     }
   ],
   "Borg Knijnenburg": [
@@ -3628,6 +3637,24 @@
       "queens_time": "0:12",
       "time_seconds": 12,
       "points": 4
+    },
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:11:00",
+      "queens_time": "0:10",
+      "time_seconds": 10,
+      "points": 6
+    },
+    {
+      "queens_num": 849,
+      "date": "2026-08-27",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:19:00",
+      "queens_time": "0:30",
+      "time_seconds": 30,
+      "points": 2
     }
   ],
   "Kaissar": [
@@ -5313,6 +5340,15 @@
       "queens_time": "0:08",
       "time_seconds": 8,
       "points": 6
+    },
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:31:00",
+      "queens_time": "0:14",
+      "time_seconds": 14,
+      "points": 5
     }
   ],
   "Anna del Pozo": [
@@ -7124,6 +7160,15 @@
       "queens_time": "0:05",
       "time_seconds": 5,
       "points": 9
+    },
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:15:00",
+      "queens_time": "0:09",
+      "time_seconds": 9,
+      "points": 8
     }
   ],
   "Linda": [
@@ -9549,6 +9594,15 @@
       "queens_time": "0:07",
       "time_seconds": 7,
       "points": 7
+    },
+    {
+      "queens_num": 849,
+      "date": "2026-08-27",
+      "day_of_week": "Thursday",
+      "time_submitted": "09:39:00",
+      "queens_time": "1:20",
+      "time_seconds": 80,
+      "points": 1
     }
   ],
   "ev": [
@@ -10781,6 +10835,15 @@
       "queens_time": "0:19",
       "time_seconds": 19,
       "points": 3
+    },
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:42:00",
+      "queens_time": "1:02",
+      "time_seconds": 62,
+      "points": 1
     }
   ],
   "Sebastiaan Helbing": [
@@ -12821,6 +12884,15 @@
       "queens_time": "0:27",
       "time_seconds": 27,
       "points": 1
+    },
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:55:00",
+      "queens_time": "0:39",
+      "time_seconds": 39,
+      "points": 3
     }
   ],
   "Evie": [
@@ -13768,6 +13840,15 @@
       "queens_time": "0:26",
       "time_seconds": 26,
       "points": 2
+    },
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "13:20:00",
+      "queens_time": "0:29",
+      "time_seconds": 29,
+      "points": 4
     }
   ],
   "Omar": [
@@ -14490,6 +14571,35 @@
       "queens_time": "0:09",
       "time_seconds": 9,
       "points": 5
+    },
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "16:39:00",
+      "queens_time": "0:09",
+      "time_seconds": 9,
+      "points": 8
+    },
+    {
+      "queens_num": 849,
+      "date": "2026-08-27",
+      "day_of_week": "Thursday",
+      "time_submitted": "11:42:00",
+      "queens_time": "0:12",
+      "time_seconds": 12,
+      "points": 4
+    }
+  ],
+  "Reka": [
+    {
+      "queens_num": 848,
+      "date": "2026-08-26",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:15:00",
+      "queens_time": "0:40",
+      "time_seconds": 40,
+      "points": 2
     }
   ]
 }
