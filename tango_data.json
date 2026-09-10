@@ -2221,7 +2221,34 @@
       "time_submitted": "09:37:00",
       "tango_time": "0:10",
       "time_seconds": 10,
-      "points": 5
+      "points": 10
+    },
+    {
+      "tango_num": 701,
+      "date": "2026-09-08",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:04:00",
+      "tango_time": "0:17",
+      "time_seconds": 17,
+      "points": 8
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:33:00",
+      "tango_time": "0:15",
+      "time_seconds": 15,
+      "points": 10
+    },
+    {
+      "tango_num": 703,
+      "date": "2026-09-10",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:20:00",
+      "tango_time": "0:19",
+      "time_seconds": 19,
+      "points": 4
     }
   ],
   "Kaissar": [
@@ -4338,7 +4365,34 @@
       "time_submitted": "10:45:00",
       "tango_time": "0:15",
       "time_seconds": 15,
-      "points": 3
+      "points": 6
+    },
+    {
+      "tango_num": 701,
+      "date": "2026-09-08",
+      "day_of_week": "Tuesday",
+      "time_submitted": "13:08:00",
+      "tango_time": "0:13",
+      "time_seconds": 13,
+      "points": 9
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:49:00",
+      "tango_time": "0:17",
+      "time_seconds": 17,
+      "points": 9
+    },
+    {
+      "tango_num": 703,
+      "date": "2026-09-10",
+      "day_of_week": "Thursday",
+      "time_submitted": "12:05:00",
+      "tango_time": "0:21",
+      "time_seconds": 21,
+      "points": 2
     }
   ],
   "Borg Knijnenburg": [
@@ -6536,6 +6590,33 @@
       "time_submitted": "09:09:00",
       "tango_time": "0:12",
       "time_seconds": 12,
+      "points": 9
+    },
+    {
+      "tango_num": 701,
+      "date": "2026-09-08",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:10:00",
+      "tango_time": "0:30",
+      "time_seconds": 30,
+      "points": 3
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "09:58:00",
+      "tango_time": "0:53",
+      "time_seconds": 53,
+      "points": 1
+    },
+    {
+      "tango_num": 703,
+      "date": "2026-09-10",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:01:00",
+      "tango_time": "0:19",
+      "time_seconds": 19,
       "points": 4
     }
   ],
@@ -8770,7 +8851,34 @@
       "time_submitted": "09:21:00",
       "tango_time": "0:15",
       "time_seconds": 15,
-      "points": 3
+      "points": 6
+    },
+    {
+      "tango_num": 701,
+      "date": "2026-09-08",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:57:00",
+      "tango_time": "0:19",
+      "time_seconds": 19,
+      "points": 6
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "11:58:00",
+      "tango_time": "0:30",
+      "time_seconds": 30,
+      "points": 5
+    },
+    {
+      "tango_num": 703,
+      "date": "2026-09-10",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:29:00",
+      "tango_time": "0:18",
+      "time_seconds": 18,
+      "points": 5
     }
   ],
   "Linda": [
@@ -11583,6 +11691,33 @@
       "tango_time": "0:49",
       "time_seconds": 49,
       "points": 2
+    },
+    {
+      "tango_num": 700,
+      "date": "2026-09-07",
+      "day_of_week": "Monday",
+      "time_submitted": "21:25:00",
+      "tango_time": "0:15",
+      "time_seconds": 15,
+      "points": 6
+    },
+    {
+      "tango_num": 701,
+      "date": "2026-09-08",
+      "day_of_week": "Tuesday",
+      "time_submitted": "11:20:00",
+      "tango_time": "0:23",
+      "time_seconds": 23,
+      "points": 5
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "10:09:00",
+      "tango_time": "0:21",
+      "time_seconds": 21,
+      "points": 7
     }
   ],
   "ev": [
@@ -13181,6 +13316,33 @@
       "time_submitted": "09:23:00",
       "tango_time": "0:41",
       "time_seconds": 41,
+      "points": 7
+    },
+    {
+      "tango_num": 700,
+      "date": "2026-09-07",
+      "day_of_week": "Monday",
+      "time_submitted": "22:57:00",
+      "tango_time": "0:21",
+      "time_seconds": 21,
+      "points": 3
+    },
+    {
+      "tango_num": 701,
+      "date": "2026-09-08",
+      "day_of_week": "Tuesday",
+      "time_submitted": "17:19:00",
+      "tango_time": "0:51",
+      "time_seconds": 51,
+      "points": 1
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "18:09:00",
+      "tango_time": "0:21",
+      "time_seconds": 21,
       "points": 7
     }
   ],
@@ -15085,6 +15247,24 @@
       "tango_time": "1:03",
       "time_seconds": 63,
       "points": 1
+    },
+    {
+      "tango_num": 700,
+      "date": "2026-09-07",
+      "day_of_week": "Monday",
+      "time_submitted": "14:46:00",
+      "tango_time": "0:25",
+      "time_seconds": 25,
+      "points": 2
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "12:37:00",
+      "tango_time": "0:32",
+      "time_seconds": 32,
+      "points": 3
     }
   ],
   "Oliwer Wirkus": [
@@ -16970,6 +17150,33 @@
       "tango_time": "0:25",
       "time_seconds": 25,
       "points": 9
+    },
+    {
+      "tango_num": 700,
+      "date": "2026-09-07",
+      "day_of_week": "Monday",
+      "time_submitted": "14:03:00",
+      "tango_time": "0:14",
+      "time_seconds": 14,
+      "points": 8
+    },
+    {
+      "tango_num": 701,
+      "date": "2026-09-08",
+      "day_of_week": "Tuesday",
+      "time_submitted": "10:38:00",
+      "tango_time": "0:18",
+      "time_seconds": 18,
+      "points": 7
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "15:04:00",
+      "tango_time": "0:20",
+      "time_seconds": 20,
+      "points": 8
     }
   ],
   "Omar": [
@@ -18070,6 +18277,33 @@
       "tango_time": "0:41",
       "time_seconds": 41,
       "points": 7
+    },
+    {
+      "tango_num": 700,
+      "date": "2026-09-07",
+      "day_of_week": "Monday",
+      "time_submitted": "16:12:00",
+      "tango_time": "0:14",
+      "time_seconds": 14,
+      "points": 8
+    },
+    {
+      "tango_num": 701,
+      "date": "2026-09-08",
+      "day_of_week": "Tuesday",
+      "time_submitted": "12:21:00",
+      "tango_time": "0:24",
+      "time_seconds": 24,
+      "points": 4
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "15:11:00",
+      "tango_time": "0:31",
+      "time_seconds": 31,
+      "points": 4
     }
   ],
   "Reka": [
@@ -18152,6 +18386,33 @@
       "time_submitted": "10:22:00",
       "tango_time": "1:22",
       "time_seconds": 82,
+      "points": 1
+    },
+    {
+      "tango_num": 701,
+      "date": "2026-09-08",
+      "day_of_week": "Tuesday",
+      "time_submitted": "09:47:00",
+      "tango_time": "0:46",
+      "time_seconds": 46,
+      "points": 2
+    },
+    {
+      "tango_num": 702,
+      "date": "2026-09-09",
+      "day_of_week": "Wednesday",
+      "time_submitted": "23:30:00",
+      "tango_time": "0:48",
+      "time_seconds": 48,
+      "points": 2
+    },
+    {
+      "tango_num": 703,
+      "date": "2026-09-10",
+      "day_of_week": "Thursday",
+      "time_submitted": "10:14:00",
+      "tango_time": "0:48",
+      "time_seconds": 48,
       "points": 1
     }
   ]
