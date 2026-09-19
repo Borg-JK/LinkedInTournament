@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
 import TopNav from '../components/TopNav';
-import GameChips from '../components/GameChips';
 
 export default function Home() {
   const { user, profile, profileChecked, loading } = useAuth();
@@ -34,19 +33,11 @@ export default function Home() {
           <p>Your account is set up. Score entry, tournaments, and your game history land here in the next phases.</p>
         </div>
 
-        <div className="panel-grid">
-          <section className="panel">
-            <h2>Tournaments</h2>
-            <div className="section-sub">Where you're placed, across every tournament you're in.</div>
-            <div className="panel-empty">Tournament creation and standings arrive in Phase 3 &amp; 5.</div>
-          </section>
-
-          <section className="panel">
-            <h2>Games you play</h2>
-            <div className="section-sub">Used for daily score entry once that's live.</div>
-            <GameChips gameIds={profile.gamesPlayed || []} />
-          </section>
-        </div>
+        <section className="panel">
+          <h2>Tournaments</h2>
+          <div className="section-sub">Where you're placed, across every tournament you're in.</div>
+          <div className="panel-empty">Friends (next) and tournament creation arrive in Phases 2 &amp; 3.</div>
+        </section>
       </main>
     </div>
   );

@@ -60,9 +60,6 @@ export default function TopNav() {
 
           {open && (
             <div className="dropdown" role="menu">
-              <a href="/settings" role="menuitem" className="dropdown-item" onClick={() => setOpen(false)}>
-                Edit games played
-              </a>
               <button
                 type="button"
                 role="menuitem"

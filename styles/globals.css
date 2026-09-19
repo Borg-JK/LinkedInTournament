@@ -20,13 +20,6 @@
   --radius-xs: 8px;
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.28);
-
-  /* per-game accents, carried over from the original dashboard's themes */
-  --c-queens: #3a4b9e;
-  --c-tango: #c9942a;
-  --c-mini: #2d6a4f;
-  --c-zip: #c4521f;
-  --c-patches: #5c7a3a;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -153,132 +146,6 @@ button, input, select {
 }
 .btn-ghost:hover { background: var(--surface2); }
 
-/* ── Games picker (toggle chips) ───────────────────────────────── */
-
-.picker-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.picker-count {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.chip-link {
-  background: none;
-  border: none;
-  color: #a87e2e;
-  font-weight: 600;
-  font-size: 0.8rem;
-  cursor: pointer;
-  padding: 0;
-}
-.chip-link:hover { text-decoration: underline; }
-
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.game-chip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border);
-  background: var(--surface2);
-  color: var(--text-soft);
-  font-size: 0.92rem;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: left;
-  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
-}
-
-.game-chip:hover { border-color: var(--gold); }
-
-.game-chip.selected {
-  border-color: var(--gold);
-  background: var(--gold-dim);
-  color: var(--text);
-  font-weight: 700;
-}
-
-.game-chip-check {
-  width: 16px;
-  height: 16px;
-  flex: none;
-  border-radius: 5px;
-  border: 1.5px solid rgba(0, 0, 0, 0.22);
-  background: var(--surface);
-  position: relative;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-
-.game-chip.selected .game-chip-check {
-  background: var(--gold);
-  border-color: var(--gold);
-}
-
-.game-chip.selected .game-chip-check::after {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 1px;
-  width: 4px;
-  height: 8px;
-  border: solid #1a1508;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-/* ── Read-only game badges (home page) ─────────────────────────── */
-
-.chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.games-empty {
-  color: var(--text-muted);
-  font-size: 0.88rem;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  background: var(--surface2);
-  color: var(--text-soft);
-  border: 1px solid var(--border-soft);
-}
-
-.badge::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent, var(--gold));
-}
-
-.badge[data-game="queens"]  { --accent: var(--c-queens); }
-.badge[data-game="tango"]   { --accent: var(--c-tango); }
-.badge[data-game="mini"]    { --accent: var(--c-mini); }
-.badge[data-game="zip"]     { --accent: var(--c-zip); }
-.badge[data-game="patches"] { --accent: var(--c-patches); }
-
-/* ── Misc ───────────────────────────────────────────────────────── */
-
 .error {
   color: #c44545;
   font-size: 0.85rem;
@@ -292,19 +159,6 @@ button, input, select {
   line-height: 1.5;
 }
 
-.signed-in-bar {
-  width: 100%;
-  max-width: 440px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 22px;
-  font-size: 0.9rem;
-  color: var(--text-on-dark-muted);
-}
-
-.signed-in-bar strong { color: var(--text-on-dark); }
-
 .link-btn {
   background: none;
   border: none;
@@ -317,25 +171,8 @@ button, input, select {
 }
 .link-btn:hover { text-decoration: underline; }
 
-.section-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-}
-
-.card-footer {
-  margin-top: 22px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border-soft);
-  text-align: center;
-}
-
 @media (max-width: 420px) {
   .card { padding: 28px 22px; }
-  .games-grid { grid-template-columns: 1fr; }
 }
 
 /* ── App shell (authenticated, full-width pages) ───────────────── */
@@ -435,10 +272,6 @@ button, input, select {
   padding: 56px 32px 80px;
 }
 
-.app-main-narrow {
-  max-width: 640px;
-}
-
 .hero {
   margin-bottom: 40px;
 }
@@ -454,13 +287,6 @@ button, input, select {
   color: var(--text-on-dark-muted);
   max-width: 620px;
   line-height: 1.6;
-}
-
-.panel-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: 24px;
-  align-items: start;
 }
 
 .panel {
@@ -492,7 +318,6 @@ button, input, select {
 }
 
 @media (max-width: 860px) {
-  .panel-grid { grid-template-columns: 1fr; }
   .topnav-inner { padding: 16px 20px; }
   .app-main { padding: 36px 20px 60px; }
   .hero h1 { font-size: 2rem; }

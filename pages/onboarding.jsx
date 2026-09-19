@@ -3,13 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth, checkUsernameAvailable, isValidUsername } from '../lib/useAuth';
-import GamesPicker from '../components/GamesPicker';
 
 export default function Onboarding() {
   const { user, profile, profileChecked, loading, completeOnboarding } = useAuth();
   const router = useRouter();
   const [username, setUsername] = useState('');
-  const [games, setGames] = useState([]);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -27,10 +25,6 @@ export default function Onboarding() {
       setError('Username must be 3–20 characters: letters, numbers, underscores only.');
       return;
     }
-    if (games.length === 0) {
-      setError('Pick at least one game you play.');
-      return;
-    }
     setBusy(true);
     try {
       const available = await checkUsernameAvailable(trimmed);
@@ -39,7 +33,7 @@ export default function Onboarding() {
         setBusy(false);
         return;
       }
-      await completeOnboarding({ username: trimmed, gamesPlayed: games });
+      await completeOnboarding({ username: trimmed });
       router.replace('/');
     } catch (err) {
       setError(err.message === 'USERNAME_TAKEN'
@@ -53,7 +47,7 @@ export default function Onboarding() {
     <div className="page">
       <div className="card">
         <div className="brand">Welcome</div>
-        <div className="subtitle">Pick a username and tell us which games you play.</div>
+        <div className="subtitle">Pick a username to finish setting up your account.</div>
 
         <form onSubmit={handleSubmit}>
           <div className="field">
@@ -67,11 +61,6 @@ export default function Onboarding() {
               onChange={e => setUsername(e.target.value)}
               placeholder="e.g. borgk"
             />
-          </div>
-
-          <div className="field">
-            <label>Games you play</label>
-            <GamesPicker value={games} onChange={setGames} />
           </div>
 
           {error && <div className="error">{error}</div>}
