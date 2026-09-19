@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
+import TopNav from '../components/TopNav';
 import GamesPicker from '../components/GamesPicker';
 
 export default function Settings() {
@@ -33,28 +34,33 @@ export default function Settings() {
   if (!profile) return null;
 
   return (
-    <div className="page">
-      <div className="card">
-        <div className="brand">Settings</div>
-        <div className="subtitle">Signed in as {profile.username}</div>
+    <div className="app-page">
+      <TopNav />
+      <main className="app-main app-main-narrow">
+        <div className="hero">
+          <h1>Settings</h1>
+          <p>Signed in as {profile.username}.</p>
+        </div>
 
-        <form onSubmit={handleSave}>
-          <div className="field">
-            <label>Games you play</label>
+        <section className="panel">
+          <h2>Games you play</h2>
+          <div className="section-sub">This decides which score-entry boxes you'll see once that's live.</div>
+
+          <form onSubmit={handleSave}>
             <GamesPicker value={games} onChange={setGames} />
-          </div>
 
-          {saved && <div className="msg">Saved.</div>}
+            {saved && <div className="msg" style={{ marginTop: 18 }}>Saved.</div>}
 
-          <button className="btn" type="submit" disabled={busy}>
-            {busy ? 'Saving…' : 'Save changes'}
-          </button>
-        </form>
+            <button className="btn" type="submit" disabled={busy} style={{ marginTop: 20 }}>
+              {busy ? 'Saving…' : 'Save changes'}
+            </button>
+          </form>
+        </section>
 
-        <div className="card-footer">
+        <div style={{ marginTop: 24, textAlign: 'center' }}>
           <a className="link-btn" href="/">Back home</a>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

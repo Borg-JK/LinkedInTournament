@@ -4,10 +4,11 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
+import TopNav from '../components/TopNav';
 import GameChips from '../components/GameChips';
 
 export default function Home() {
-  const { user, profile, profileChecked, loading, logout } = useAuth();
+  const { user, profile, profileChecked, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -19,29 +20,34 @@ export default function Home() {
   if (loading || !profileChecked || !user || !profile) {
     return (
       <div className="page">
-        <div className="subtitle" style={{ marginTop: 64 }}>Loading…</div>
+        <div className="subtitle" style={{ marginTop: 64, color: 'var(--text-on-dark-muted)' }}>Loading…</div>
       </div>
     );
   }
 
   return (
-    <div className="page">
-      <div className="signed-in-bar">
-        <span>Signed in as <strong>{profile.username}</strong></span>
-        <button className="link-btn" onClick={logout}>Sign out</button>
-      </div>
-
-      <div className="card">
-        <div className="brand">LinkedIn Tournament</div>
-        <div className="subtitle">Your account is set up. Tournaments and scoring land in the next phases.</div>
-
-        <div className="section-label">Games you play</div>
-        <GameChips gameIds={profile.gamesPlayed || []} />
-
-        <div className="card-footer">
-          <a className="link-btn" href="/settings">Edit games played</a>
+    <div className="app-page">
+      <TopNav />
+      <main className="app-main">
+        <div className="hero">
+          <h1>Welcome back, {profile.username}</h1>
+          <p>Your account is set up. Score entry, tournaments, and your game history land here in the next phases.</p>
         </div>
-      </div>
+
+        <div className="panel-grid">
+          <section className="panel">
+            <h2>Tournaments</h2>
+            <div className="section-sub">Where you're placed, across every tournament you're in.</div>
+            <div className="panel-empty">Tournament creation and standings arrive in Phase 3 &amp; 5.</div>
+          </section>
+
+          <section className="panel">
+            <h2>Games you play</h2>
+            <div className="section-sub">Used for daily score entry once that's live.</div>
+            <GameChips gameIds={profile.gamesPlayed || []} />
+          </section>
+        </div>
+      </main>
     </div>
   );
 }

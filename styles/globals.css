@@ -40,6 +40,7 @@ body {
   color: var(--text-on-dark);
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -335,4 +336,164 @@ button, input, select {
 @media (max-width: 420px) {
   .card { padding: 28px 22px; }
   .games-grid { grid-template-columns: 1fr; }
+}
+
+/* ── App shell (authenticated, full-width pages) ───────────────── */
+
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  width: 100%;
+  background: rgba(10, 18, 64, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.topnav-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topnav-brand {
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--gold2);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.topnav-right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topnav-user {
+  font-size: 0.94rem;
+  color: var(--text-on-dark-muted);
+  font-weight: 500;
+}
+
+.gear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-on-dark);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.gear-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 210px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  padding: 6px;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 11px 14px;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+}
+.dropdown-item:hover { background: var(--surface2); }
+.dropdown-item-danger { color: var(--loss); }
+
+.app-page {
+  min-height: 100vh;
+}
+
+.app-main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 56px 32px 80px;
+}
+
+.app-main-narrow {
+  max-width: 640px;
+}
+
+.hero {
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  font-size: 2.6rem;
+  color: var(--text-on-dark);
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.08rem;
+  color: var(--text-on-dark-muted);
+  max-width: 620px;
+  line-height: 1.6;
+}
+
+.panel-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 32px;
+}
+
+.panel h2 {
+  font-size: 1.25rem;
+  margin-bottom: 6px;
+}
+
+.panel .section-sub {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 20px;
+}
+
+.panel-empty {
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 28px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.94rem;
+}
+
+@media (max-width: 860px) {
+  .panel-grid { grid-template-columns: 1fr; }
+  .topnav-inner { padding: 16px 20px; }
+  .app-main { padding: 36px 20px 60px; }
+  .hero h1 { font-size: 2rem; }
 }
