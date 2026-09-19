@@ -2,6 +2,14 @@
 __pycache__/
 *.pyc
 
+# Next.js app (new multi-tournament rearchitecture)
+node_modules/
+.next/
+.env*
+!.env.example
+*firebase-admin*.json
+firebase-adminsdk*.json
+
 .venv/
 .whatsapp-web-profile/
 .whatsapp-scraper-debug/
