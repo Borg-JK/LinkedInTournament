@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
+import GameChips from '../components/GameChips';
 
 export default function Home() {
   const { user, profile, profileChecked, loading, logout } = useAuth();
@@ -32,10 +33,14 @@ export default function Home() {
 
       <div className="card">
         <div className="brand">LinkedIn Tournament</div>
-        <div className="subtitle">
-          Games you play: {(profile.gamesPlayed || []).join(', ') || 'none yet'}
+        <div className="subtitle">Your account is set up. Tournaments and scoring land in the next phases.</div>
+
+        <div className="section-label">Games you play</div>
+        <GameChips gameIds={profile.gamesPlayed || []} />
+
+        <div className="card-footer">
+          <a className="link-btn" href="/settings">Edit games played</a>
         </div>
-        <a className="link-btn" href="/settings">Edit games played</a>
       </div>
     </div>
   );

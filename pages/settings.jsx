@@ -51,7 +51,7 @@ export default function Settings() {
           </button>
         </form>
 
-        <div style={{ marginTop: 16, textAlign: 'center' }}>
+        <div className="card-footer">
           <a className="link-btn" href="/">Back home</a>
         </div>
       </div>
