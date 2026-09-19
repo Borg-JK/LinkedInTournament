@@ -1,8 +1,8 @@
 rules_version = '2';
 
-// Phase 1 scope: users + usernames only. Friends (Phase 2), tournaments (Phase 3),
-// and scores (Phase 5) collections get their own rules blocks added in those phases.
-// Everything not explicitly matched below is denied by default.
+// Phase 1+2 scope: users, usernames, friends, friendRequests. Tournaments
+// (Phase 3) and scores (Phase 5) collections get their own rules blocks added
+// in those phases. Everything not explicitly matched below is denied by default.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -13,6 +13,37 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow create, update: if request.auth != null && request.auth.uid == uid;
       allow delete: if false;
+
+      // One doc per friendship, keyed by the friend's uid. A user can write
+      // their own friends list (e.g. removing someone), AND can write
+      // themselves into someone else's friends list, keyed by their own uid —
+      // that second case is how accepting a friend request creates the
+      // reciprocal entry client-side, without a Cloud Function in the loop.
+      match /friends/{friendUid} {
+        allow read: if request.auth != null && request.auth.uid == uid;
+        allow write: if request.auth != null
+                     && (request.auth.uid == uid || request.auth.uid == friendUid);
+      }
+
+      // Incoming friend request, keyed by the sender's uid, living under the
+      // recipient's (uid's) tree. Either party can read one specific request
+      // doc (recipient sees their inbox; sender can check whether they've
+      // already got one pending, to avoid duplicates) — but list queries only
+      // resolve for the recipient, since only uid == request.auth.uid can see
+      // the whole subcollection.
+      match /friendRequests/{fromUid} {
+        allow read: if request.auth != null
+                    && (request.auth.uid == uid || request.auth.uid == fromUid);
+        // Sending a request: only the sender can create it, under the
+        // recipient's tree, and only as 'pending'.
+        allow create: if request.auth != null && request.auth.uid == fromUid
+                      && request.resource.data.status == 'pending';
+        // Accepting/declining: the recipient (owner) resolves it. The sender
+        // may also delete their own outgoing request to cancel it.
+        allow update: if request.auth != null && request.auth.uid == uid;
+        allow delete: if request.auth != null
+                      && (request.auth.uid == uid || request.auth.uid == fromUid);
+      }
     }
 
     // username (lowercased) -> uid lookup, used for uniqueness checks at signup

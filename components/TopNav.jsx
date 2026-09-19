@@ -3,6 +3,7 @@
 // settings-gear dropdown (games played, sign out) on the right.
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../lib/useAuth';
+import { useFriends } from '../lib/useFriends';
 
 function GearIcon() {
   return (
@@ -22,6 +23,7 @@ function GearIcon() {
 
 export default function TopNav() {
   const { profile, logout } = useAuth();
+  const { incomingRequests } = useFriends();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -44,6 +46,15 @@ export default function TopNav() {
     <header className="topnav">
       <div className="topnav-inner">
         <a href="/" className="topnav-brand">LinkedIn Tournament</a>
+
+        <div className="topnav-links">
+          <a href="/friends" className="topnav-link">
+            Friends
+            {incomingRequests.length > 0 && (
+              <span className="nav-badge">{incomingRequests.length}</span>
+            )}
+          </a>
+        </div>
 
         <div className="topnav-right" ref={ref}>
           <span className="topnav-user">{profile?.username}</span>

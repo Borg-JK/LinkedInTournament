@@ -272,6 +272,10 @@ button, input, select {
   padding: 56px 32px 80px;
 }
 
+.app-main-narrow {
+  max-width: 640px;
+}
+
 .hero {
   margin-bottom: 40px;
 }
@@ -322,3 +326,106 @@ button, input, select {
   .app-main { padding: 36px 20px 60px; }
   .hero h1 { font-size: 2rem; }
 }
+
+/* ── Nav links + badge ──────────────────────────────────────────── */
+
+.topnav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.topnav-link {
+  position: relative;
+  color: var(--text-on-dark-muted);
+  text-decoration: none;
+  font-size: 0.94rem;
+  font-weight: 500;
+}
+.topnav-link:hover { color: var(--text-on-dark); }
+
+.nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  margin-left: 6px;
+  border-radius: 999px;
+  background: var(--loss);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  vertical-align: 2px;
+}
+
+/* ── Friends page ───────────────────────────────────────────────── */
+
+.search-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 0.98rem;
+  outline: none;
+  margin-bottom: 16px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.search-input:focus { border-color: var(--gold); background: var(--surface); }
+
+.list-empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 6px 0;
+}
+
+.people-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.people-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.people-row:last-child { border-bottom: none; }
+
+.people-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.pill-static {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  border-radius: var(--radius-xs);
+  border: none;
+  background: var(--gold);
+  color: #1a1508;
+  font-weight: 700;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+.btn-sm:hover { background: var(--gold2); }
+.btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-sm-ghost {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text-soft);
+}
+.btn-sm-ghost:hover { background: var(--surface2); }
