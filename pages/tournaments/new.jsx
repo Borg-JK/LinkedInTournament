@@ -6,6 +6,8 @@ import { useFriends } from '../../lib/useFriends';
 import { useTournaments } from '../../lib/useTournaments';
 import { GAMES, GAME_IDS } from '../../lib/games';
 import { SCORING_METRICS, DEFAULT_SCORING_METRIC, ELIGIBILITY_STEPS, DEFAULT_ELIGIBILITY_PCT } from '../../lib/scoring';
+import { JOIN_POLICIES, DEFAULT_JOIN_POLICY } from '../../lib/useTournaments';
+import { todayIso } from '../../lib/games';
 import TopNav from '../../components/TopNav';
 
 export default function NewTournament() {
@@ -18,7 +20,9 @@ export default function NewTournament() {
   const [games, setGames] = useState([...GAME_IDS]);
   const [scoringMetric, setScoringMetric] = useState(DEFAULT_SCORING_METRIC);
   const [thresholdPct, setThresholdPct] = useState(DEFAULT_ELIGIBILITY_PCT);
-  const [memberUids, setMemberUids] = useState([]);
+  const [startDate, setStartDate] = useState(todayIso());
+  const [joinPolicy, setJoinPolicy] = useState(DEFAULT_JOIN_POLICY);
+  const [inviteUids, setInviteUids] = useState([]);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -32,8 +36,8 @@ export default function NewTournament() {
     setGames(prev => prev.includes(id) ? prev.filter(g => g !== id) : [...prev, id]);
   }
 
-  function toggleMember(uid) {
-    setMemberUids(prev => prev.includes(uid) ? prev.filter(u => u !== uid) : [...prev, uid]);
+  function toggleInvite(uid) {
+    setInviteUids(prev => prev.includes(uid) ? prev.filter(u => u !== uid) : [...prev, uid]);
   }
 
   const allGamesSelected = GAME_IDS.every(id => games.includes(id));
@@ -45,7 +49,7 @@ export default function NewTournament() {
     if (games.length === 0) { setError('Pick at least one game.'); return; }
     setBusy(true);
     try {
-      const id = await createTournament({ name, games, scoringMetric, eligibilityThresholdPct: thresholdPct, memberUids });
+      const id = await createTournament({ name, games, scoringMetric, eligibilityThresholdPct: thresholdPct, startDate, joinPolicy, inviteUids });
       router.replace(`/tournaments/${id}`);
     } catch (err) {
       setError(err.message || 'Something went wrong. Try again.');
@@ -75,6 +79,18 @@ export default function NewTournament() {
               onChange={e => setName(e.target.value)}
               placeholder="e.g. Autumn League"
               autoFocus
+            />
+          </section>
+
+          <section className="panel" style={{ marginBottom: 20 }}>
+            <h2>Start date</h2>
+            <div className="section-sub">When this tournament's scoring begins.</div>
+            <input
+              type="date"
+              className="search-input"
+              style={{ marginBottom: 0 }}
+              value={startDate}
+              onChange={e => setStartDate(e.target.value)}
             />
           </section>
 
@@ -147,8 +163,25 @@ export default function NewTournament() {
           </section>
 
           <section className="panel" style={{ marginBottom: 20 }}>
+            <h2>When can people join?</h2>
+            <ul className="check-list">
+              {JOIN_POLICIES.map(p => (
+                <li key={p.id}>
+                  <label className="check-row check-row-radio">
+                    <input type="radio" name="joinPolicy" checked={joinPolicy === p.id} onChange={() => setJoinPolicy(p.id)} />
+                    <span>
+                      <span className="check-row-title">{p.label}</span>
+                      <span className="check-row-desc">{p.desc}</span>
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="panel" style={{ marginBottom: 20 }}>
             <h2>Invite friends</h2>
-            <div className="section-sub">You're added automatically as the owner.</div>
+            <div className="section-sub">You're added automatically as the owner. Everyone else is invited, not added — they join once they accept.</div>
             {friends.length === 0 ? (
               <div className="panel-empty">No friends yet — add some first, or create this just for yourself for now.</div>
             ) : (
@@ -156,7 +189,7 @@ export default function NewTournament() {
                 {friends.map(f => (
                   <li key={f.uid}>
                     <label className="check-row">
-                      <input type="checkbox" checked={memberUids.includes(f.uid)} onChange={() => toggleMember(f.uid)} />
+                      <input type="checkbox" checked={inviteUids.includes(f.uid)} onChange={() => toggleInvite(f.uid)} />
                       {f.username}
                     </label>
                   </li>

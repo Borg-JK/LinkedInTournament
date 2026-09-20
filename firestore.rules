@@ -44,43 +44,174 @@ service cloud.firestore {
         allow delete: if request.auth != null
                       && (request.auth.uid == uid || request.auth.uid == fromUid);
       }
+
+      // Incoming tournament invite, keyed by the tournament id, living under
+      // the invitee's (uid's) tree. Only that tournament's owner may create
+      // one (checked via get() on the tournament doc); the invitee resolves
+      // it by accepting (which also writes their own membership — see
+      // tournaments/{id} update rule below) or declining (delete). The owner
+      // may also delete it to cancel/re-invite.
+      match /tournamentInvites/{tournamentId} {
+        allow read: if request.auth != null
+                    && (request.auth.uid == uid
+                        || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
+        allow create: if request.auth != null
+                      && request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId
+                      && request.resource.data.status == 'pending';
+        allow delete: if request.auth != null
+                      && (request.auth.uid == uid
+                          || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
+        allow update: if false;
+      }
+
+      // Mirror of tournaments/{id}/waitlist/{uid} (below), kept under the
+      // waitlisted user's own tree so they can list "tournaments I'm waiting
+      // on" without a collection-group query. Written by whoever resolves
+      // the invite/join-request under a 'monthly' join policy — the invitee
+      // themselves (accepting an invite) or the tournament owner (approving
+      // a join request) — and cleared by the user once they self-promote.
+      match /waitlisted/{tournamentId} {
+        allow read, delete: if request.auth != null && request.auth.uid == uid;
+        allow create: if request.auth != null
+                      && (request.auth.uid == uid
+                          || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
+        allow update: if false;
+      }
     }
 
-    // Tournament configuration + membership only — no scores here (Phase 5's
-    // global scores collection is the source of truth; standings are always
-    // computed on the fly from there, filtered to this doc's games/members).
-    // games/scoringMetric/eligibilityThresholdPct/ownerId/members are locked
-    // after creation — a mid-tournament change would retroactively rewrite
-    // historical standings, and the original dashboard never allowed that
-    // either. Only name/status can be edited later (e.g. archiving).
+    // Tournament configuration + membership — no scores here (Phase 5's global
+    // scores collection is the source of truth; standings are always computed
+    // on the fly from there, filtered to this doc's games/members).
+    //
+    // Membership model: nobody is added unilaterally. An owner-sent invite
+    // (users/{invitee}/tournamentInvites/{tournamentId}) needs the invitee to
+    // accept; a self-service join request (joinRequests/{uid} below) needs the
+    // owner to approve. Under joinPolicy 'monthly', either resolution parks
+    // the person on the waitlist (below) instead of writing `members`
+    // directly — they self-promote once their eligibleFrom date has passed
+    // (there's no server-side scheduler in this app, so that happens lazily,
+    // the next time they load the app — see lib/useTournaments.js). The
+    // owner can also remove a member, or edit name/games/scoringMetric/
+    // eligibilityThresholdPct/startDate/joinPolicy, at any time, and delete
+    // the tournament entirely. ownerId itself is immutable — no ownership
+    // transfer yet.
     match /tournaments/{tournamentId} {
-      allow read: if request.auth != null && request.auth.uid in resource.data.members;
+      // Readable by any signed-in user — tournaments are discoverable by
+      // name search (Phase 3), not just visible to current members.
+      allow read: if request.auth != null;
       allow create: if request.auth != null
                     && request.resource.data.ownerId == request.auth.uid
-                    && request.auth.uid in request.resource.data.members
+                    && request.resource.data.members == [request.auth.uid]
                     && request.resource.data.games is list
                     && request.resource.data.games.size() > 0
                     && request.resource.data.scoringMetric in ['simple', 'ratio', 'median', 'average']
                     && request.resource.data.eligibilityThresholdPct in [20, 25, 30, 35, 40, 45, 50]
-                    && request.resource.data.status == 'active';
-      allow update: if request.auth != null
-                    && request.auth.uid == resource.data.ownerId
-                    && request.resource.data.ownerId == resource.data.ownerId
-                    && request.resource.data.games == resource.data.games
-                    && request.resource.data.scoringMetric == resource.data.scoringMetric
-                    && request.resource.data.eligibilityThresholdPct == resource.data.eligibilityThresholdPct
-                    && request.resource.data.members == resource.data.members;
-      allow delete: if false;
+                    && request.resource.data.joinPolicy in ['anytime', 'monthly']
+                    && request.resource.data.startDate is string
+                    && request.resource.data.status == 'active'
+                    && request.resource.data.nameLower == request.resource.data.name.lower();
+      allow update: if request.auth != null && (
+        // Owner: full control over settings and membership (add/remove
+        // anyone, e.g. approving a join request or kicking a member),
+        // except ownerId itself.
+        (request.auth.uid == resource.data.ownerId
+         && request.resource.data.ownerId == resource.data.ownerId
+         && request.resource.data.games is list && request.resource.data.games.size() > 0
+         && request.resource.data.scoringMetric in ['simple', 'ratio', 'median', 'average']
+         && request.resource.data.eligibilityThresholdPct in [20, 25, 30, 35, 40, 45, 50]
+         && request.resource.data.joinPolicy in ['anytime', 'monthly']
+         && request.resource.data.startDate is string
+         && request.resource.data.nameLower == request.resource.data.name.lower())
+        ||
+        // Invitee accepting (anytime policy): may only append their own uid
+        // to members — nothing else on this doc may change — and only with
+        // a pending invite on file.
+        (!(request.auth.uid in resource.data.members)
+         && request.auth.uid in request.resource.data.members
+         && request.resource.data.members == resource.data.members.concat([request.auth.uid])
+         && exists(/databases/$(database)/documents/users/$(request.auth.uid)/tournamentInvites/$(tournamentId))
+         && request.resource.data.ownerId == resource.data.ownerId
+         && request.resource.data.games == resource.data.games
+         && request.resource.data.scoringMetric == resource.data.scoringMetric
+         && request.resource.data.eligibilityThresholdPct == resource.data.eligibilityThresholdPct
+         && request.resource.data.joinPolicy == resource.data.joinPolicy
+         && request.resource.data.startDate == resource.data.startDate
+         && request.resource.data.name == resource.data.name
+         && request.resource.data.nameLower == resource.data.nameLower
+         && request.resource.data.status == resource.data.status)
+        ||
+        // Waitlisted member self-promoting (monthly policy): may only append
+        // their own uid to members, once their own waitlist doc's
+        // eligibleFrom timestamp has passed — everything else unchanged.
+        (!(request.auth.uid in resource.data.members)
+         && request.auth.uid in request.resource.data.members
+         && request.resource.data.members == resource.data.members.concat([request.auth.uid])
+         && exists(/databases/$(database)/documents/tournaments/$(tournamentId)/waitlist/$(request.auth.uid))
+         && request.time > get(/databases/$(database)/documents/tournaments/$(tournamentId)/waitlist/$(request.auth.uid)).data.eligibleFrom
+         && request.resource.data.ownerId == resource.data.ownerId
+         && request.resource.data.games == resource.data.games
+         && request.resource.data.scoringMetric == resource.data.scoringMetric
+         && request.resource.data.eligibilityThresholdPct == resource.data.eligibilityThresholdPct
+         && request.resource.data.joinPolicy == resource.data.joinPolicy
+         && request.resource.data.startDate == resource.data.startDate
+         && request.resource.data.name == resource.data.name
+         && request.resource.data.nameLower == resource.data.nameLower
+         && request.resource.data.status == resource.data.status)
+      );
+      allow delete: if request.auth != null && request.auth.uid == resource.data.ownerId;
 
-      // Written only after the parent doc exists (see useTournaments.js),
-      // so get() here can see it. Membership itself is fixed at creation —
-      // no invite-more-later flow yet.
+      // Authoritative per-member record (role, joinedAt). Written only after
+      // the parent doc exists, so get() here can see it.
       match /members/{memberUid} {
         allow read: if request.auth != null
                     && request.auth.uid in get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.members;
-        allow create: if request.auth != null
+        allow create: if request.auth != null && (
+          request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId
+          || (request.auth.uid == memberUid
+              && exists(/databases/$(database)/documents/users/$(request.auth.uid)/tournamentInvites/$(tournamentId)))
+          || (request.auth.uid == memberUid
+              && exists(/databases/$(database)/documents/tournaments/$(tournamentId)/waitlist/$(memberUid))
+              && request.time > get(/databases/$(database)/documents/tournaments/$(tournamentId)/waitlist/$(memberUid)).data.eligibleFrom)
+        );
+        // No self-leave yet — only the owner can remove a member (keeps the
+        // members/{uid} doc and the parent's `members` array in sync; a
+        // self-leave would need its own array-removal branch on the parent).
+        allow delete: if request.auth != null
                       && request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId;
-        allow update, delete: if false;
+        allow update: if false;
+      }
+
+      // Self-service join request, keyed by the requester's uid. Either the
+      // requester (to cancel) or the owner (to approve/decline) can remove it.
+      match /joinRequests/{requesterUid} {
+        allow read: if request.auth != null
+                    && (request.auth.uid == requesterUid
+                        || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
+        allow create: if request.auth != null && request.auth.uid == requesterUid
+                      && request.resource.data.status == 'pending';
+        allow delete: if request.auth != null
+                      && (request.auth.uid == requesterUid
+                          || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
+        allow update: if false;
+      }
+
+      // Holds people waiting for the next calendar month under a 'monthly'
+      // joinPolicy — see the tournaments/{id} update rule above for the
+      // self-promotion path. Created either by the invitee themselves
+      // (accepting an invite) or by the owner (approving a join request);
+      // removed by the waitlisted user (once they self-promote) or the owner.
+      match /waitlist/{waitlistUid} {
+        allow read: if request.auth != null
+                    && (request.auth.uid == waitlistUid
+                        || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
+        allow create: if request.auth != null
+                      && request.resource.data.eligibleFrom is timestamp
+                      && (request.auth.uid == waitlistUid
+                          || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
+        allow delete: if request.auth != null
+                      && (request.auth.uid == waitlistUid
+                          || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
+        allow update: if false;
       }
     }
 

@@ -4,6 +4,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../lib/useAuth';
 import { useFriends } from '../lib/useFriends';
+import { useTournamentInvites, useWaitlist } from '../lib/useTournaments';
 
 function GearIcon() {
   return (
@@ -24,6 +25,8 @@ function GearIcon() {
 export default function TopNav() {
   const { profile, logout } = useAuth();
   const { incomingRequests } = useFriends();
+  const { invites: tournamentInvites } = useTournamentInvites();
+  useWaitlist(); // lazily promotes any waitlisted memberships whose wait is over
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -48,6 +51,13 @@ export default function TopNav() {
         <a href="/" className="topnav-brand">LinkedIn Tournament</a>
 
         <div className="topnav-links">
+          <a href="/" className="topnav-link">
+            Tournaments
+            {tournamentInvites.length > 0 && (
+              <span className="nav-badge">{tournamentInvites.length}</span>
+            )}
+          </a>
+          <a href="/tournaments/search" className="topnav-link">Find</a>
           <a href="/friends" className="topnav-link">
             Friends
             {incomingRequests.length > 0 && (
