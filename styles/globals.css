@@ -411,6 +411,7 @@ button, input, select {
 }
 
 .btn-sm {
+  display: inline-block;
   padding: 7px 14px;
   border-radius: var(--radius-xs);
   border: none;
@@ -419,6 +420,7 @@ button, input, select {
   font-weight: 700;
   font-size: 0.84rem;
   cursor: pointer;
+  text-decoration: none;
 }
 .btn-sm:hover { background: var(--gold2); }
 .btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -429,3 +431,95 @@ button, input, select {
   color: var(--text-soft);
 }
 .btn-sm-ghost:hover { background: var(--surface2); }
+
+.chip-link {
+  background: none;
+  border: none;
+  color: #a87e2e;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+}
+.chip-link:hover { text-decoration: underline; }
+
+.panel-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.panel-head-row h2 { margin-bottom: 0; }
+
+/* ── Checkbox / radio lists (tournament creation form) ─────────────────── */
+
+.check-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-soft);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.check-row:hover { border-color: var(--gold); }
+.check-row:has(input:checked) {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.check-row-radio { align-items: flex-start; }
+.check-row-radio input { margin-top: 3px; }
+.check-row-title { display: block; font-weight: 700; color: var(--text); }
+.check-row-desc { display: block; font-weight: 400; font-size: 0.84rem; color: var(--text-muted); margin-top: 2px; }
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stepper-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.stepper-btn:hover { border-color: var(--gold); }
+.stepper-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.stepper-value {
+  min-width: 52px;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.config-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 20px;
+  font-size: 0.92rem;
+}
+.config-list dt { color: var(--text-muted); font-weight: 600; }
+.config-list dd { color: var(--text); }

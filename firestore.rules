@@ -1,8 +1,8 @@
 rules_version = '2';
 
-// Phase 1+2 scope: users, usernames, friends, friendRequests. Tournaments
-// (Phase 3) and scores (Phase 5) collections get their own rules blocks added
-// in those phases. Everything not explicitly matched below is denied by default.
+// Phase 1+2+3 scope: users, usernames, friends, friendRequests, tournaments.
+// Scores (Phase 5) get their own rules block added in that phase.
+// Everything not explicitly matched below is denied by default.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -43,6 +43,44 @@ service cloud.firestore {
         allow update: if request.auth != null && request.auth.uid == uid;
         allow delete: if request.auth != null
                       && (request.auth.uid == uid || request.auth.uid == fromUid);
+      }
+    }
+
+    // Tournament configuration + membership only — no scores here (Phase 5's
+    // global scores collection is the source of truth; standings are always
+    // computed on the fly from there, filtered to this doc's games/members).
+    // games/scoringMetric/eligibilityThresholdPct/ownerId/members are locked
+    // after creation — a mid-tournament change would retroactively rewrite
+    // historical standings, and the original dashboard never allowed that
+    // either. Only name/status can be edited later (e.g. archiving).
+    match /tournaments/{tournamentId} {
+      allow read: if request.auth != null && request.auth.uid in resource.data.members;
+      allow create: if request.auth != null
+                    && request.resource.data.ownerId == request.auth.uid
+                    && request.auth.uid in request.resource.data.members
+                    && request.resource.data.games is list
+                    && request.resource.data.games.size() > 0
+                    && request.resource.data.scoringMetric in ['simple', 'ratio', 'median', 'average']
+                    && request.resource.data.eligibilityThresholdPct in [20, 25, 30, 35, 40, 45, 50]
+                    && request.resource.data.status == 'active';
+      allow update: if request.auth != null
+                    && request.auth.uid == resource.data.ownerId
+                    && request.resource.data.ownerId == resource.data.ownerId
+                    && request.resource.data.games == resource.data.games
+                    && request.resource.data.scoringMetric == resource.data.scoringMetric
+                    && request.resource.data.eligibilityThresholdPct == resource.data.eligibilityThresholdPct
+                    && request.resource.data.members == resource.data.members;
+      allow delete: if false;
+
+      // Written only after the parent doc exists (see useTournaments.js),
+      // so get() here can see it. Membership itself is fixed at creation —
+      // no invite-more-later flow yet.
+      match /members/{memberUid} {
+        allow read: if request.auth != null
+                    && request.auth.uid in get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.members;
+        allow create: if request.auth != null
+                      && request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId;
+        allow update, delete: if false;
       }
     }
 
