@@ -197,11 +197,17 @@ export default function TournamentDetail() {
     hasPendingJoinRequest(tournament.id, uid).then(setMyJoinPending);
   }, [tournament, isMember, uid]);
 
+  // Every owner/member action below can fail on a Firestore permission
+  // error (e.g. a doc written under an older schema version missing a field
+  // the current rules validate) — always surfaced, never silent, since a
+  // silent failure here means the UI claims something worked when it didn't.
   async function handleInvite(targetUid) {
     setBusyUid(targetUid);
     try {
       await inviteToTournament(tournament.id, tournament.name, tournament.ownerId, targetUid);
       setInvitableFriends(prev => prev.map(f => f.uid === targetUid ? { ...f, invited: true } : f));
+    } catch (err) {
+      window.alert(err.message || 'Could not send that invite.');
     } finally { setBusyUid(null); }
   }
 
@@ -210,38 +216,69 @@ export default function TournamentDetail() {
     try {
       await cancelInvite(tournament.id, targetUid);
       setInvitableFriends(prev => prev.map(f => f.uid === targetUid ? { ...f, invited: false } : f));
+    } catch (err) {
+      window.alert(err.message || 'Could not cancel that invite.');
     } finally { setBusyUid(null); }
   }
 
   async function handleRemove(memberUid) {
     if (!window.confirm('Remove this person from the tournament?')) return;
     setBusyUid(memberUid);
-    try { await removeMember(tournament.id, memberUid); await loadMembers(); } finally { setBusyUid(null); }
+    try {
+      await removeMember(tournament.id, memberUid);
+      await loadMembers();
+    } catch (err) {
+      window.alert(err.message || 'Could not remove this member.');
+    } finally { setBusyUid(null); }
   }
 
   async function handleApprove(requesterUid) {
     setBusyUid(requesterUid);
-    try { await approveJoinRequest(tournament.id, requesterUid); await loadMembers(); } finally { setBusyUid(null); }
+    try {
+      await approveJoinRequest(tournament.id, requesterUid);
+      await loadMembers();
+    } catch (err) {
+      window.alert(err.message || 'Could not approve this request.');
+    } finally { setBusyUid(null); }
   }
 
   async function handleDecline(requesterUid) {
     setBusyUid(requesterUid);
-    try { await declineJoinRequest(tournament.id, requesterUid); } finally { setBusyUid(null); }
+    try {
+      await declineJoinRequest(tournament.id, requesterUid);
+    } catch (err) {
+      window.alert(err.message || 'Could not decline this request.');
+    } finally { setBusyUid(null); }
   }
 
   async function handleAskToJoin() {
     setBusyUid('__ask__');
-    try { await requestToJoin(tournament.id, uid); setMyJoinPending(true); } finally { setBusyUid(null); }
+    try {
+      await requestToJoin(tournament.id, uid);
+      setMyJoinPending(true);
+    } catch (err) {
+      window.alert(err.message || 'Could not send a join request.');
+    } finally { setBusyUid(null); }
   }
 
   async function handleCancelMyRequest() {
     setBusyUid('__ask__');
-    try { await cancelJoinRequest(tournament.id, uid); setMyJoinPending(false); } finally { setBusyUid(null); }
+    try {
+      await cancelJoinRequest(tournament.id, uid);
+      setMyJoinPending(false);
+    } catch (err) {
+      window.alert(err.message || 'Could not cancel your request.');
+    } finally { setBusyUid(null); }
   }
 
   async function handlePromote(targetUid) {
     setBusyUid(targetUid);
-    try { await promoteFromWaitlist(tournament.id, targetUid); await loadMembers(); } finally { setBusyUid(null); }
+    try {
+      await promoteFromWaitlist(tournament.id, targetUid);
+      await loadMembers();
+    } catch (err) {
+      window.alert(err.message || 'Could not add this person now.');
+    } finally { setBusyUid(null); }
   }
 
   async function handleDelete() {

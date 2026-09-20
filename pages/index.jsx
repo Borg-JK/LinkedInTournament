@@ -35,7 +35,13 @@ export default function Home() {
 
   async function handleDecline(tournamentId) {
     setBusyId(tournamentId);
-    try { await declineInvite(tournamentId); } finally { setBusyId(null); }
+    try {
+      await declineInvite(tournamentId);
+    } catch (err) {
+      window.alert(err.message || 'Could not decline this invite.');
+    } finally {
+      setBusyId(null);
+    }
   }
 
   if (loading || !profileChecked || !user || !profile) {

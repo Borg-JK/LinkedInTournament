@@ -53,6 +53,8 @@ export default function SearchTournaments() {
     try {
       await requestToJoin(tournamentId, uid);
       setPending(prev => new Set(prev).add(tournamentId));
+    } catch (err) {
+      window.alert(err.message || 'Could not send a join request.');
     } finally {
       setBusyId(null);
     }
@@ -63,6 +65,8 @@ export default function SearchTournaments() {
     try {
       await cancelJoinRequest(tournamentId, uid);
       setPending(prev => { const next = new Set(prev); next.delete(tournamentId); return next; });
+    } catch (err) {
+      window.alert(err.message || 'Could not cancel that request.');
     } finally {
       setBusyId(null);
     }
