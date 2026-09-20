@@ -1,0 +1,25 @@
+{
+  "_comment": "Fill in `username` for every player you want migrated, matching their exact registered username in the app (case-insensitive). Leave a player's `username` blank and the script refuses to run until it's filled in or the player is marked `skip: true`. `ownerUsername` becomes the owner of the migrated 'legacy' tournament.",
+  "legacyTournamentName": "Original Tournament",
+  "ownerUsername": "Borg",
+  "players": {
+    "Igor": { "username": "" },
+    "Borg Knijnenburg": { "username": "Borg" },
+    "Anna del Pozo": { "username": "" },
+    "Kaissar": { "username": "" },
+    "Adam": { "username": "" },
+    "Kornel Baranowski": { "username": "" },
+    "Dominik Orkiszewski": { "username": "" },
+    "Evie": { "username": "" },
+    "Omar": { "username": "" },
+    "Sebastiaan Helbing": { "username": "" },
+    "Oliwer Wirkus": { "username": "" },
+    "Reka": { "username": "" },
+    "Linda": { "username": "" },
+    "ev": { "username": "" },
+    "Svetlio": { "username": "" },
+    "Bogdan Ene": { "username": "" },
+    "Saranya": { "username": "" },
+    "+48 730 750 520": { "skip": true, "_note": "phone-number-only sender — skipped by default per the earlier decision; flip to a username if you've since identified them" }
+  }
+}
