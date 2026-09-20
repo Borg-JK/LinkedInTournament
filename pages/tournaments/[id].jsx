@@ -1,6 +1,4 @@
 // pages/tournaments/[id].jsx
-// Config + membership only — standings land here in Phase 5 once real score
-// data exists to compute them from.
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../lib/useAuth';
@@ -11,10 +9,55 @@ import {
   approveJoinRequest, declineJoinRequest, requestToJoin, cancelJoinRequest, hasPendingJoinRequest,
   watchWaitlist, promoteFromWaitlist, JOIN_POLICIES,
 } from '../../lib/useTournaments';
+import { useTournamentStandings } from '../../lib/useTournamentStandings';
 import { resolveUser } from '../../lib/users';
 import { GAMES, GAME_IDS } from '../../lib/games';
 import { SCORING_METRICS, ELIGIBILITY_STEPS } from '../../lib/scoring';
 import TopNav from '../../components/TopNav';
+
+function Leaderboard({ tournament, myUid }) {
+  const { ranked, sortDir, ready } = useTournamentStandings(tournament);
+  const [names, setNames] = useState({});
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const withNames = await Promise.all(ranked.map(async r => [r.uid, (await resolveUser(r.uid)).username]));
+      if (!cancelled) setNames(Object.fromEntries(withNames));
+    })();
+    return () => { cancelled = true; };
+  }, [ranked]);
+
+  if (!ready) return <div className="list-empty">Computing standings…</div>;
+  if (ranked.length === 0) {
+    return <div className="panel-empty">No one has qualified yet — scores need to be entered first.</div>;
+  }
+
+  const isRatioLike = sortDir === 'asc';
+
+  return (
+    <div style={{ overflowX: 'auto' }}>
+      <table className="leaderboard">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Player</th>
+            <th>{isRatioLike ? 'Avg ratio' : 'Points'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ranked.map(r => (
+            <tr key={r.uid} className={r.uid === myUid ? 'leaderboard-me' : ''}>
+              <td className="leaderboard-rank">{r.rank}</td>
+              <td>{names[r.uid] || '…'}</td>
+              <td>{isRatioLike ? r.value.toFixed(3) : r.value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 function SettingsForm({ tournament, onSaved, onCancel }) {
   const [name, setName] = useState(tournament.name);
@@ -337,10 +380,12 @@ export default function TournamentDetail() {
           </section>
         )}
 
-        <section className="panel" style={{ marginBottom: 20 }}>
-          <h2>Standings</h2>
-          <div className="panel-empty">Live standings arrive in Phase 5, once there's real score data.</div>
-        </section>
+        {isMember && (
+          <section className="panel" style={{ marginBottom: 20 }}>
+            <h2>Standings</h2>
+            <Leaderboard tournament={tournament} myUid={uid} />
+          </section>
+        )}
 
         <section className="panel" style={{ marginBottom: 20 }}>
           <div className="panel-head-row">

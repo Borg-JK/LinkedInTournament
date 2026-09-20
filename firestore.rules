@@ -1,10 +1,28 @@
 rules_version = '2';
 
-// Phase 1+2+3 scope: users, usernames, friends, friendRequests, tournaments.
-// Scores (Phase 5) get their own rules block added in that phase.
-// Everything not explicitly matched below is denied by default.
+// Phase 1-5 scope: users, usernames, friends, friendRequests, tournaments,
+// scores. Everything not explicitly matched below is denied by default.
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // One fact per person per game per day, global — not scoped to any
+    // tournament (tournaments only ever read from here, filtered to their
+    // own games/members; see lib/standings.js). A user can only write their
+    // own scores, for any of the five games — Phase 1 dropped the idea of a
+    // fixed "games I play" list, so there's nothing to gate write access on
+    // beyond the game being a real one. Read access is broad (any signed-in
+    // user), matching the same openness already given to users/tournaments/
+    // usernames — this is a small friend-group app, and computing shared
+    // standings needs every tournament member to be able to read every
+    // other member's relevant scores anyway.
+    match /scores/{uid}/{game}/{date} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == uid
+                   && game in ['queens', 'tango', 'mini', 'zip', 'patches']
+                   && request.resource.data.timeSeconds is number
+                   && request.resource.data.timeSeconds > 0
+                   && request.resource.data.puzzleNum is number;
+    }
 
     // Public profile doc, one per account. Any signed-in user can read (needed for
     // friend search, leaderboards, tournament member lists later); only the owner

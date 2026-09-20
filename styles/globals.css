@@ -523,3 +523,124 @@ button, input, select {
 }
 .config-list dt { color: var(--text-muted); font-weight: 600; }
 .config-list dd { color: var(--text); }
+
+/* ── Score entry boxes ──────────────────────────────────────────── */
+
+.score-boxes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.score-box {
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
+}
+
+.score-box-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.score-box-game {
+  font-weight: 700;
+  font-size: 0.94rem;
+}
+
+.score-box-num {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.score-box-loading {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.score-box-form {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.score-box-form input {
+  width: 64px;
+  padding: 8px 10px;
+  border-radius: var(--radius-xs);
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 0.94rem;
+  outline: none;
+}
+.score-box-form input:focus { border-color: var(--gold); background: var(--surface); }
+
+.score-box-done {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.score-box-time {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.score-box-error {
+  color: #c44545;
+  font-size: 0.78rem;
+  margin-top: 8px;
+}
+
+/* ── Leaderboard ────────────────────────────────────────────────── */
+
+.leaderboard {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard th {
+  text-align: left;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 0 10px 8px;
+}
+.leaderboard th:last-child, .leaderboard td:last-child { text-align: right; }
+
+.leaderboard td {
+  padding: 10px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.92rem;
+}
+
+.leaderboard tr.leaderboard-me td { background: var(--gold-dim); font-weight: 700; }
+.leaderboard tr:first-child td { border-top: none; }
+
+.leaderboard-rank {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  width: 32px;
+}
+
+.placement-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--gold-dim);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 700;
+}

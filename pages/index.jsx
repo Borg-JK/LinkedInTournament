@@ -1,13 +1,36 @@
 // pages/index.jsx
-// Phase 1 shell only — score boxes and your personal history land in Phase 5/6.
-// Placements per tournament (not just the list) land in Phase 5 once there's
-// real score data to compute them from.
+// Your game history (Phase 6) lands here too.
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
 import { useTournaments, useTournamentInvites } from '../lib/useTournaments';
+import { useTournamentStandings } from '../lib/useTournamentStandings';
 import { GAMES } from '../lib/games';
 import TopNav from '../components/TopNav';
+import ScoreBoxes from '../components/ScoreBoxes';
+
+function TournamentRow({ tournament, uid }) {
+  const { ranked, ready } = useTournamentStandings(tournament);
+  const mine = ranked.find(r => r.uid === uid);
+
+  return (
+    <li className="people-row">
+      <a href={`/tournaments/${tournament.id}`} className="people-name" style={{ textDecoration: 'none' }}>
+        {tournament.name}
+        <span className="pill-static" style={{ display: 'block', fontWeight: 400 }}>
+          {tournament.games.map(gId => GAMES.find(g => g.id === gId)?.label || gId).join(', ')}
+        </span>
+      </a>
+      {!ready ? (
+        <span className="pill-static">…</span>
+      ) : mine ? (
+        <span className="placement-pill">#{mine.rank} of {ranked.length}</span>
+      ) : (
+        <span className="pill-static">Not yet ranked</span>
+      )}
+    </li>
+  );
+}
 
 export default function Home() {
   const { user, profile, profileChecked, loading } = useAuth();
@@ -58,8 +81,10 @@ export default function Home() {
       <main className="app-main">
         <div className="hero">
           <h1>Welcome back, {profile.username}</h1>
-          <p>Score entry and your game history land here in Phases 5 &amp; 6.</p>
+          <p>Today's puzzles — fill in whichever ones you play.</p>
         </div>
+
+        <ScoreBoxes />
 
         {!invitesLoading && invites.length > 0 && (
           <section className="panel" style={{ marginBottom: 24 }}>
@@ -99,16 +124,7 @@ export default function Home() {
             <div className="panel-empty">No tournaments yet — create one, or find one to ask to join.</div>
           ) : (
             <ul className="people-list">
-              {tournaments.map(t => (
-                <li key={t.id} className="people-row">
-                  <a href={`/tournaments/${t.id}`} className="people-name" style={{ textDecoration: 'none' }}>
-                    {t.name}
-                  </a>
-                  <span className="pill-static">
-                    {t.games.map(gId => GAMES.find(g => g.id === gId)?.label || gId).join(', ')}
-                  </span>
-                </li>
-              ))}
+              {tournaments.map(t => <TournamentRow key={t.id} tournament={t} uid={user.uid} />)}
             </ul>
           )}
         </section>
