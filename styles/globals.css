@@ -571,7 +571,7 @@ button, input, select {
 }
 
 .score-box-form input {
-  width: 64px;
+  width: 72px;
   padding: 8px 10px;
   border-radius: var(--radius-xs);
   border: 1.5px solid var(--border);
@@ -616,16 +616,27 @@ button, input, select {
   font-weight: 600;
   padding: 0 10px 8px;
 }
+.leaderboard th.leaderboard-num, .leaderboard td.leaderboard-num,
 .leaderboard th:last-child, .leaderboard td:last-child { text-align: right; }
 
 .leaderboard td {
   padding: 10px;
   border-top: 1px solid var(--border-soft);
   font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .leaderboard tr.leaderboard-me td { background: var(--gold-dim); font-weight: 700; }
 .leaderboard tr:first-child td { border-top: none; }
+
+.leaderboard td.leaderboard-winner {
+  color: var(--gold);
+  font-weight: 700;
+}
+.leaderboard td.leaderboard-winner::after {
+  content: ' \1F3C6';
+  font-size: 0.8em;
+}
 
 .leaderboard-rank {
   color: var(--text-muted);

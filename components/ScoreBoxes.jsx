@@ -6,26 +6,31 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../lib/useAuth';
 import { useTodayScores, submitScore } from '../lib/useScores';
 import { GAMES, puzzleNumberFor, todayIso } from '../lib/games';
-import { formatSeconds, parseTimeInput } from '../lib/time';
+import { formatSeconds, digitsFromInput, formatDigitsForDisplay, digitsToSeconds, secondsToDigits } from '../lib/time';
 
 function ScoreBox({ game, existing }) {
   const { user } = useAuth();
   const [editing, setEditing] = useState(false);
-  const [input, setInput] = useState('');
+  const [digits, setDigits] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const puzzleNum = puzzleNumberFor(game.id);
 
   useEffect(() => {
-    if (existing && !editing) setInput(formatSeconds(existing.timeSeconds));
+    if (existing && !editing) setDigits(secondsToDigits(existing.timeSeconds));
   }, [existing, editing]);
+
+  function handleInputChange(e) {
+    setDigits(digitsFromInput(e.target.value));
+    setError('');
+  }
 
   async function handleSave(e) {
     e.preventDefault();
     setError('');
-    const seconds = parseTimeInput(input);
+    const seconds = digitsToSeconds(digits);
     if (seconds == null || seconds <= 0) {
-      setError('Enter a time like 1:05.');
+      setError('Enter a time, e.g. 105 for 1:05.');
       return;
     }
     setBusy(true);
@@ -56,8 +61,8 @@ function ScoreBox({ game, existing }) {
             type="text"
             inputMode="numeric"
             placeholder="1:05"
-            value={input}
-            onChange={e => setInput(e.target.value)}
+            value={formatDigitsForDisplay(digits)}
+            onChange={handleInputChange}
             autoFocus={editing}
           />
           <button type="submit" className="btn-sm" disabled={busy}>

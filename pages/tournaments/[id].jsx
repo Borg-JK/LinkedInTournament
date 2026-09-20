@@ -34,6 +34,7 @@ function Leaderboard({ tournament, myUid }) {
   }
 
   const isRatioLike = sortDir === 'asc';
+  const fmt = v => (isRatioLike ? v.toFixed(3) : v);
 
   return (
     <div style={{ overflowX: 'auto' }}>
@@ -42,7 +43,10 @@ function Leaderboard({ tournament, myUid }) {
           <tr>
             <th></th>
             <th>Player</th>
-            <th>{isRatioLike ? 'Avg ratio' : 'Points'}</th>
+            {tournament.games.length > 1 && tournament.games.map(gId => (
+              <th key={gId} className="leaderboard-num">{GAMES.find(g => g.id === gId)?.label || gId}</th>
+            ))}
+            <th>{tournament.games.length > 1 ? 'Cumulative' : (isRatioLike ? 'Avg ratio' : 'Points')}</th>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +54,15 @@ function Leaderboard({ tournament, myUid }) {
             <tr key={r.uid} className={r.uid === myUid ? 'leaderboard-me' : ''}>
               <td className="leaderboard-rank">{r.rank}</td>
               <td>{names[r.uid] || '…'}</td>
-              <td>{isRatioLike ? r.value.toFixed(3) : r.value}</td>
+              {tournament.games.length > 1 && tournament.games.map(gId => {
+                const cell = r.perGame?.[gId];
+                return (
+                  <td key={gId} className={`leaderboard-num${cell?.rank === 1 ? ' leaderboard-winner' : ''}`}>
+                    {cell ? fmt(cell.value) : '—'}
+                  </td>
+                );
+              })}
+              <td>{fmt(r.value)}</td>
             </tr>
           ))}
         </tbody>
