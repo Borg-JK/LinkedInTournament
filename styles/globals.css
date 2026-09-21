@@ -442,6 +442,7 @@ button, input, select {
   padding: 0;
 }
 .chip-link:hover { text-decoration: underline; }
+.chip-link-danger { color: #b0453a; }
 
 .panel-head-row {
   display: flex;

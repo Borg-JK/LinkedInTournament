@@ -7,8 +7,8 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useAuth } from '../lib/useAuth';
-import { usePlayerGameScores, submitScore } from '../lib/useScores';
-import { GAMES, puzzleNumberFor, todayIso } from '../lib/games';
+import { usePlayerGameScores, submitScore, deleteScore } from '../lib/useScores';
+import { GAMES, puzzleNumberFor, todayIso, yesterdayIso } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
 import { buildMonthlyHistory, averageByMonthForGame } from '../lib/personalHistory';
@@ -22,10 +22,25 @@ export default function PersonalHistoryTab() {
   const uid = user?.uid;
   const [chartGame, setChartGame] = useState(GAMES[0].id);
   const [editingKey, setEditingKey] = useState(null); // `${gameId}|${date}`
+  const [backfillGame, setBackfillGame] = useState(null);
 
   async function handleSaveEdit(gameId, date, seconds) {
     await submitScore(uid, gameId, date, seconds);
     setEditingKey(null);
+  }
+
+  async function handleDeleteEntry(gameId, date) {
+    const label = GAMES.find(g => g.id === gameId)?.label || gameId;
+    if (!window.confirm(`Delete your ${label} time for ${date}?`)) return;
+    await deleteScore(uid, gameId, date);
+    if (editingKey === `${gameId}|${date}`) setEditingKey(null);
+  }
+
+  const yesterday = yesterdayIso();
+
+  async function handleBackfillSave(gameId, seconds) {
+    await submitScore(uid, gameId, yesterday, seconds);
+    setBackfillGame(null);
   }
 
   const pairs = useMemo(() => (uid ? GAMES.map(g => ({ uid, gameId: g.id })) : []), [uid]);
@@ -47,12 +62,49 @@ export default function PersonalHistoryTab() {
 
   if (!ready) return <div className="list-empty">Loading…</div>;
 
+  const missingYesterday = GAMES.filter(g => !entriesByGame[g.id].some(e => e.date === yesterday));
+
+  const backfillPanel = missingYesterday.length > 0 && (
+    <section className="panel" style={{ marginBottom: 24 }}>
+      <h2>Missed yesterday?</h2>
+      <div className="section-sub">
+        Fill in a time for {yesterday} — you can only backfill one day back, so don't let it slip further.
+      </div>
+      {backfillGame ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          <span style={{ fontWeight: 700 }}>{GAMES.find(g => g.id === backfillGame)?.label}</span>
+          <InlineTimeEditor
+            onSave={seconds => handleBackfillSave(backfillGame, seconds)}
+            onCancel={() => setBackfillGame(null)}
+            saveLabel="Add"
+            autoFocus
+          />
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+          {missingYesterday.map(g => (
+            <button key={g.id} type="button" className="chip-link" onClick={() => setBackfillGame(g.id)}>
+              + {g.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+
   if (monthly.length === 0) {
-    return <div className="panel-empty">No scores yet — enter a time above and your history builds up here.</div>;
+    return (
+      <>
+        {backfillPanel}
+        <div className="panel-empty">No scores yet — enter a time above and your history builds up here.</div>
+      </>
+    );
   }
 
   return (
     <>
+      {backfillPanel}
+
       <section className="panel" style={{ marginBottom: 24 }}>
         <div className="panel-head-row">
           <h2>Trend</h2>
@@ -127,6 +179,7 @@ export default function PersonalHistoryTab() {
                           <>
                             <span className="history-entry-time">{formatSeconds(e.timeSeconds)}</span>
                             <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
+                            <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(gameId, e.date)}>Delete</button>
                           </>
                         )}
                       </li>

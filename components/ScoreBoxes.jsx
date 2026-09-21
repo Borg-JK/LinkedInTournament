@@ -4,7 +4,7 @@
 // from what they actually fill in (Phase 1 dropped a fixed preference).
 import { useState } from 'react';
 import { useAuth } from '../lib/useAuth';
-import { useTodayScores, submitScore } from '../lib/useScores';
+import { useTodayScores, submitScore, deleteScore } from '../lib/useScores';
 import { GAMES, puzzleNumberFor, todayIso } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
@@ -17,6 +17,12 @@ function ScoreBox({ game, existing }) {
 
   async function handleSave(seconds) {
     await submitScore(user.uid, game.id, todayIso(), seconds);
+    setEditing(false);
+  }
+
+  async function handleDelete() {
+    if (!window.confirm(`Delete today's ${game.label} time?`)) return;
+    await deleteScore(user.uid, game.id, todayIso());
     setEditing(false);
   }
 
@@ -53,7 +59,10 @@ function ScoreBox({ game, existing }) {
       ) : (
         <div className="score-box-done">
           <span className="score-box-time">{formatSeconds(existing.timeSeconds)}</span>
-          <button className="chip-link" onClick={() => setEditing(true)}>Edit</button>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button className="chip-link" onClick={() => setEditing(true)}>Edit</button>
+            <button className="chip-link chip-link-danger" onClick={handleDelete}>Delete</button>
+          </div>
         </div>
       )}
     </div>
