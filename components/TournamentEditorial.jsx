@@ -7,6 +7,7 @@ import { usePlayerGameScores } from '../lib/useScores';
 import { resolveUser } from '../lib/users';
 import { todayIso } from '../lib/games';
 import { themeFor } from '../lib/theme';
+import { effectivePeriodEnd, revealStatus } from '../lib/reveal';
 import StandingsTab from './StandingsTab';
 import HallOfFameTab from './HallOfFameTab';
 import BattleTab from './BattleTab';
@@ -51,7 +52,9 @@ export default function TournamentEditorial({ tournament, myUid, manageHref }) {
   const dataReady = tournament.members.every(uid => tournament.games.every(g => byUidGame[uid]?.[g] !== undefined));
 
   const theme = themeFor(themeGame);
-  const periodEnd = todayIso();
+  const today = todayIso();
+  const periodEnd = effectivePeriodEnd(tournament, today);
+  const status = revealStatus(tournament, today);
 
   const tabProps = {
     tournament, names, byUidGame, dataReady, myUid, periodEnd,
@@ -90,6 +93,14 @@ export default function TournamentEditorial({ tournament, myUid, manageHref }) {
             </a>
           )}
         </div>
+
+        {section === 'standings' && status && (
+          <div className="reveal-banner">
+            {status.asOf
+              ? `This month's standings are as of ${status.asOf}${status.nextRevealDate ? ` — next reveal ${status.nextRevealDate}` : ' — frozen until next month'}.`
+              : `Nothing revealed yet this month — next reveal ${status.nextRevealDate}.`}
+          </div>
+        )}
 
         {!dataReady ? (
           <div className="leaderboard-card"><div className="lb-meta">Loading…</div></div>

@@ -14,6 +14,7 @@ import {
 import { resolveUser } from '../../../lib/users';
 import { GAMES, GAME_IDS } from '../../../lib/games';
 import { SCORING_METRICS, ELIGIBILITY_STEPS } from '../../../lib/scoring';
+import { REVEAL_POLICIES, DEFAULT_REVEAL_POLICY, DEFAULT_REVEAL_INTERVAL_DAYS } from '../../../lib/reveal';
 import TopNav from '../../../components/TopNav';
 
 function SettingsForm({ tournament, onSaved, onCancel }) {
@@ -23,6 +24,8 @@ function SettingsForm({ tournament, onSaved, onCancel }) {
   const [thresholdPct, setThresholdPct] = useState(tournament.eligibilityThresholdPct);
   const [startDate, setStartDate] = useState(tournament.startDate);
   const [joinPolicy, setJoinPolicy] = useState(tournament.joinPolicy);
+  const [revealPolicy, setRevealPolicy] = useState(tournament.revealPolicy || DEFAULT_REVEAL_POLICY);
+  const [revealIntervalDays, setRevealIntervalDays] = useState(tournament.revealIntervalDays || DEFAULT_REVEAL_INTERVAL_DAYS);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const allGamesSelected = GAME_IDS.every(id => games.includes(id));
@@ -38,7 +41,10 @@ function SettingsForm({ tournament, onSaved, onCancel }) {
     if (games.length === 0) { setError('Pick at least one game.'); return; }
     setBusy(true);
     try {
-      await updateTournamentSettings(tournament.id, { name, games, scoringMetric, eligibilityThresholdPct: thresholdPct, startDate, joinPolicy });
+      await updateTournamentSettings(tournament.id, {
+        name, games, scoringMetric, eligibilityThresholdPct: thresholdPct, startDate, joinPolicy,
+        revealPolicy, revealIntervalDays,
+      });
       onSaved();
     } catch (err) {
       setError(err.message || 'Something went wrong.');
@@ -117,6 +123,38 @@ function SettingsForm({ tournament, onSaved, onCancel }) {
           </li>
         ))}
       </ul>
+
+      <div className="section-sub">Standings reveal</div>
+      <ul className="check-list" style={{ marginBottom: 12 }}>
+        {REVEAL_POLICIES.map(p => (
+          <li key={p.id}>
+            <label className="check-row check-row-radio">
+              <input type="radio" name="revealPolicy" checked={revealPolicy === p.id} onChange={() => setRevealPolicy(p.id)} />
+              <span>
+                <span className="check-row-title">{p.label}</span>
+                <span className="check-row-desc">{p.desc}</span>
+              </span>
+            </label>
+          </li>
+        ))}
+      </ul>
+      {revealPolicy === 'interval' && (
+        <div className="field" style={{ marginBottom: 20 }}>
+          <label>Reveal every</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <input
+              type="number"
+              min={1}
+              max={28}
+              className="search-input"
+              style={{ width: 90, marginBottom: 0 }}
+              value={revealIntervalDays}
+              onChange={e => setRevealIntervalDays(Math.max(1, parseInt(e.target.value, 10) || 1))}
+            />
+            <span className="section-sub" style={{ margin: 0 }}>days</span>
+          </div>
+        </div>
+      )}
 
       {error && <div className="error">{error}</div>}
 
@@ -293,6 +331,11 @@ export default function ManageTournament() {
               <dt>Scoring</dt><dd>{SCORING_METRICS.find(m => m.id === tournament.scoringMetric)?.label}</dd>
               <dt>Eligibility threshold</dt><dd>{tournament.eligibilityThresholdPct}%</dd>
               <dt>Joining</dt><dd>{JOIN_POLICIES.find(p => p.id === tournament.joinPolicy)?.label}</dd>
+              <dt>Reveal</dt>
+              <dd>
+                {REVEAL_POLICIES.find(p => p.id === (tournament.revealPolicy || DEFAULT_REVEAL_POLICY))?.label}
+                {tournament.revealPolicy === 'interval' ? ` (every ${tournament.revealIntervalDays || DEFAULT_REVEAL_INTERVAL_DAYS} days)` : ''}
+              </dd>
               <dt>Games</dt><dd>{gameLabels.join(', ')}</dd>
             </dl>
           )}

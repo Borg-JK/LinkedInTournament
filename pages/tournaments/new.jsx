@@ -7,6 +7,7 @@ import { useTournaments } from '../../lib/useTournaments';
 import { GAMES, GAME_IDS } from '../../lib/games';
 import { SCORING_METRICS, DEFAULT_SCORING_METRIC, ELIGIBILITY_STEPS, DEFAULT_ELIGIBILITY_PCT } from '../../lib/scoring';
 import { JOIN_POLICIES, DEFAULT_JOIN_POLICY } from '../../lib/useTournaments';
+import { REVEAL_POLICIES, DEFAULT_REVEAL_POLICY, DEFAULT_REVEAL_INTERVAL_DAYS } from '../../lib/reveal';
 import { todayIso } from '../../lib/games';
 import TopNav from '../../components/TopNav';
 
@@ -22,6 +23,8 @@ export default function NewTournament() {
   const [thresholdPct, setThresholdPct] = useState(DEFAULT_ELIGIBILITY_PCT);
   const [startDate, setStartDate] = useState(todayIso());
   const [joinPolicy, setJoinPolicy] = useState(DEFAULT_JOIN_POLICY);
+  const [revealPolicy, setRevealPolicy] = useState(DEFAULT_REVEAL_POLICY);
+  const [revealIntervalDays, setRevealIntervalDays] = useState(DEFAULT_REVEAL_INTERVAL_DAYS);
   const [inviteUids, setInviteUids] = useState([]);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -49,7 +52,10 @@ export default function NewTournament() {
     if (games.length === 0) { setError('Pick at least one game.'); return; }
     setBusy(true);
     try {
-      const id = await createTournament({ name, games, scoringMetric, eligibilityThresholdPct: thresholdPct, startDate, joinPolicy, inviteUids });
+      const id = await createTournament({
+        name, games, scoringMetric, eligibilityThresholdPct: thresholdPct, startDate, joinPolicy,
+        revealPolicy, revealIntervalDays, inviteUids,
+      });
       router.replace(`/tournaments/${id}`);
     } catch (err) {
       setError(err.message || 'Something went wrong. Try again.');
@@ -177,6 +183,41 @@ export default function NewTournament() {
                 </li>
               ))}
             </ul>
+          </section>
+
+          <section className="panel" style={{ marginBottom: 20 }}>
+            <h2>Standings reveal</h2>
+            <div className="section-sub">Make it exciting — hide progress between reveals instead of updating live.</div>
+            <ul className="check-list">
+              {REVEAL_POLICIES.map(p => (
+                <li key={p.id}>
+                  <label className="check-row check-row-radio">
+                    <input type="radio" name="revealPolicy" checked={revealPolicy === p.id} onChange={() => setRevealPolicy(p.id)} />
+                    <span>
+                      <span className="check-row-title">{p.label}</span>
+                      <span className="check-row-desc">{p.desc}</span>
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+            {revealPolicy === 'interval' && (
+              <div className="field" style={{ marginTop: 12 }}>
+                <label>Reveal every</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <input
+                    type="number"
+                    min={1}
+                    max={28}
+                    className="search-input"
+                    style={{ width: 90, marginBottom: 0 }}
+                    value={revealIntervalDays}
+                    onChange={e => setRevealIntervalDays(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                  />
+                  <span className="section-sub" style={{ margin: 0 }}>days</span>
+                </div>
+              </div>
+            )}
           </section>
 
           <section className="panel" style={{ marginBottom: 20 }}>

@@ -13,18 +13,22 @@ function rankClass(rank) {
 export default function StandingsTab({ tournament, names, byUidGame, myUid, periodEnd, onGameThemeChange }) {
   const months = useMemo(() => monthsBetween(tournament.startDate, periodEnd), [tournament.startDate, periodEnd]);
   const [month, setMonth] = useState(months[0]);
+  useEffect(() => {
+    if (months.length > 0 && !months.includes(month)) setMonth(months[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [months.join(',')]);
   const multiGame = tournament.games.length > 1;
   const [game, setGame] = useState(multiGame ? 'overall' : tournament.games[0]);
 
   useEffect(() => { onGameThemeChange(game); }, [game, onGameThemeChange]);
 
-  const { start, end } = monthBounds(month, tournament.startDate, periodEnd);
+  const { start, end } = month ? monthBounds(month, tournament.startDate, periodEnd) : { start: periodEnd, end: tournament.startDate };
   const isOverall = game === 'overall';
   const isRatioLike = tournament.scoringMetric !== 'simple';
   const gameLabel = isOverall ? 'Overall' : (GAMES.find(g => g.id === game)?.label || game);
 
   const rows = useMemo(() => {
-    if (start > end) return { ranked: [], perGameForOverall: null };
+    if (!month || start > end) return { ranked: [], perGameForOverall: null };
     if (isOverall) {
       const monthTournament = { ...tournament, startDate: start };
       const { ranked } = computeTournamentStandings(monthTournament, byUidGame, end);
@@ -55,9 +59,13 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
   return (
     <>
       <div className="editorial-controls">
-        <select className="editorial-select" value={month} onChange={e => setMonth(e.target.value)}>
-          {months.map(m => <option key={m} value={m}>{monthLabel(m)}</option>)}
-        </select>
+        {months.length > 0 ? (
+          <select className="editorial-select" value={month} onChange={e => setMonth(e.target.value)}>
+            {months.map(m => <option key={m} value={m}>{monthLabel(m)}</option>)}
+          </select>
+        ) : (
+          <div className="lb-meta">Nothing revealed yet.</div>
+        )}
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {tournament.games.map(gId => (
             <button

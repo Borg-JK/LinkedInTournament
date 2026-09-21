@@ -7,12 +7,13 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useAuth } from '../lib/useAuth';
-import { usePlayerGameScores } from '../lib/useScores';
+import { usePlayerGameScores, submitScore } from '../lib/useScores';
 import { GAMES, puzzleNumberFor, todayIso } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
 import { buildMonthlyHistory, averageByMonthForGame } from '../lib/personalHistory';
 import { monthLabel } from '../lib/months';
+import InlineTimeEditor from './InlineTimeEditor';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip);
 
@@ -20,6 +21,12 @@ export default function PersonalHistoryTab() {
   const { user } = useAuth();
   const uid = user?.uid;
   const [chartGame, setChartGame] = useState(GAMES[0].id);
+  const [editingKey, setEditingKey] = useState(null); // `${gameId}|${date}`
+
+  async function handleSaveEdit(gameId, date, seconds) {
+    await submitScore(uid, gameId, date, seconds);
+    setEditingKey(null);
+  }
 
   const pairs = useMemo(() => (uid ? GAMES.map(g => ({ uid, gameId: g.id })) : []), [uid]);
   const byUidGame = usePlayerGameScores(pairs);
@@ -100,19 +107,32 @@ export default function PersonalHistoryTab() {
                     {stats.daysMissed > 0 ? ` · ${stats.daysMissed} missed` : ''}
                   </span>
                 </div>
-                <div style={{ overflowX: 'auto' }}>
-                  <table className="dow-table" style={{ maxWidth: 420 }}>
-                    <tbody>
-                      {stats.entries.map(e => (
-                        <tr key={e.date}>
-                          <td style={{ textAlign: 'left' }}>{e.date}</td>
-                          <td className="lb-meta">#{puzzleNumberFor(gameId, e.date)}</td>
-                          <td style={{ fontWeight: 600 }}>{formatSeconds(e.timeSeconds)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <ul className="history-entry-list">
+                  {stats.entries.map(e => {
+                    const key = `${gameId}|${e.date}`;
+                    const isEditing = editingKey === key;
+                    return (
+                      <li key={e.date} className="history-entry-row">
+                        <span className="history-entry-date">{e.date}</span>
+                        <span className="lb-meta">#{puzzleNumberFor(gameId, e.date)}</span>
+                        {isEditing ? (
+                          <InlineTimeEditor
+                            initialSeconds={e.timeSeconds}
+                            onSave={seconds => handleSaveEdit(gameId, e.date, seconds)}
+                            onCancel={() => setEditingKey(null)}
+                            className="history-entry-form"
+                            autoFocus
+                          />
+                        ) : (
+                          <>
+                            <span className="history-entry-time">{formatSeconds(e.timeSeconds)}</span>
+                            <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
+                          </>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
             );
           })}

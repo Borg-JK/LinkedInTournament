@@ -865,6 +865,16 @@ button, input, select {
 .t-section-tab.active .t-section-tab-num { opacity: 1; color: var(--ed-accent); }
 @media (max-width: 640px) { .t-section-tab { padding: 10px 14px 12px; } .t-section-tab-label { font-size: 1rem; } }
 
+.reveal-banner {
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(212, 175, 106, 0.14);
+  border: 1px solid var(--ed-accent, var(--gold));
+  color: var(--ed-text, var(--text-on-dark));
+  font-size: 0.86rem;
+  margin-bottom: 20px;
+}
+
 /* Controls row: month select + game pills */
 .editorial-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
 .editorial-select {
@@ -1148,3 +1158,40 @@ button, input, select {
   border-color: transparent;
   color: #1a1508;
 }
+
+/* ── Personal history entry rows (editable) ────────────────────────── */
+
+.history-entry-list {
+  list-style: none;
+  max-width: 420px;
+}
+
+.history-entry-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 2px;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 0.88rem;
+}
+.history-entry-row:last-child { border-bottom: none; }
+
+.history-entry-date { flex: 1; color: var(--text-soft); }
+.history-entry-time { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.history-entry-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+.history-entry-form input {
+  width: 68px;
+  padding: 5px 8px;
+  border-radius: var(--radius-xs);
+  border: 1.5px solid var(--border);
+  text-align: center;
+  font-size: 0.85rem;
+}
+.history-entry-form .score-box-btn { width: auto; padding: 5px 12px; font-size: 0.78rem; }
+.history-entry-form .score-box-error { margin: 0; }

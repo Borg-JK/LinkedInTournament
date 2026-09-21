@@ -2,47 +2,22 @@
 // One box per game, for today's puzzle — every game gets a box regardless
 // of whether this person "plays" it; which games are theirs is self-evident
 // from what they actually fill in (Phase 1 dropped a fixed preference).
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../lib/useAuth';
 import { useTodayScores, submitScore } from '../lib/useScores';
 import { GAMES, puzzleNumberFor, todayIso } from '../lib/games';
-import { formatSeconds, digitsFromInput, formatDigitsForDisplay, digitsToSeconds, secondsToDigits } from '../lib/time';
+import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
+import InlineTimeEditor from './InlineTimeEditor';
 
 function ScoreBox({ game, existing }) {
   const { user } = useAuth();
   const [editing, setEditing] = useState(false);
-  const [digits, setDigits] = useState('');
-  const [error, setError] = useState('');
-  const [busy, setBusy] = useState(false);
   const puzzleNum = puzzleNumberFor(game.id);
 
-  useEffect(() => {
-    if (existing && !editing) setDigits(secondsToDigits(existing.timeSeconds));
-  }, [existing, editing]);
-
-  function handleInputChange(e) {
-    setDigits(digitsFromInput(e.target.value));
-    setError('');
-  }
-
-  async function handleSave(e) {
-    e.preventDefault();
-    setError('');
-    const seconds = digitsToSeconds(digits);
-    if (seconds == null || seconds <= 0) {
-      setError('Enter a time, e.g. 105 for 1:05.');
-      return;
-    }
-    setBusy(true);
-    try {
-      await submitScore(user.uid, game.id, todayIso(), seconds);
-      setEditing(false);
-    } catch (err) {
-      setError(err.message || 'Could not save.');
-    } finally {
-      setBusy(false);
-    }
+  async function handleSave(seconds) {
+    await submitScore(user.uid, game.id, todayIso(), seconds);
+    setEditing(false);
   }
 
   const showForm = editing || existing === null;
@@ -68,31 +43,19 @@ function ScoreBox({ game, existing }) {
       {existing === undefined ? (
         <div className="score-box-loading">…</div>
       ) : showForm ? (
-        <form onSubmit={handleSave} className="score-box-form">
-          <input
-            type="text"
-            inputMode="numeric"
-            placeholder="1:05"
-            value={formatDigitsForDisplay(digits)}
-            onChange={handleInputChange}
-            autoFocus={editing}
-          />
-          <button type="submit" className="score-box-btn" disabled={busy}>
-            {busy ? '…' : existing ? 'Save' : 'Add'}
-          </button>
-          {editing && (
-            <button type="button" className="chip-link" onClick={() => { setEditing(false); setError(''); }}>
-              Cancel
-            </button>
-          )}
-        </form>
+        <InlineTimeEditor
+          initialSeconds={existing?.timeSeconds}
+          onSave={handleSave}
+          onCancel={editing ? () => setEditing(false) : null}
+          saveLabel={existing ? 'Save' : 'Add'}
+          autoFocus={editing}
+        />
       ) : (
         <div className="score-box-done">
           <span className="score-box-time">{formatSeconds(existing.timeSeconds)}</span>
           <button className="chip-link" onClick={() => setEditing(true)}>Edit</button>
         </div>
       )}
-      {error && <div className="score-box-error">{error}</div>}
     </div>
   );
 }
