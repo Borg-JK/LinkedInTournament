@@ -1,0 +1,386 @@
+// pages/tournaments/[id]/manage.jsx
+// Membership + settings management — owner only. Split out from the main
+// tournament page so /tournaments/[id] itself can be the full-page
+// standings/stats experience.
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { useAuth } from '../../../lib/useAuth';
+import { useFriends } from '../../../lib/useFriends';
+import {
+  useTournament, useTournaments, getTournamentMembers, updateTournamentSettings, removeMember,
+  inviteToTournament, cancelInvite, hasPendingInvite, watchJoinRequests,
+  approveJoinRequest, declineJoinRequest, watchWaitlist, promoteFromWaitlist, JOIN_POLICIES,
+} from '../../../lib/useTournaments';
+import { resolveUser } from '../../../lib/users';
+import { GAMES, GAME_IDS } from '../../../lib/games';
+import { SCORING_METRICS, ELIGIBILITY_STEPS } from '../../../lib/scoring';
+import TopNav from '../../../components/TopNav';
+
+function SettingsForm({ tournament, onSaved, onCancel }) {
+  const [name, setName] = useState(tournament.name);
+  const [games, setGames] = useState(tournament.games);
+  const [scoringMetric, setScoringMetric] = useState(tournament.scoringMetric);
+  const [thresholdPct, setThresholdPct] = useState(tournament.eligibilityThresholdPct);
+  const [startDate, setStartDate] = useState(tournament.startDate);
+  const [joinPolicy, setJoinPolicy] = useState(tournament.joinPolicy);
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  const allGamesSelected = GAME_IDS.every(id => games.includes(id));
+
+  function toggleGame(id) {
+    setGames(prev => prev.includes(id) ? prev.filter(g => g !== id) : [...prev, id]);
+  }
+
+  async function handleSave(e) {
+    e.preventDefault();
+    setError('');
+    if (!name.trim()) { setError('Give the tournament a name.'); return; }
+    if (games.length === 0) { setError('Pick at least one game.'); return; }
+    setBusy(true);
+    try {
+      await updateTournamentSettings(tournament.id, { name, games, scoringMetric, eligibilityThresholdPct: thresholdPct, startDate, joinPolicy });
+      onSaved();
+    } catch (err) {
+      setError(err.message || 'Something went wrong.');
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form onSubmit={handleSave}>
+      <div className="field">
+        <label>Name</label>
+        <input type="text" className="search-input" style={{ marginBottom: 0 }} value={name} onChange={e => setName(e.target.value)} />
+      </div>
+
+      <div className="field" style={{ marginTop: 18 }}>
+        <label>Start date</label>
+        <input type="date" className="search-input" style={{ marginBottom: 0 }} value={startDate} onChange={e => setStartDate(e.target.value)} />
+      </div>
+
+      <div className="panel-head-row" style={{ marginTop: 18 }}>
+        <span className="section-sub" style={{ margin: 0 }}>Games</span>
+        <button type="button" className="chip-link" onClick={() => setGames(allGamesSelected ? [] : [...GAME_IDS])}>
+          {allGamesSelected ? 'Clear all' : 'All games'}
+        </button>
+      </div>
+      <ul className="check-list" style={{ marginBottom: 18 }}>
+        {GAMES.map(g => (
+          <li key={g.id}>
+            <label className="check-row">
+              <input type="checkbox" checked={games.includes(g.id)} onChange={() => toggleGame(g.id)} />
+              {g.label}
+            </label>
+          </li>
+        ))}
+      </ul>
+
+      <div className="section-sub">Scoring</div>
+      <ul className="check-list" style={{ marginBottom: 18 }}>
+        {SCORING_METRICS.map(m => (
+          <li key={m.id}>
+            <label className="check-row check-row-radio">
+              <input type="radio" name="scoringMetric" checked={scoringMetric === m.id} onChange={() => setScoringMetric(m.id)} />
+              <span>
+                <span className="check-row-title">{m.label}</span>
+                <span className="check-row-desc">{m.desc}</span>
+              </span>
+            </label>
+          </li>
+        ))}
+      </ul>
+
+      <div className="section-sub">Eligibility threshold</div>
+      <div className="stepper" style={{ marginBottom: 20 }}>
+        <button type="button" className="stepper-btn"
+          disabled={thresholdPct <= ELIGIBILITY_STEPS[0]}
+          onClick={() => setThresholdPct(p => ELIGIBILITY_STEPS[Math.max(0, ELIGIBILITY_STEPS.indexOf(p) - 1)])}
+        >−</button>
+        <span className="stepper-value">{thresholdPct}%</span>
+        <button type="button" className="stepper-btn"
+          disabled={thresholdPct >= ELIGIBILITY_STEPS[ELIGIBILITY_STEPS.length - 1]}
+          onClick={() => setThresholdPct(p => ELIGIBILITY_STEPS[Math.min(ELIGIBILITY_STEPS.length - 1, ELIGIBILITY_STEPS.indexOf(p) + 1)])}
+        >+</button>
+      </div>
+
+      <div className="section-sub">When can people join?</div>
+      <ul className="check-list" style={{ marginBottom: 20 }}>
+        {JOIN_POLICIES.map(p => (
+          <li key={p.id}>
+            <label className="check-row check-row-radio">
+              <input type="radio" name="joinPolicy" checked={joinPolicy === p.id} onChange={() => setJoinPolicy(p.id)} />
+              <span>
+                <span className="check-row-title">{p.label}</span>
+                <span className="check-row-desc">{p.desc}</span>
+              </span>
+            </label>
+          </li>
+        ))}
+      </ul>
+
+      {error && <div className="error">{error}</div>}
+
+      <div style={{ display: 'flex', gap: 10 }}>
+        <button className="btn" type="submit" disabled={busy}>{busy ? 'Saving…' : 'Save changes'}</button>
+        <button className="btn-sm btn-sm-ghost" type="button" onClick={onCancel}>Cancel</button>
+      </div>
+    </form>
+  );
+}
+
+export default function ManageTournament() {
+  const { user, profile, profileChecked, loading: authLoading } = useAuth();
+  const { friends } = useFriends();
+  const { deleteTournament } = useTournaments();
+  const router = useRouter();
+  const { id } = router.query;
+  const { tournament, loading } = useTournament(typeof id === 'string' ? id : null);
+  const uid = user?.uid;
+
+  const [members, setMembers] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [joinRequests, setJoinRequests] = useState([]);
+  const [waitlist, setWaitlist] = useState([]);
+  const [invitableFriends, setInvitableFriends] = useState(null);
+  const [busyUid, setBusyUid] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (authLoading || !profileChecked) return;
+    if (!user) { router.replace('/signin'); return; }
+    if (!profile) { router.replace('/onboarding'); return; }
+  }, [authLoading, profileChecked, user, profile, router]);
+
+  const isOwner = !!tournament && tournament.ownerId === uid;
+
+  useEffect(() => {
+    if (!loading && tournament && !isOwner) router.replace(`/tournaments/${tournament.id}`);
+  }, [loading, tournament, isOwner, router]);
+
+  const loadMembers = useCallback(async () => {
+    if (!tournament) return;
+    const rows = await getTournamentMembers(tournament.id);
+    const withNames = await Promise.all(rows.map(async r => ({ ...r, ...(await resolveUser(r.uid)) })));
+    withNames.sort((a, b) => (a.role === 'owner' ? -1 : b.role === 'owner' ? 1 : a.username.localeCompare(b.username)));
+    setMembers(withNames);
+  }, [tournament]);
+
+  useEffect(() => { if (isOwner) loadMembers(); }, [isOwner, loadMembers]);
+
+  useEffect(() => {
+    if (!isOwner || !tournament) return;
+    return watchJoinRequests(tournament.id, async (rows) => {
+      const withNames = await Promise.all(rows.map(async r => ({ ...r, ...(await resolveUser(r.uid)) })));
+      setJoinRequests(withNames);
+    });
+  }, [isOwner, tournament]);
+
+  useEffect(() => {
+    if (!isOwner || !tournament) return;
+    return watchWaitlist(tournament.id, async (rows) => {
+      const withNames = await Promise.all(rows.map(async r => ({ ...r, ...(await resolveUser(r.uid)) })));
+      setWaitlist(withNames);
+    });
+  }, [isOwner, tournament]);
+
+  useEffect(() => {
+    if (!isOwner || !tournament) { setInvitableFriends(null); return; }
+    (async () => {
+      const notMember = friends.filter(f => !tournament.members.includes(f.uid));
+      const withStatus = await Promise.all(notMember.map(async f => ({
+        ...f, invited: await hasPendingInvite(tournament.id, f.uid),
+      })));
+      setInvitableFriends(withStatus);
+    })();
+  }, [isOwner, tournament, friends]);
+
+  async function handleInvite(targetUid) {
+    setBusyUid(targetUid);
+    try {
+      await inviteToTournament(tournament.id, tournament.name, tournament.ownerId, targetUid);
+      setInvitableFriends(prev => prev.map(f => f.uid === targetUid ? { ...f, invited: true } : f));
+    } catch (err) {
+      window.alert(err.message || 'Could not send that invite.');
+    } finally { setBusyUid(null); }
+  }
+
+  async function handleCancelInvite(targetUid) {
+    setBusyUid(targetUid);
+    try {
+      await cancelInvite(tournament.id, targetUid);
+      setInvitableFriends(prev => prev.map(f => f.uid === targetUid ? { ...f, invited: false } : f));
+    } catch (err) {
+      window.alert(err.message || 'Could not cancel that invite.');
+    } finally { setBusyUid(null); }
+  }
+
+  async function handleRemove(memberUid) {
+    if (!window.confirm('Remove this person from the tournament?')) return;
+    setBusyUid(memberUid);
+    try {
+      await removeMember(tournament.id, memberUid);
+      await loadMembers();
+    } catch (err) {
+      window.alert(err.message || 'Could not remove this member.');
+    } finally { setBusyUid(null); }
+  }
+
+  async function handleApprove(requesterUid) {
+    setBusyUid(requesterUid);
+    try {
+      await approveJoinRequest(tournament.id, requesterUid);
+      await loadMembers();
+    } catch (err) {
+      window.alert(err.message || 'Could not approve this request.');
+    } finally { setBusyUid(null); }
+  }
+
+  async function handleDecline(requesterUid) {
+    setBusyUid(requesterUid);
+    try {
+      await declineJoinRequest(tournament.id, requesterUid);
+    } catch (err) {
+      window.alert(err.message || 'Could not decline this request.');
+    } finally { setBusyUid(null); }
+  }
+
+  async function handlePromote(targetUid) {
+    setBusyUid(targetUid);
+    try {
+      await promoteFromWaitlist(tournament.id, targetUid);
+      await loadMembers();
+    } catch (err) {
+      window.alert(err.message || 'Could not add this person now.');
+    } finally { setBusyUid(null); }
+  }
+
+  async function handleDelete() {
+    if (!window.confirm(`Delete "${tournament.name}" for everyone? This can't be undone.`)) return;
+    setDeleting(true);
+    try {
+      await deleteTournament(tournament.id);
+      router.replace('/');
+    } catch (err) {
+      window.alert(err.message || 'Could not delete this tournament.');
+      setDeleting(false);
+    }
+  }
+
+  if (!profile || loading || !tournament || !isOwner) return null;
+
+  const gameLabels = tournament.games.map(gId => GAMES.find(g => g.id === gId)?.label || gId);
+
+  return (
+    <div className="app-page">
+      <TopNav />
+      <main className="app-main app-main-narrow">
+        <div className="hero">
+          <h1>Manage {tournament.name}</h1>
+          <p>{gameLabels.join(', ')}</p>
+          <a className="link-btn" href={`/tournaments/${tournament.id}`}>← Back to tournament</a>
+        </div>
+
+        <section className="panel" style={{ marginBottom: 20, marginTop: 20 }}>
+          <div className="panel-head-row">
+            <h2>Configuration</h2>
+            {!editing && <button className="chip-link" onClick={() => setEditing(true)}>Edit</button>}
+          </div>
+          {editing ? (
+            <SettingsForm tournament={tournament} onSaved={() => setEditing(false)} onCancel={() => setEditing(false)} />
+          ) : (
+            <dl className="config-list">
+              <dt>Start date</dt><dd>{tournament.startDate}</dd>
+              <dt>Scoring</dt><dd>{SCORING_METRICS.find(m => m.id === tournament.scoringMetric)?.label}</dd>
+              <dt>Eligibility threshold</dt><dd>{tournament.eligibilityThresholdPct}%</dd>
+              <dt>Joining</dt><dd>{JOIN_POLICIES.find(p => p.id === tournament.joinPolicy)?.label}</dd>
+              <dt>Games</dt><dd>{gameLabels.join(', ')}</dd>
+            </dl>
+          )}
+        </section>
+
+        {waitlist.length > 0 && (
+          <section className="panel" style={{ marginBottom: 20 }}>
+            <h2>Waitlist</h2>
+            <div className="section-sub">Joining at the start of next month — approve early if you'd rather not wait.</div>
+            <ul className="people-list">
+              {waitlist.map(w => (
+                <li key={w.uid} className="people-row">
+                  <span className="people-name">{w.username}</span>
+                  <button className="btn-sm" disabled={busyUid === w.uid} onClick={() => handlePromote(w.uid)}>Add now</button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {joinRequests.length > 0 && (
+          <section className="panel" style={{ marginBottom: 20 }}>
+            <h2>Join requests</h2>
+            <div className="section-sub">{joinRequests.length} pending</div>
+            <ul className="people-list">
+              {joinRequests.map(r => (
+                <li key={r.uid} className="people-row">
+                  <span className="people-name">{r.username}</span>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button className="btn-sm" disabled={busyUid === r.uid} onClick={() => handleApprove(r.uid)}>Approve</button>
+                    <button className="btn-sm btn-sm-ghost" disabled={busyUid === r.uid} onClick={() => handleDecline(r.uid)}>Decline</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <section className="panel" style={{ marginBottom: 20 }}>
+          <h2>Members</h2>
+          <div className="section-sub">{tournament.members.length} in this tournament</div>
+          {!members ? (
+            <div className="list-empty">Loading…</div>
+          ) : (
+            <ul className="people-list">
+              {members.map(m => (
+                <li key={m.uid} className="people-row">
+                  <span className="people-name">{m.username}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    {m.role === 'owner' && <span className="pill-static">Owner</span>}
+                    {m.role !== 'owner' && (
+                      <button className="btn-sm btn-sm-ghost" disabled={busyUid === m.uid} onClick={() => handleRemove(m.uid)}>Remove</button>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="panel">
+          <h2>Invite friends</h2>
+          {!invitableFriends ? (
+            <div className="list-empty">Loading…</div>
+          ) : invitableFriends.length === 0 ? (
+            <div className="panel-empty">Everyone on your friends list is already in, or already invited.</div>
+          ) : (
+            <ul className="people-list">
+              {invitableFriends.map(f => (
+                <li key={f.uid} className="people-row">
+                  <span className="people-name">{f.username}</span>
+                  {f.invited ? (
+                    <button className="btn-sm btn-sm-ghost" disabled={busyUid === f.uid} onClick={() => handleCancelInvite(f.uid)}>Cancel invite</button>
+                  ) : (
+                    <button className="btn-sm" disabled={busyUid === f.uid} onClick={() => handleInvite(f.uid)}>Invite</button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <div style={{ marginTop: 24, textAlign: 'center' }}>
+          <button className="btn-sm btn-sm-ghost" style={{ color: 'var(--loss)' }} disabled={deleting} onClick={handleDelete}>
+            {deleting ? 'Deleting…' : 'Delete tournament'}
+          </button>
+        </div>
+      </main>
+    </div>
+  );
+}
