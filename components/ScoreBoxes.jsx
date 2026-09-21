@@ -47,9 +47,19 @@ function ScoreBox({ game, existing }) {
 
   const showForm = editing || existing === null;
   const theme = themeFor(game.id);
+  const boxStyle = {
+    '--sb-accent': theme.accent,
+    '--sb-accent2': theme.accent2,
+    '--sb-bg': theme.bg,
+    '--sb-bg-soft': theme.bgSoft,
+    '--sb-text': theme.onDark ? 'var(--text-on-dark)' : 'var(--text)',
+    '--sb-text-muted': theme.onDark ? 'var(--text-on-dark-muted)' : 'var(--text-muted)',
+    '--sb-input-bg': theme.onDark ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.75)',
+    '--sb-input-border': theme.onDark ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.14)',
+  };
 
   return (
-    <div className="score-box" style={{ '--sb-accent': theme.accent, '--sb-accent2': theme.accent2 }}>
+    <div className="score-box" style={boxStyle}>
       <div className="score-box-head">
         <span className="score-box-game">{game.label}</span>
         <span className="score-box-num">#{puzzleNum}</span>

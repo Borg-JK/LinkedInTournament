@@ -41,18 +41,13 @@ export default function DailyCompareWidget() {
     <aside className="daily-compare" style={{ '--dc-accent': theme.accent, '--dc-accent2': theme.accent2 }}>
       <div className="daily-compare-title">Today vs. friends</div>
 
-      <div className="daily-compare-tabs">
-        {GAMES.map(g => (
-          <button
-            key={g.id}
-            type="button"
-            className={`daily-compare-tab${gameId === g.id ? ' active' : ''}`}
-            onClick={() => setGameId(g.id)}
-          >
-            {g.label}
-          </button>
-        ))}
-      </div>
+      <select
+        className="daily-compare-select"
+        value={gameId}
+        onChange={e => setGameId(e.target.value)}
+      >
+        {GAMES.map(g => <option key={g.id} value={g.id}>{g.label}</option>)}
+      </select>
 
       {!ready ? (
         <div className="list-empty">Loading…</div>

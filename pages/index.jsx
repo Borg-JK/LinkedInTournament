@@ -80,10 +80,6 @@ export default function Home() {
     <div className="app-page">
       <TopNav />
       <main className="app-main">
-        <div style={{ marginTop: 40 }}>
-          <ScoreBoxes />
-        </div>
-
         {!invitesLoading && invites.length > 0 && (
           <section className="panel" style={{ marginBottom: 24 }}>
             <h2>Tournament invites</h2>
@@ -107,25 +103,29 @@ export default function Home() {
         )}
 
         <div className="home-columns">
-          <section className="panel">
-            <div className="panel-head-row">
-              <h2>Tournaments</h2>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <a href="/tournaments/search" className="btn-sm btn-sm-ghost">Find</a>
-                <a href="/tournaments/new" className="btn-sm">+ New</a>
-              </div>
-            </div>
+          <div className="home-main">
+            <ScoreBoxes />
 
-            {tLoading ? (
-              <div className="list-empty">Loading…</div>
-            ) : tournaments.length === 0 ? (
-              <div className="panel-empty">No tournaments yet — create one, or find one to ask to join.</div>
-            ) : (
-              <ul className="people-list">
-                {tournaments.map(t => <TournamentRow key={t.id} tournament={t} uid={user.uid} />)}
-              </ul>
-            )}
-          </section>
+            <section className="panel">
+              <div className="panel-head-row">
+                <h2>Tournaments</h2>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <a href="/tournaments/search" className="btn-sm btn-sm-ghost">Find</a>
+                  <a href="/tournaments/new" className="btn-sm">+ New</a>
+                </div>
+              </div>
+
+              {tLoading ? (
+                <div className="list-empty">Loading…</div>
+              ) : tournaments.length === 0 ? (
+                <div className="panel-empty">No tournaments yet — create one, or find one to ask to join.</div>
+              ) : (
+                <ul className="people-list">
+                  {tournaments.map(t => <TournamentRow key={t.id} tournament={t} uid={user.uid} />)}
+                </ul>
+              )}
+            </section>
+          </div>
 
           <DailyCompareWidget />
         </div>
