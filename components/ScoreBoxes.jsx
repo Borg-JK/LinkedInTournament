@@ -9,15 +9,18 @@ import { GAMES, puzzleNumberFor, todayIso } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
 import InlineTimeEditor from './InlineTimeEditor';
+import PasteScoreForm from './PasteScoreForm';
 
 function ScoreBox({ game, existing }) {
   const { user } = useAuth();
   const [editing, setEditing] = useState(false);
+  const [mode, setMode] = useState('type'); // 'type' | 'paste'
   const puzzleNum = puzzleNumberFor(game.id);
 
-  async function handleSave(seconds) {
-    await submitScore(user.uid, game.id, todayIso(), seconds);
+  async function handleSave(seconds, qualifier) {
+    await submitScore(user.uid, game.id, todayIso(), seconds, qualifier);
     setEditing(false);
+    setMode('type');
   }
 
   async function handleDelete() {
@@ -49,13 +52,29 @@ function ScoreBox({ game, existing }) {
       {existing === undefined ? (
         <div className="score-box-loading">…</div>
       ) : showForm ? (
-        <InlineTimeEditor
-          initialSeconds={existing?.timeSeconds}
-          onSave={handleSave}
-          onCancel={editing ? () => setEditing(false) : null}
-          saveLabel={existing ? 'Save' : 'Add'}
-          autoFocus={editing}
-        />
+        <>
+          {mode === 'type' ? (
+            <InlineTimeEditor
+              initialSeconds={existing?.timeSeconds}
+              onSave={handleSave}
+              onCancel={editing ? () => setEditing(false) : null}
+              saveLabel={existing ? 'Save' : 'Add'}
+              autoFocus={editing}
+            />
+          ) : (
+            <PasteScoreForm
+              gameId={game.id}
+              onSave={handleSave}
+              onCancel={() => setMode('type')}
+              autoFocus
+            />
+          )}
+          {mode === 'type' && (
+            <button type="button" className="chip-link score-box-mode-toggle" onClick={() => setMode('paste')}>
+              Paste from LinkedIn
+            </button>
+          )}
+        </>
       ) : (
         <div className="score-box-done">
           <span className="score-box-time">{formatSeconds(existing.timeSeconds)}</span>

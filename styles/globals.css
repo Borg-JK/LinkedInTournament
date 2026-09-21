@@ -633,6 +633,46 @@ button, input, select {
   margin-top: 10px;
 }
 
+.score-box-mode-toggle {
+  display: block;
+  margin: 8px auto 0;
+  font-size: 0.68rem;
+  color: var(--sb-text-muted, var(--text-muted));
+}
+
+.paste-score-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: stretch;
+  width: 100%;
+}
+.paste-score-form textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 6px 8px;
+  border-radius: var(--radius-xs);
+  border: 1.5px solid var(--sb-input-border, var(--border));
+  background: var(--sb-input-bg, var(--surface2));
+  color: var(--sb-text, var(--text));
+  font-size: 0.7rem;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+}
+.paste-score-form textarea::placeholder { color: var(--sb-text-muted, var(--text-muted)); }
+.paste-score-form textarea:focus { border-color: var(--sb-accent, var(--gold)); }
+.paste-score-preview {
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+.paste-score-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 /* ── Leaderboard ────────────────────────────────────────────────── */
 
 .leaderboard {
