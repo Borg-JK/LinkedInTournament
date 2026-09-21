@@ -256,5 +256,21 @@ service cloud.firestore {
                     && !exists(/databases/$(database)/documents/usernames/$(username));
       allow update, delete: if false;
     }
+
+    // Email sign-in codes. Only ever touched by the requestLoginCode /
+    // verifyLoginCode Cloud Functions via the Admin SDK, which bypasses
+    // security rules entirely — so this denies every client-side access,
+    // signed in or not, on principle (a client has no legitimate reason to
+    // read or write this collection directly).
+    match /emailOtps/{email} {
+      allow read, write: if false;
+    }
+
+    // Outbound mail queue for the Trigger Email extension — same story:
+    // only the requestLoginCode function ever writes here (Admin SDK), and
+    // only the extension ever reads it.
+    match /mail/{docId} {
+      allow read, write: if false;
+    }
   }
 }
