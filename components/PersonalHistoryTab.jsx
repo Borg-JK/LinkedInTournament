@@ -21,6 +21,7 @@ export default function PersonalHistoryTab() {
   const { user } = useAuth();
   const uid = user?.uid;
   const [chartGame, setChartGame] = useState(GAMES[0].id);
+  const [historyGame, setHistoryGame] = useState(GAMES[0].id);
   const [editingKey, setEditingKey] = useState(null); // `${gameId}|${date}`
   const [backfillGame, setBackfillGame] = useState(null);
 
@@ -95,16 +96,14 @@ export default function PersonalHistoryTab() {
   if (monthly.length === 0) {
     return (
       <>
-        {backfillPanel}
         <div className="panel-empty">No scores yet — enter a time above and your history builds up here.</div>
+        {backfillPanel}
       </>
     );
   }
 
   return (
     <>
-      {backfillPanel}
-
       <section className="panel" style={{ marginBottom: 24 }}>
         <div className="panel-head-row">
           <h2>Trend</h2>
@@ -143,34 +142,54 @@ export default function PersonalHistoryTab() {
         )}
       </section>
 
-      {monthly.map(({ month, games }) => (
-        <section className="panel" key={month} style={{ marginBottom: 20 }}>
-          <h2 style={{ marginBottom: 16 }}>{monthLabel(month)}</h2>
-          {Object.entries(games).map(([gameId, stats]) => {
-            const gTheme = themeFor(gameId);
-            const label = GAMES.find(g => g.id === gameId)?.label || gameId;
-            return (
-              <div key={gameId} style={{ marginBottom: 18 }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
-                  <span style={{ fontWeight: 700, color: gTheme.accent }}>{label}</span>
-                  <span className="section-sub" style={{ margin: 0 }}>
-                    Avg {formatSeconds(stats.avgSeconds)} · Best {formatSeconds(stats.bestSeconds)} ·
-                    {' '}{stats.daysPlayed}/{stats.activeDays} days played
-                    {stats.daysMissed > 0 ? ` · ${stats.daysMissed} missed` : ''}
-                  </span>
+      {monthly.map(({ month, games }) => {
+        const stats = games[historyGame];
+        const label = GAMES.find(g => g.id === historyGame)?.label || historyGame;
+        return (
+          <section className="panel" key={month} style={{ marginBottom: 20 }}>
+            <div className="panel-head-row" style={{ flexWrap: 'wrap', rowGap: 10 }}>
+              <h2 style={{ marginBottom: 0 }}>{monthLabel(month)}</h2>
+              <div className="history-game-tabs">
+                {GAMES.map(g => {
+                  const gTheme = themeFor(g.id);
+                  const active = historyGame === g.id;
+                  return (
+                    <button
+                      key={g.id}
+                      type="button"
+                      className={`history-game-tab${active ? ' active' : ''}`}
+                      style={{
+                        '--hg-accent': gTheme.accent,
+                        '--hg-text': gTheme.onDark ? '#fff' : '#1a1508',
+                      }}
+                      onClick={() => setHistoryGame(g.id)}
+                    >
+                      {g.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {stats ? (
+              <>
+                <div className="section-sub" style={{ margin: '10px 0 10px' }}>
+                  Avg {formatSeconds(stats.avgSeconds)} · Best {formatSeconds(stats.bestSeconds)} ·
+                  {' '}{stats.daysPlayed}/{stats.activeDays} days played
+                  {stats.daysMissed > 0 ? ` · ${stats.daysMissed} missed` : ''}
                 </div>
                 <ul className="history-entry-list">
                   {stats.entries.map(e => {
-                    const key = `${gameId}|${e.date}`;
+                    const key = `${historyGame}|${e.date}`;
                     const isEditing = editingKey === key;
                     return (
                       <li key={e.date} className="history-entry-row">
                         <span className="history-entry-date">{e.date}</span>
-                        <span className="lb-meta">#{puzzleNumberFor(gameId, e.date)}</span>
+                        <span className="lb-meta">#{puzzleNumberFor(historyGame, e.date)}</span>
                         {isEditing ? (
                           <InlineTimeEditor
                             initialSeconds={e.timeSeconds}
-                            onSave={seconds => handleSaveEdit(gameId, e.date, seconds)}
+                            onSave={seconds => handleSaveEdit(historyGame, e.date, seconds)}
                             onCancel={() => setEditingKey(null)}
                             className="history-entry-form"
                             autoFocus
@@ -179,18 +198,22 @@ export default function PersonalHistoryTab() {
                           <>
                             <span className="history-entry-time">{formatSeconds(e.timeSeconds)}</span>
                             <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
-                            <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(gameId, e.date)}>Delete</button>
+                            <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(historyGame, e.date)}>Delete</button>
                           </>
                         )}
                       </li>
                     );
                   })}
                 </ul>
-              </div>
-            );
-          })}
-        </section>
-      ))}
+              </>
+            ) : (
+              <div className="panel-empty" style={{ marginTop: 10 }}>No {label} entries this month.</div>
+            )}
+          </section>
+        );
+      })}
+
+      {backfillPanel}
     </>
   );
 }

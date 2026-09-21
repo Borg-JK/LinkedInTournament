@@ -1162,6 +1162,29 @@ button, input, select {
 
 /* ── Personal history entry rows (editable) ────────────────────────── */
 
+.history-game-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.history-game-tab {
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  border: 1.5px solid var(--hg-accent, var(--border));
+  background: transparent;
+  color: var(--hg-accent, var(--text-soft));
+}
+.history-game-tab:hover { background: color-mix(in srgb, var(--hg-accent, var(--border)) 12%, transparent); }
+.history-game-tab.active {
+  background: var(--hg-accent, var(--gold));
+  color: var(--hg-text, #1a1508);
+  border-color: transparent;
+}
+
 .history-entry-list {
   list-style: none;
   max-width: 420px;
