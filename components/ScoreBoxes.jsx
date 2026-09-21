@@ -7,6 +7,7 @@ import { useAuth } from '../lib/useAuth';
 import { useTodayScores, submitScore } from '../lib/useScores';
 import { GAMES, puzzleNumberFor, todayIso } from '../lib/games';
 import { formatSeconds, digitsFromInput, formatDigitsForDisplay, digitsToSeconds, secondsToDigits } from '../lib/time';
+import { themeFor } from '../lib/theme';
 
 function ScoreBox({ game, existing }) {
   const { user } = useAuth();
@@ -45,9 +46,10 @@ function ScoreBox({ game, existing }) {
   }
 
   const showForm = editing || existing === null;
+  const theme = themeFor(game.id);
 
   return (
-    <div className="score-box">
+    <div className="score-box" style={{ '--sb-accent': theme.accent, '--sb-accent2': theme.accent2 }}>
       <div className="score-box-head">
         <span className="score-box-game">{game.label}</span>
         <span className="score-box-num">#{puzzleNum}</span>
@@ -65,11 +67,11 @@ function ScoreBox({ game, existing }) {
             onChange={handleInputChange}
             autoFocus={editing}
           />
-          <button type="submit" className="btn-sm" disabled={busy}>
+          <button type="submit" className="score-box-btn" disabled={busy}>
             {busy ? '…' : existing ? 'Save' : 'Add'}
           </button>
           {editing && (
-            <button type="button" className="btn-sm btn-sm-ghost" onClick={() => { setEditing(false); setError(''); }}>
+            <button type="button" className="chip-link" onClick={() => { setEditing(false); setError(''); }}>
               Cancel
             </button>
           )}
