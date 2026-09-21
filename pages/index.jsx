@@ -12,6 +12,7 @@ import TopNav from '../components/TopNav';
 import ScoreBoxes from '../components/ScoreBoxes';
 import DailyCompareWidget from '../components/DailyCompareWidget';
 import PersonalHistoryTab from '../components/PersonalHistoryTab';
+import SharedScoreIntake from '../components/SharedScoreIntake';
 
 function InfoIcon() {
   return (
@@ -155,6 +156,8 @@ export default function Home() {
 
         {homeTab === 'today' ? (
           <>
+            <SharedScoreIntake />
+
             {!invitesLoading && invites.length > 0 && (
               <section className="panel" style={{ marginBottom: 24 }}>
                 <h2>Tournament invites</h2>
