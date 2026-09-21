@@ -9,6 +9,7 @@ import { GAMES } from '../lib/games';
 import TopNav from '../components/TopNav';
 import ScoreBoxes from '../components/ScoreBoxes';
 import DailyCompareWidget from '../components/DailyCompareWidget';
+import PersonalHistoryTab from '../components/PersonalHistoryTab';
 
 function TournamentRow({ tournament, uid }) {
   const { ranked, ready } = useTournamentStandings(tournament);
@@ -38,6 +39,7 @@ export default function Home() {
   const { tournaments, loading: tLoading } = useTournaments();
   const { invites, loading: invitesLoading, acceptInvite, declineInvite } = useTournamentInvites();
   const [busyId, setBusyId] = useState(null);
+  const [homeTab, setHomeTab] = useState('today');
   const router = useRouter();
 
   useEffect(() => {
@@ -80,55 +82,68 @@ export default function Home() {
     <div className="app-page">
       <TopNav />
       <main className="app-main">
-        {!invitesLoading && invites.length > 0 && (
-          <section className="panel" style={{ marginBottom: 24 }}>
-            <h2>Tournament invites</h2>
-            <div className="section-sub">{invites.length} pending</div>
-            <ul className="people-list">
-              {invites.map(inv => (
-                <li key={inv.tournamentId} className="people-row">
-                  <span className="people-name">{inv.tournamentName}</span>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button className="btn-sm" disabled={busyId === inv.tournamentId} onClick={() => handleAccept(inv.tournamentId)}>
-                      Accept
-                    </button>
-                    <button className="btn-sm btn-sm-ghost" disabled={busyId === inv.tournamentId} onClick={() => handleDecline(inv.tournamentId)}>
-                      Decline
-                    </button>
+        <div className="home-tabs">
+          <button type="button" className={`home-tab${homeTab === 'today' ? ' active' : ''}`} onClick={() => setHomeTab('today')}>Today</button>
+          <button type="button" className={`home-tab${homeTab === 'history' ? ' active' : ''}`} onClick={() => setHomeTab('history')}>History</button>
+        </div>
+
+        {homeTab === 'today' ? (
+          <>
+            {!invitesLoading && invites.length > 0 && (
+              <section className="panel" style={{ marginBottom: 24 }}>
+                <h2>Tournament invites</h2>
+                <div className="section-sub">{invites.length} pending</div>
+                <ul className="people-list">
+                  {invites.map(inv => (
+                    <li key={inv.tournamentId} className="people-row">
+                      <span className="people-name">{inv.tournamentName}</span>
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <button className="btn-sm" disabled={busyId === inv.tournamentId} onClick={() => handleAccept(inv.tournamentId)}>
+                          Accept
+                        </button>
+                        <button className="btn-sm btn-sm-ghost" disabled={busyId === inv.tournamentId} onClick={() => handleDecline(inv.tournamentId)}>
+                          Decline
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            <div className="home-columns">
+              <div className="home-main">
+                <ScoreBoxes />
+
+                <section className="panel">
+                  <div className="panel-head-row">
+                    <h2>Tournaments</h2>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <a href="/tournaments/search" className="btn-sm btn-sm-ghost">Find</a>
+                      <a href="/tournaments/new" className="btn-sm">+ New</a>
+                    </div>
                   </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
 
-        <div className="home-columns">
-          <div className="home-main">
-            <ScoreBoxes />
-
-            <section className="panel">
-              <div className="panel-head-row">
-                <h2>Tournaments</h2>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <a href="/tournaments/search" className="btn-sm btn-sm-ghost">Find</a>
-                  <a href="/tournaments/new" className="btn-sm">+ New</a>
-                </div>
+                  {tLoading ? (
+                    <div className="list-empty">Loading…</div>
+                  ) : tournaments.length === 0 ? (
+                    <div className="panel-empty">No tournaments yet — create one, or find one to ask to join.</div>
+                  ) : (
+                    <ul className="people-list">
+                      {tournaments.map(t => <TournamentRow key={t.id} tournament={t} uid={user.uid} />)}
+                    </ul>
+                  )}
+                </section>
               </div>
 
-              {tLoading ? (
-                <div className="list-empty">Loading…</div>
-              ) : tournaments.length === 0 ? (
-                <div className="panel-empty">No tournaments yet — create one, or find one to ask to join.</div>
-              ) : (
-                <ul className="people-list">
-                  {tournaments.map(t => <TournamentRow key={t.id} tournament={t} uid={user.uid} />)}
-                </ul>
-              )}
-            </section>
+              <DailyCompareWidget />
+            </div>
+          </>
+        ) : (
+          <div className="home-main">
+            <PersonalHistoryTab />
           </div>
-
-          <DailyCompareWidget />
-        </div>
+        )}
       </main>
     </div>
   );
