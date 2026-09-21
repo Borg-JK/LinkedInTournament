@@ -10,10 +10,63 @@ import {
   watchWaitlist, promoteFromWaitlist, JOIN_POLICIES,
 } from '../../lib/useTournaments';
 import { useTournamentStandings } from '../../lib/useTournamentStandings';
+import { usePlayerGameScores } from '../../lib/useScores';
 import { resolveUser } from '../../lib/users';
-import { GAMES, GAME_IDS } from '../../lib/games';
+import { GAMES, GAME_IDS, todayIso } from '../../lib/games';
 import { SCORING_METRICS, ELIGIBILITY_STEPS } from '../../lib/scoring';
 import TopNav from '../../components/TopNav';
+import GameTabs from '../../components/GameTabs';
+import GameStatsPanel from '../../components/GameStatsPanel';
+
+function useMemberNames(memberUids) {
+  const [names, setNames] = useState({});
+  const key = (memberUids || []).slice().sort().join(',');
+  useEffect(() => {
+    if (!memberUids || memberUids.length === 0) return;
+    let cancelled = false;
+    (async () => {
+      const withNames = await Promise.all(memberUids.map(async uid => [uid, (await resolveUser(uid)).username]));
+      if (!cancelled) setNames(Object.fromEntries(withNames));
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+  return names;
+}
+
+function StandingsSection({ tournament, myUid }) {
+  const multiGame = tournament.games.length > 1;
+  const [tab, setTab] = useState(multiGame ? 'overall' : tournament.games[0]);
+  const names = useMemberNames(tournament.members);
+
+  const pairs = tab === 'overall' ? [] : tournament.members.map(uid => ({ uid, gameId: tab }));
+  const byUidGame = usePlayerGameScores(pairs);
+  const entriesByUid = {};
+  if (tab !== 'overall') {
+    for (const uid of tournament.members) entriesByUid[uid] = byUidGame[uid]?.[tab] || [];
+  }
+  const gameDataReady = tab === 'overall' || tournament.members.every(uid => byUidGame[uid]?.[tab] !== undefined);
+
+  return (
+    <>
+      <GameTabs gameIds={tournament.games} active={tab} onChange={setTab} />
+      {tab === 'overall' ? (
+        <Leaderboard tournament={tournament} myUid={myUid} />
+      ) : !gameDataReady ? (
+        <div className="list-empty">Loading…</div>
+      ) : (
+        <GameStatsPanel
+          tournament={tournament}
+          gameId={tab}
+          entriesByUid={entriesByUid}
+          names={names}
+          myUid={myUid}
+          periodEnd={todayIso()}
+        />
+      )}
+    </>
+  );
+}
 
 function Leaderboard({ tournament, myUid }) {
   const { ranked, sortDir, ready } = useTournamentStandings(tournament);
@@ -395,7 +448,7 @@ export default function TournamentDetail() {
         {isMember && (
           <section className="panel" style={{ marginBottom: 20 }}>
             <h2>Standings</h2>
-            <Leaderboard tournament={tournament} myUid={uid} />
+            <StandingsSection tournament={tournament} myUid={uid} />
           </section>
         )}
 

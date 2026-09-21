@@ -655,3 +655,70 @@ button, input, select {
   font-size: 0.82rem;
   font-weight: 700;
 }
+
+/* ── Game tabs + per-game stats panel ──────────────────────────────── */
+
+.game-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border-soft);
+  padding-bottom: 10px;
+}
+
+.game-tab {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-soft);
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.game-tab:hover { border-color: var(--tab-accent, var(--gold)); }
+
+.game-tab-active {
+  border-color: var(--tab-accent, var(--gold));
+  background: color-mix(in srgb, var(--tab-accent, var(--gold)) 16%, var(--surface2));
+  color: var(--text);
+}
+
+.game-stats-panel .leaderboard,
+.game-stats-panel .dow-table { margin-top: 4px; }
+
+.dow-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.dow-table th {
+  text-align: right;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 0 8px 8px;
+}
+.dow-table th:first-child { text-align: left; }
+.dow-table td {
+  padding: 8px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.86rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.dow-table td:first-child { text-align: left; font-weight: 600; }
+.dow-table tr.leaderboard-me td { background: var(--gold-dim); }
+
+.ratio-good { color: var(--win); font-weight: 600; }
+.ratio-bad { color: var(--loss); }
+
+.chart-block {
+  margin-bottom: 28px;
+  padding: 16px;
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+}
+.chart-block:last-child { margin-bottom: 0; }
