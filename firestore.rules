@@ -141,10 +141,15 @@ service cloud.firestore {
          && request.resource.data.games is list && request.resource.data.games.size() > 0
          && request.resource.data.scoringMetric in ['simple', 'ratio', 'median', 'average']
          && request.resource.data.eligibilityThresholdPct in [20, 25, 30, 35, 40, 45, 50]
-         && request.resource.data.joinPolicy in ['anytime', 'monthly']
-         && request.resource.data.revealPolicy in ['live', 'midpoint', 'interval', 'dailyUntilMidpoint']
-         && request.resource.data.revealIntervalDays is int
-         && request.resource.data.revealIntervalDays >= 1
+         // joinPolicy/revealPolicy/revealIntervalDays were added to the schema
+         // after some tournaments already existed — .get() with a default
+         // tolerates a doc that predates the field, instead of a strict `in`/
+         // `is` check erroring (and denying the WHOLE update) on a key that
+         // simply isn't there yet.
+         && request.resource.data.get('joinPolicy', 'anytime') in ['anytime', 'monthly']
+         && request.resource.data.get('revealPolicy', 'live') in ['live', 'midpoint', 'interval', 'dailyUntilMidpoint']
+         && request.resource.data.get('revealIntervalDays', 5) is int
+         && request.resource.data.get('revealIntervalDays', 5) >= 1
          && request.resource.data.startDate is string
          && request.resource.data.nameLower == request.resource.data.name.lower())
         ||
@@ -159,9 +164,9 @@ service cloud.firestore {
          && request.resource.data.games == resource.data.games
          && request.resource.data.scoringMetric == resource.data.scoringMetric
          && request.resource.data.eligibilityThresholdPct == resource.data.eligibilityThresholdPct
-         && request.resource.data.joinPolicy == resource.data.joinPolicy
-         && request.resource.data.revealPolicy == resource.data.revealPolicy
-         && request.resource.data.revealIntervalDays == resource.data.revealIntervalDays
+         && request.resource.data.get('joinPolicy', 'anytime') == resource.data.get('joinPolicy', 'anytime')
+         && request.resource.data.get('revealPolicy', 'live') == resource.data.get('revealPolicy', 'live')
+         && request.resource.data.get('revealIntervalDays', 5) == resource.data.get('revealIntervalDays', 5)
          && request.resource.data.startDate == resource.data.startDate
          && request.resource.data.name == resource.data.name
          && request.resource.data.nameLower == resource.data.nameLower
@@ -179,9 +184,9 @@ service cloud.firestore {
          && request.resource.data.games == resource.data.games
          && request.resource.data.scoringMetric == resource.data.scoringMetric
          && request.resource.data.eligibilityThresholdPct == resource.data.eligibilityThresholdPct
-         && request.resource.data.joinPolicy == resource.data.joinPolicy
-         && request.resource.data.revealPolicy == resource.data.revealPolicy
-         && request.resource.data.revealIntervalDays == resource.data.revealIntervalDays
+         && request.resource.data.get('joinPolicy', 'anytime') == resource.data.get('joinPolicy', 'anytime')
+         && request.resource.data.get('revealPolicy', 'live') == resource.data.get('revealPolicy', 'live')
+         && request.resource.data.get('revealIntervalDays', 5) == resource.data.get('revealIntervalDays', 5)
          && request.resource.data.startDate == resource.data.startDate
          && request.resource.data.name == resource.data.name
          && request.resource.data.nameLower == resource.data.nameLower
