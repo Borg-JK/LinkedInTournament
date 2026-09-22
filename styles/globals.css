@@ -100,7 +100,8 @@ button, input, select {
 }
 
 .field input[type="text"],
-.field input[type="email"] {
+.field input[type="email"],
+.field textarea {
   width: 100%;
   padding: 12px 14px;
   border-radius: var(--radius-sm);
@@ -112,7 +113,8 @@ button, input, select {
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.field input:focus {
+.field input:focus,
+.field textarea:focus {
   border-color: var(--gold);
   background: var(--surface);
 }
