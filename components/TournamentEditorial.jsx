@@ -4,6 +4,7 @@
 // dashboard's per-tournament page (header, section tabs, per-game theming).
 import { useState, useEffect } from 'react';
 import { usePlayerGameScores } from '../lib/useScores';
+import { useTournamentMemberJoinDates } from '../lib/useTournaments';
 import { resolveUser } from '../lib/users';
 import { todayIso } from '../lib/games';
 import { themeFor } from '../lib/theme';
@@ -50,6 +51,7 @@ export default function TournamentEditorial({ tournament, myUid, manageHref }) {
   const pairs = tournament.members.flatMap(uid => tournament.games.map(gameId => ({ uid, gameId })));
   const byUidGame = usePlayerGameScores(pairs);
   const dataReady = tournament.members.every(uid => tournament.games.every(g => byUidGame[uid]?.[g] !== undefined));
+  const joinedAtByUid = useTournamentMemberJoinDates(tournament.id);
 
   const theme = themeFor(themeGame);
   const today = todayIso();
@@ -57,7 +59,7 @@ export default function TournamentEditorial({ tournament, myUid, manageHref }) {
   const status = revealStatus(tournament, today);
 
   const tabProps = {
-    tournament, names, byUidGame, dataReady, myUid, periodEnd,
+    tournament, names, byUidGame, dataReady, myUid, periodEnd, joinedAtByUid,
     onGameThemeChange: setThemeGame,
   };
 
