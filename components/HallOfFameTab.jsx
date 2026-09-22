@@ -35,7 +35,7 @@ function TrophyCard({ gameId, label, winner, isOverall }) {
   );
 }
 
-export default function HallOfFameTab({ tournament, names, byUidGame, periodEnd }) {
+export default function HallOfFameTab({ tournament, names, byUidGame, periodEnd, joinedAtByUid }) {
   const months = useMemo(() => monthsBetween(tournament.startDate, periodEnd), [tournament.startDate, periodEnd]);
   const currentMonth = periodEnd.slice(0, 7);
   const multiGame = tournament.games.length > 1;
@@ -63,7 +63,7 @@ export default function HallOfFameTab({ tournament, names, byUidGame, periodEnd 
             </div>
             <div className="hall-grid">
               {multiGame && (() => {
-                const w = computeMonthWinnerOverall(byUidGame, month, tournament, periodEnd);
+                const w = computeMonthWinnerOverall(byUidGame, month, tournament, periodEnd, joinedAtByUid);
                 return (
                   <TrophyCard
                     key="overall"
@@ -77,7 +77,7 @@ export default function HallOfFameTab({ tournament, names, byUidGame, periodEnd 
               {tournament.games.map(gameId => {
                 const entriesByUid = {};
                 for (const uid of tournament.members) entriesByUid[uid] = byUidGame[uid]?.[gameId] || [];
-                const w = computeMonthWinnerForGame(entriesByUid, month, tournament, periodEnd);
+                const w = computeMonthWinnerForGame(entriesByUid, month, tournament, periodEnd, joinedAtByUid);
                 return (
                   <TrophyCard
                     key={gameId}
