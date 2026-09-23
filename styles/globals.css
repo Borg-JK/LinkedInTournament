@@ -21,6 +21,18 @@
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.28);
   --shadow-card: 0 4px 28px rgba(0, 0, 0, 0.16);
+
+  /* The tournament "Overall" theme's warm bronze/gold palette — same
+     colors as .editorial[data-theme="overall"], reused site-wide via
+     .page-warm so pages that opt in share that same identity instead of
+     the cooler navy the app otherwise defaults to. */
+  --warm-bg: #1a1408;
+  --warm-bg-soft: #2a2110;
+  --warm-nav: rgba(26, 20, 8, 0.9);
+  --warm-accent: #d4af37;
+  --warm-accent2: #f0d98a;
+
+  --topnav-bg: rgba(10, 18, 64, 0.88);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -188,9 +200,10 @@ button, input, select {
   top: 0;
   z-index: 20;
   width: 100%;
-  background: rgba(10, 18, 64, 0.88);
+  background: var(--topnav-bg);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(212, 175, 106, 0.16);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
 .topnav-inner {
@@ -287,6 +300,22 @@ button, input, select {
 
 .app-page {
   min-height: 100vh;
+}
+
+/* Opts a whole page into the tournament "Overall" theme's warm bronze/gold
+   identity instead of the app's default navy — redefines the same custom
+   properties everything else already reads (--bg, --gold, --topnav-bg), so
+   every child (topnav, buttons, chip-links, card accents) retints for
+   free with no per-component changes. */
+.page-warm {
+  --bg: var(--warm-bg);
+  --bg-soft: var(--warm-bg-soft);
+  --topnav-bg: var(--warm-nav);
+  --gold: var(--warm-accent);
+  --gold2: var(--warm-accent2);
+  background:
+    radial-gradient(1200px 560px at 50% -10%, var(--bg-soft), transparent),
+    var(--bg);
 }
 
 .app-main {
@@ -418,8 +447,22 @@ button, input, select {
   text-decoration: none;
   font-size: 0.94rem;
   font-weight: 500;
+  padding-bottom: 4px;
+  transition: color 0.15s ease;
+}
+.topnav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 2px;
+  background: var(--gold2);
+  border-radius: 2px;
+  transition: right 0.2s ease;
 }
 .topnav-link:hover { color: var(--text-on-dark); }
+.topnav-link:hover::after { right: 0; }
 
 .nav-badge {
   display: inline-flex;
