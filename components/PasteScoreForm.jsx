@@ -63,7 +63,7 @@ export default function PasteScoreForm({ gameId, onSave, onCancel, autoFocus = f
       />
       <div className="paste-score-actions">
         <button type="button" className="score-box-btn" onClick={handleParse} disabled={!text.trim()}>Parse</button>
-        {onCancel && <button type="button" className="chip-link" onClick={onCancel}>Cancel</button>}
+        {onCancel && <button type="button" className="chip-link" onClick={onCancel}>Type it in instead</button>}
       </div>
     </div>
   );

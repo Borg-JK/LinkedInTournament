@@ -329,6 +329,23 @@ button, input, select {
   .hero h1 { font-size: 2rem; }
 }
 
+/* Phone widths: the brand + nav links + username + gear button don't fit
+   on one un-wrapping row — wrap onto a second row and drop the username
+   (redundant with the page content) so nothing clips or runs together. */
+@media (max-width: 520px) {
+  .topnav-inner {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+  .topnav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 18px;
+  }
+  .topnav-user { display: none; }
+}
+
 /* ── Nav links + badge ──────────────────────────────────────────── */
 
 .topnav-links {

@@ -11,16 +11,18 @@ import { themeFor } from '../lib/theme';
 import InlineTimeEditor from './InlineTimeEditor';
 import PasteScoreForm from './PasteScoreForm';
 
-function ScoreBox({ game, existing }) {
+function ScoreBox({ game, existing, loadError, onRetry }) {
   const { user } = useAuth();
   const [editing, setEditing] = useState(false);
-  const [mode, setMode] = useState('type'); // 'type' | 'paste'
+  // Paste-to-submit is the primary flow on mobile — typing digits in by
+  // hand is the fallback, not the default.
+  const [mode, setMode] = useState('paste'); // 'paste' | 'type'
   const puzzleNum = puzzleNumberFor(game.id);
 
   async function handleSave(seconds, qualifier) {
     await submitScore(user.uid, game.id, todayIso(), seconds, qualifier);
     setEditing(false);
-    setMode('type');
+    setMode('paste');
   }
 
   async function handleDelete() {
@@ -50,10 +52,24 @@ function ScoreBox({ game, existing }) {
       </div>
 
       {existing === undefined ? (
-        <div className="score-box-loading">…</div>
+        loadError ? (
+          <div className="score-box-form">
+            <div className="score-box-error" style={{ margin: 0 }}>Couldn't load</div>
+            <button type="button" className="chip-link" onClick={onRetry}>Retry</button>
+          </div>
+        ) : (
+          <div className="score-box-loading">…</div>
+        )
       ) : showForm ? (
         <>
-          {mode === 'type' ? (
+          {mode === 'paste' ? (
+            <PasteScoreForm
+              gameId={game.id}
+              onSave={handleSave}
+              onCancel={() => setMode('type')}
+              autoFocus
+            />
+          ) : (
             <InlineTimeEditor
               initialSeconds={existing?.timeSeconds}
               onSave={handleSave}
@@ -61,17 +77,10 @@ function ScoreBox({ game, existing }) {
               saveLabel={existing ? 'Save' : 'Add'}
               autoFocus={editing}
             />
-          ) : (
-            <PasteScoreForm
-              gameId={game.id}
-              onSave={handleSave}
-              onCancel={() => setMode('type')}
-              autoFocus
-            />
           )}
           {mode === 'type' && (
             <button type="button" className="chip-link score-box-mode-toggle" onClick={() => setMode('paste')}>
-              Paste from LinkedIn
+              Paste from LinkedIn instead
             </button>
           )}
         </>
@@ -89,10 +98,12 @@ function ScoreBox({ game, existing }) {
 }
 
 export default function ScoreBoxes() {
-  const { scores } = useTodayScores();
+  const { scores, error, retry } = useTodayScores();
   return (
     <div className="score-boxes-grid">
-      {GAMES.map(game => <ScoreBox key={game.id} game={game} existing={scores[game.id]} />)}
+      {GAMES.map(game => (
+        <ScoreBox key={game.id} game={game} existing={scores[game.id]} loadError={error} onRetry={retry} />
+      ))}
     </div>
   );
 }
