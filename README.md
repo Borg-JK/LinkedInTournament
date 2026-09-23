@@ -1,23 +1,34 @@
 # LinkedIn Tournament
 
-Static dashboard for LinkedIn game tournament results.
+Next.js app for tracking LinkedIn daily-puzzle scores against friends, with
+multi-tournament support (custom games/scoring/eligibility per tournament),
+email-link sign-in, and a personal history/trends view. Firebase
+(Auth + Firestore) on the backend, deployed on Vercel.
 
-## Local Update Flow
+`Borg-JK/LinkedInCompetition` holds a frozen snapshot of the original
+single-file static dashboard this app replaced — nothing further is ever
+built there.
 
-1. Scrape WhatsApp Web and update the dashboard:
+## Local development
 
-   ```bash
-   .venv/bin/python whatsapp_scraper.py --once
-   ```
+```bash
+npm install
+cp .env.example .env.local   # fill in Firebase web app config
+npm run dev
+```
 
-2. Or scrape, commit, and push in one step:
+Firestore security rules live in `firestore.rules`; deploy them with:
 
-   ```bash
-   ./update_site.sh
-   ```
+```bash
+firebase deploy --only firestore:rules --project linkedintournam
+```
 
-Netlify deploys the `HTML` folder. Raw WhatsApp chat files are intentionally
-ignored by git; only generated dashboard data should be published.
+## Legacy data
 
-If WhatsApp Web shows dates as `MM/DD/YYYY`, set `"date_order": "MDY"` in
-`whatsapp_scraper_config.json`. Use `"DMY"` for `DD/MM/YYYY`.
+The original site's history (Jan–May 2026, scraped from WhatsApp chat
+exports) can be migrated into Firestore as a one-time "Legacy Tournament"
+via `scripts/migrate-legacy-data.js` — see the usage notes at the top of
+that file. `parse_chat.py` / `whatsapp_scraper.py` are kept around only as
+the source of that legacy data and as a reference for the real-world
+variety of LinkedIn share-text formats; they're not part of the deployed
+app.
