@@ -23,7 +23,16 @@ function GearIcon() {
 }
 
 export default function TopNav() {
-  const { profile, logout } = useAuth();
+  const { profile, logout, setScoreEntryDefault } = useAuth();
+  const scoreEntryDefault = profile?.scoreEntryDefault || 'paste';
+
+  async function handleSetScoreEntryDefault(mode) {
+    try {
+      await setScoreEntryDefault(mode);
+    } catch (err) {
+      window.alert(err.message || 'Could not save that preference.');
+    }
+  }
   const { incomingRequests } = useFriends();
   const { invites: tournamentInvites } = useTournamentInvites();
   useWaitlist(); // lazily promotes any waitlisted memberships whose wait is over
@@ -81,6 +90,26 @@ export default function TopNav() {
 
           {open && (
             <div className="dropdown" role="menu">
+              <div className="dropdown-section-label">Score entry default</div>
+              <button
+                type="button"
+                role="menuitemradio"
+                aria-checked={scoreEntryDefault === 'paste'}
+                className={`dropdown-item${scoreEntryDefault === 'paste' ? ' dropdown-item-active' : ''}`}
+                onClick={() => handleSetScoreEntryDefault('paste')}
+              >
+                {scoreEntryDefault === 'paste' ? '✓ ' : ''}Paste from LinkedIn
+              </button>
+              <button
+                type="button"
+                role="menuitemradio"
+                aria-checked={scoreEntryDefault === 'type'}
+                className={`dropdown-item${scoreEntryDefault === 'type' ? ' dropdown-item-active' : ''}`}
+                onClick={() => handleSetScoreEntryDefault('type')}
+              >
+                {scoreEntryDefault === 'type' ? '✓ ' : ''}Type it in
+              </button>
+              <div className="dropdown-divider" />
               <button
                 type="button"
                 role="menuitem"

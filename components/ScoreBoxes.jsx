@@ -11,18 +11,19 @@ import { themeFor } from '../lib/theme';
 import InlineTimeEditor from './InlineTimeEditor';
 import PasteScoreForm from './PasteScoreForm';
 
-function ScoreBox({ game, existing, loadError, onRetry }) {
+function ScoreBox({ game, existing, loadError, onRetry, defaultMode }) {
   const { user } = useAuth();
   const [editing, setEditing] = useState(false);
-  // Paste-to-submit is the primary flow on mobile — typing digits in by
-  // hand is the fallback, not the default.
-  const [mode, setMode] = useState('paste'); // 'paste' | 'type'
+  // Paste-to-submit is the default entry flow — typing digits in by hand is
+  // the fallback — but it's a per-person preference (Settings gear menu),
+  // not a hardcoded choice.
+  const [mode, setMode] = useState(defaultMode); // 'paste' | 'type'
   const puzzleNum = puzzleNumberFor(game.id);
 
   async function handleSave(seconds, qualifier) {
     await submitScore(user.uid, game.id, todayIso(), seconds, qualifier);
     setEditing(false);
-    setMode('paste');
+    setMode(defaultMode);
   }
 
   async function handleDelete() {
@@ -98,11 +99,20 @@ function ScoreBox({ game, existing, loadError, onRetry }) {
 }
 
 export default function ScoreBoxes() {
+  const { profile } = useAuth();
   const { scores, error, retry } = useTodayScores();
+  const defaultMode = profile?.scoreEntryDefault || 'paste';
   return (
     <div className="score-boxes-grid">
       {GAMES.map(game => (
-        <ScoreBox key={game.id} game={game} existing={scores[game.id]} loadError={error} onRetry={retry} />
+        <ScoreBox
+          key={game.id}
+          game={game}
+          existing={scores[game.id]}
+          loadError={error}
+          onRetry={retry}
+          defaultMode={defaultMode}
+        />
       ))}
     </div>
   );
