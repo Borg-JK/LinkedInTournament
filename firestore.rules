@@ -96,6 +96,13 @@ service cloud.firestore {
                           || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
         allow update: if false;
       }
+
+      // Personal display preferences for a tournament (pinned, card color)
+      // — entirely the viewer's own, not gated by tournament membership or
+      // ownership, since it never affects anyone else's view.
+      match /tournamentPrefs/{tournamentId} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
     }
 
     // Tournament configuration + membership — no scores here (Phase 5's global
