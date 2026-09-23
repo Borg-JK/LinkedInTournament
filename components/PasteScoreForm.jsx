@@ -14,11 +14,28 @@ export default function PasteScoreForm({ gameId, onSave, onCancel, autoFocus = f
   const [text, setText] = useState('');
   const [parsed, setParsed] = useState(null);
   const [manual, setManual] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [saveError, setSaveError] = useState('');
 
   function handleParse() {
     const result = parseShareText(text);
     setParsed(result);
     if (!result.ok || result.gameId !== gameId) setManual(true);
+  }
+
+  // Without this, a failed save (permissions, network) left the box stuck
+  // showing "Confirm" forever with zero feedback — the parsed preview was
+  // right, it just silently never made it into Firestore.
+  async function handleConfirm() {
+    setSaveError('');
+    setBusy(true);
+    try {
+      await onSave(parsed.timeSeconds, parsed.qualifier);
+    } catch (err) {
+      setSaveError(err.message || 'Could not save. Try again.');
+    } finally {
+      setBusy(false);
+    }
   }
 
   const label = GAMES.find(g => g.id === gameId)?.label || gameId;
@@ -45,9 +62,10 @@ export default function PasteScoreForm({ gameId, onSave, onCancel, autoFocus = f
           {parsed.qualifier ? ` (${parsed.qualifier})` : ''}
         </div>
         <div className="paste-score-actions">
-          <button type="button" className="score-box-btn" onClick={() => onSave(parsed.timeSeconds, parsed.qualifier)}>Confirm</button>
-          <button type="button" className="chip-link" onClick={() => setParsed(null)}>Edit</button>
+          <button type="button" className="score-box-btn" onClick={handleConfirm} disabled={busy}>{busy ? '…' : 'Confirm'}</button>
+          <button type="button" className="chip-link" onClick={() => { setParsed(null); setSaveError(''); }} disabled={busy}>Edit</button>
         </div>
+        {saveError && <div className="score-box-error">{saveError}</div>}
       </div>
     );
   }
