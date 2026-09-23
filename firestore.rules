@@ -39,7 +39,14 @@ service cloud.firestore {
       // that second case is how accepting a friend request creates the
       // reciprocal entry client-side, without a Cloud Function in the loop.
       match /friends/{friendUid} {
-        allow read: if request.auth != null && request.auth.uid == uid;
+        // A friend of yours can read your *whole* friends subcollection too
+        // (not just this one doc) — needed for "people you may know"
+        // mutual-friend suggestions. Scoped to existing friends only, never
+        // open to a stranger: you have to already be in someone's friends
+        // list before you can see who else is in it.
+        allow read: if request.auth != null
+                    && (request.auth.uid == uid
+                        || exists(/databases/$(database)/documents/users/$(uid)/friends/$(request.auth.uid)));
         allow write: if request.auth != null
                      && (request.auth.uid == uid || request.auth.uid == friendUid);
       }
