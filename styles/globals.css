@@ -202,17 +202,17 @@ button, input, select {
   width: 100%;
   background: var(--topnav-bg);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(212, 175, 106, 0.16);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 24px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
 .topnav-inner {
-  max-width: 1240px;
+  max-width: 1520px;
   margin: 0 auto;
   padding: 18px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.9);
 }
 
 .topnav-brand {
@@ -319,7 +319,7 @@ button, input, select {
 }
 
 .app-main {
-  max-width: 1240px;
+  max-width: 1520px;
   margin: 0 auto;
   padding: 56px 32px 80px;
 }
@@ -1353,7 +1353,7 @@ button, input, select {
 
 .daily-compare {
   flex: none;
-  width: 260px;
+  width: 300px;
   display: flex;
   flex-direction: column;
   background: var(--surface);
