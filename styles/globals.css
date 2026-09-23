@@ -328,6 +328,10 @@ button, input, select {
   max-width: 640px;
 }
 
+.app-main-medium {
+  max-width: 900px;
+}
+
 .hero {
   margin-bottom: 40px;
 }

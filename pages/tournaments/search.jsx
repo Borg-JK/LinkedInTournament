@@ -75,15 +75,16 @@ export default function SearchTournaments() {
   if (!profile) return null;
 
   return (
-    <div className="app-page">
+    <div className="app-page page-warm">
       <TopNav />
-      <main className="app-main app-main-narrow">
+      <main className="app-main app-main-medium">
         <div className="hero">
+          <div className="hero-eyebrow">Discover</div>
           <h1>Find a tournament</h1>
           <p>Search by name and ask to join.</p>
         </div>
 
-        <section className="panel">
+        <section className="panel panel-accent">
           <input
             type="text"
             className="search-input"

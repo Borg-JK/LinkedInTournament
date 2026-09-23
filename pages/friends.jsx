@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
-import { useFriends } from '../lib/useFriends';
+import { useFriends, useSuggestedFriends } from '../lib/useFriends';
 import TopNav from '../components/TopNav';
 
 function statusFor(result, { isFriend, hasIncomingFrom, sentSet }) {
@@ -20,6 +20,7 @@ export default function Friends() {
     searchUsernames, hasSentRequestTo, isFriend, hasIncomingFrom,
     sendFriendRequest, acceptRequest, declineRequest,
   } = useFriends();
+  const { suggestions, loading: suggestionsLoading } = useSuggestedFriends(friends);
 
   const [term, setTerm] = useState('');
   const [results, setResults] = useState([]);
@@ -60,6 +61,8 @@ export default function Friends() {
     try {
       await sendFriendRequest(targetUid);
       setSentSet(prev => new Set(prev).add(targetUid));
+    } catch (err) {
+      window.alert(err.message || 'Could not send that request.');
     } finally {
       setBusyUid(null);
     }
@@ -67,108 +70,162 @@ export default function Friends() {
 
   async function handleAccept(fromUid) {
     setBusyUid(fromUid);
-    try { await acceptRequest(fromUid); } finally { setBusyUid(null); }
+    try {
+      await acceptRequest(fromUid);
+    } catch (err) {
+      window.alert(err.message || 'Could not accept that request.');
+    } finally {
+      setBusyUid(null);
+    }
   }
 
   async function handleDecline(fromUid) {
     setBusyUid(fromUid);
-    try { await declineRequest(fromUid); } finally { setBusyUid(null); }
+    try {
+      await declineRequest(fromUid);
+    } catch (err) {
+      window.alert(err.message || 'Could not decline that request.');
+    } finally {
+      setBusyUid(null);
+    }
   }
 
   if (!profile) return null;
 
+  const showingSearch = term.trim().length > 0;
+
   return (
-    <div className="app-page">
+    <div className="app-page page-warm">
       <TopNav />
-      <main className="app-main app-main-narrow">
+      <main className="app-main">
         <div className="hero">
+          <div className="hero-eyebrow">Your network</div>
           <h1>Friends</h1>
           <p>Find people by username, and manage requests.</p>
         </div>
 
-        <section className="panel" style={{ marginBottom: 24 }}>
-          <h2>Add a friend</h2>
-          <div className="section-sub">Search by username.</div>
+        <div className="home-columns">
+          <div className="home-main">
+            <section className="panel panel-accent" style={{ marginBottom: 24 }}>
+              <div className="section-head">
+                <span className="section-head-num">01</span>
+                <h2>Add a friend</h2>
+              </div>
+              <div className="section-sub">Search by username.</div>
 
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Search username…"
-            value={term}
-            onChange={e => onTermChange(e.target.value)}
-          />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search username…"
+                value={term}
+                onChange={e => onTermChange(e.target.value)}
+              />
 
-          {searching && <div className="list-empty">Searching…</div>}
+              {showingSearch ? (
+                <>
+                  {searching && <div className="list-empty">Searching…</div>}
+                  {!searching && results.length === 0 && (
+                    <div className="list-empty">No one found.</div>
+                  )}
+                  {!searching && results.length > 0 && (
+                    <ul className="people-list">
+                      {results.map(r => {
+                        const status = statusFor(r, { isFriend, hasIncomingFrom, sentSet });
+                        return (
+                          <li key={r.uid} className="people-row">
+                            <span className="people-name">{r.username}</span>
+                            {status === 'friend' && <span className="pill-static">Friends</span>}
+                            {status === 'sent' && <span className="pill-static">Request sent</span>}
+                            {status === 'incoming' && (
+                              <button className="btn-sm" disabled={busyUid === r.uid} onClick={() => handleAccept(r.uid)}>
+                                Accept request
+                              </button>
+                            )}
+                            {status === 'none' && (
+                              <button className="btn-sm" disabled={busyUid === r.uid} onClick={() => handleAdd(r.uid)}>
+                                Add friend
+                              </button>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="field-label" style={{ marginTop: 20 }}>People you may know</div>
+                  {suggestionsLoading ? (
+                    <div className="list-empty">Looking…</div>
+                  ) : suggestions.length === 0 ? (
+                    <div className="list-empty">No suggestions yet — add a friend or two and we'll find more.</div>
+                  ) : (
+                    <ul className="people-list">
+                      {suggestions.map(s => (
+                        <li key={s.uid} className="people-row">
+                          <span className="people-name">
+                            {s.username}
+                            <span className="pill-static" style={{ display: 'block', fontWeight: 400 }}>
+                              {s.mutualCount} mutual friend{s.mutualCount === 1 ? '' : 's'}
+                            </span>
+                          </span>
+                          <button className="btn-sm" disabled={busyUid === s.uid} onClick={() => handleAdd(s.uid)}>
+                            Add friend
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              )}
+            </section>
 
-          {!searching && term.trim() && results.length === 0 && (
-            <div className="list-empty">No one found.</div>
-          )}
+            {incomingRequests.length > 0 && (
+              <section className="panel panel-accent">
+                <div className="section-head">
+                  <span className="section-head-num">02</span>
+                  <h2>Requests</h2>
+                </div>
+                <div className="section-sub">{incomingRequests.length} pending</div>
+                <ul className="people-list">
+                  {incomingRequests.map(r => (
+                    <li key={r.uid} className="people-row">
+                      <span className="people-name">{r.username}</span>
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <button className="btn-sm" disabled={busyUid === r.uid} onClick={() => handleAccept(r.uid)}>
+                          Accept
+                        </button>
+                        <button className="btn-sm btn-sm-ghost" disabled={busyUid === r.uid} onClick={() => handleDecline(r.uid)}>
+                          Decline
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
 
-          {!searching && results.length > 0 && (
-            <ul className="people-list">
-              {results.map(r => {
-                const status = statusFor(r, { isFriend, hasIncomingFrom, sentSet });
-                return (
-                  <li key={r.uid} className="people-row">
-                    <span className="people-name">{r.username}</span>
-                    {status === 'friend' && <span className="pill-static">Friends</span>}
-                    {status === 'sent' && <span className="pill-static">Request sent</span>}
-                    {status === 'incoming' && (
-                      <button className="btn-sm" disabled={busyUid === r.uid} onClick={() => handleAccept(r.uid)}>
-                        Accept request
-                      </button>
-                    )}
-                    {status === 'none' && (
-                      <button className="btn-sm" disabled={busyUid === r.uid} onClick={() => handleAdd(r.uid)}>
-                        Add friend
-                      </button>
-                    )}
+          <aside className="daily-compare">
+            <div className="daily-compare-title">Your friends</div>
+            <div className="section-sub" style={{ textAlign: 'center', marginBottom: 14 }}>
+              {friends.length} friend{friends.length === 1 ? '' : 's'}
+            </div>
+            {friendsLoading ? (
+              <div className="list-empty">Loading…</div>
+            ) : friends.length === 0 ? (
+              <div className="daily-compare-hint">No friends yet — search to add some.</div>
+            ) : (
+              <ul className="people-list">
+                {friends.map(f => (
+                  <li key={f.uid} className="people-row">
+                    <span className="people-name">{f.username}</span>
                   </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
-
-        {incomingRequests.length > 0 && (
-          <section className="panel" style={{ marginBottom: 24 }}>
-            <h2>Requests</h2>
-            <div className="section-sub">{incomingRequests.length} pending</div>
-            <ul className="people-list">
-              {incomingRequests.map(r => (
-                <li key={r.uid} className="people-row">
-                  <span className="people-name">{r.username}</span>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button className="btn-sm" disabled={busyUid === r.uid} onClick={() => handleAccept(r.uid)}>
-                      Accept
-                    </button>
-                    <button className="btn-sm btn-sm-ghost" disabled={busyUid === r.uid} onClick={() => handleDecline(r.uid)}>
-                      Decline
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        <section className="panel">
-          <h2>Your friends</h2>
-          <div className="section-sub">{friends.length} friend{friends.length === 1 ? '' : 's'}</div>
-          {friendsLoading ? (
-            <div className="list-empty">Loading…</div>
-          ) : friends.length === 0 ? (
-            <div className="panel-empty">No friends yet — search above to add some.</div>
-          ) : (
-            <ul className="people-list">
-              {friends.map(f => (
-                <li key={f.uid} className="people-row">
-                  <span className="people-name">{f.username}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+                ))}
+              </ul>
+            )}
+          </aside>
+        </div>
       </main>
     </div>
   );
