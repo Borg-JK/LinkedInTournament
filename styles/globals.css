@@ -20,6 +20,7 @@
   --radius-xs: 8px;
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.28);
+  --shadow-card: 0 4px 28px rgba(0, 0, 0, 0.16);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -89,7 +90,8 @@ button, input, select {
 
 .field { margin-bottom: 18px; }
 
-.field label {
+.field label,
+.field-label {
   display: block;
   font-size: 0.78rem;
   font-weight: 600;
@@ -101,6 +103,8 @@ button, input, select {
 
 .field input[type="text"],
 .field input[type="email"],
+.field input[type="date"],
+.field input[type="number"],
 .field textarea {
   width: 100%;
   padding: 12px 14px;
@@ -299,6 +303,15 @@ button, input, select {
   margin-bottom: 40px;
 }
 
+.hero-eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--gold2);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
 .hero h1 {
   font-size: 2.6rem;
   color: var(--text-on-dark);
@@ -316,8 +329,9 @@ button, input, select {
   background: var(--surface);
   color: var(--text);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-card);
   padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .panel h2 {
@@ -330,6 +344,33 @@ button, input, select {
   font-size: 0.92rem;
   margin-bottom: 20px;
 }
+
+/* A gold top edge for the panels that are the actual point of the page
+   (Tournaments, invites) — echoes the same accent used on tournament
+   cards and the daily-compare sidebar, tying the home page to the same
+   visual language as the tournament pages instead of reading as a plain
+   generic panel. */
+.panel-accent { border-top: 4px solid var(--gold); }
+
+/* Numbered section header — the same "01 · Label" flourish used for the
+   tournament page's section tabs, brought over so multi-part forms and
+   lists read as a considered sequence instead of a stack of identical
+   boxes. */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.section-head-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold);
+  flex: none;
+}
+.section-head h2 { margin-bottom: 0; }
+.section-head + .section-sub { margin-top: 2px; }
 
 .panel-empty {
   border: 1.5px dashed var(--border);
@@ -523,6 +564,51 @@ button, input, select {
 .check-row-radio input { margin-top: 3px; }
 .check-row-title { display: block; font-weight: 700; color: var(--text); }
 .check-row-desc { display: block; font-weight: 400; font-size: 0.84rem; color: var(--text-muted); margin-top: 2px; }
+
+/* Custom check/radio marks in place of the browser default — small, but it
+   reads the difference between a crafted page and a plain HTML form. */
+.check-row input[type="checkbox"],
+.check-row input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.check-row input[type="checkbox"] { border-radius: 6px; }
+.check-row input[type="radio"] { border-radius: 50%; }
+.check-row input[type="checkbox"]:checked,
+.check-row input[type="radio"]:checked {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+.check-row input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid #1a1508;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.check-row input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1a1508;
+  transform: translate(-50%, -50%);
+}
 
 .stepper {
   display: flex;
@@ -788,6 +874,7 @@ button, input, select {
   padding: 26px 24px;
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--border-soft);
+  border-top: 4px solid var(--gold);
   background: var(--surface2);
   text-decoration: none;
   cursor: pointer;
@@ -795,7 +882,7 @@ button, input, select {
 }
 .tournament-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-card);
   border-color: var(--gold);
 }
 
@@ -837,7 +924,7 @@ button, input, select {
   max-width: calc(100vw - 60px);
   background: var(--surface);
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-card);
   padding: 18px;
   z-index: 20;
   text-align: left;
@@ -1230,7 +1317,7 @@ button, input, select {
   color: var(--text);
   border-radius: var(--radius);
   border-top: 5px solid var(--dc-accent, var(--gold));
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-card);
   padding: 22px 18px;
 }
 @media (max-width: 860px) {
