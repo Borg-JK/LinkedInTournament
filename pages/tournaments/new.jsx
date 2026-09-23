@@ -70,39 +70,50 @@ export default function NewTournament() {
       <TopNav />
       <main className="app-main app-main-narrow">
         <div className="hero">
+          <div className="hero-eyebrow">Start something</div>
           <h1>New tournament</h1>
           <p>Choose its games, scoring, and who's in.</p>
         </div>
 
         <form onSubmit={handleSubmit}>
           <section className="panel" style={{ marginBottom: 20 }}>
-            <h2>Name</h2>
-            <input
-              type="text"
-              className="search-input"
-              style={{ marginBottom: 0 }}
-              value={name}
-              onChange={e => setName(e.target.value)}
-              placeholder="e.g. Autumn League"
-              autoFocus
-            />
+            <div className="section-head">
+              <span className="section-head-num">01</span>
+              <h2>The basics</h2>
+            </div>
+            <div className="section-sub">What it's called, and when scoring begins.</div>
+
+            <div className="field">
+              <label htmlFor="tname">Name</label>
+              <input
+                id="tname"
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="e.g. Autumn League"
+                autoFocus
+              />
+            </div>
+            <div className="field" style={{ marginBottom: 0 }}>
+              <label htmlFor="tstart">Start date</label>
+              <input
+                id="tstart"
+                type="date"
+                value={startDate}
+                onChange={e => setStartDate(e.target.value)}
+              />
+            </div>
           </section>
 
           <section className="panel" style={{ marginBottom: 20 }}>
-            <h2>Start date</h2>
-            <div className="section-sub">When this tournament's scoring begins.</div>
-            <input
-              type="date"
-              className="search-input"
-              style={{ marginBottom: 0 }}
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-            />
-          </section>
+            <div className="section-head">
+              <span className="section-head-num">02</span>
+              <h2>Games &amp; scoring</h2>
+            </div>
+            <div className="section-sub">Which puzzles count, and how daily results turn into standings.</div>
 
-          <section className="panel" style={{ marginBottom: 20 }}>
-            <div className="panel-head-row">
-              <h2>Games</h2>
+            <div className="panel-head-row" style={{ marginTop: 18 }}>
+              <span className="field-label" style={{ marginBottom: 0 }}>Games</span>
               <button
                 type="button"
                 className="chip-link"
@@ -111,7 +122,7 @@ export default function NewTournament() {
                 {allGamesSelected ? 'Clear all' : 'All games'}
               </button>
             </div>
-            <ul className="check-list">
+            <ul className="check-list" style={{ marginBottom: 22 }}>
               {GAMES.map(g => (
                 <li key={g.id}>
                   <label className="check-row">
@@ -121,11 +132,7 @@ export default function NewTournament() {
                 </li>
               ))}
             </ul>
-          </section>
 
-          <section className="panel" style={{ marginBottom: 20 }}>
-            <h2>Scoring</h2>
-            <div className="section-sub">How daily results turn into standings.</div>
             <ul className="check-list">
               {SCORING_METRICS.map(m => (
                 <li key={m.id}>
@@ -147,11 +154,21 @@ export default function NewTournament() {
           </section>
 
           <section className="panel" style={{ marginBottom: 20 }}>
-            <h2>Eligibility threshold</h2>
-            <div className="section-sub">
-              Minimum participation to qualify for standings, as a share of each player's active window.
+            <div className="section-head">
+              <span className="section-head-num">03</span>
+              <h2>How it plays</h2>
             </div>
-            <div className="stepper">
+            <div className="section-sub">Participation, joining, and how much suspense the reveal has.</div>
+
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 18, marginBottom: 12 }}>
+              <span className="field-label" style={{ marginBottom: 0 }}>
+                Eligibility threshold
+              </span>
+              <span className="section-sub" style={{ margin: 0, textAlign: 'right', maxWidth: 260 }}>
+                Minimum participation to qualify for standings
+              </span>
+            </div>
+            <div className="stepper" style={{ marginBottom: 26 }}>
               <button
                 type="button"
                 className="stepper-btn"
@@ -166,11 +183,11 @@ export default function NewTournament() {
                 onClick={() => setThresholdPct(p => ELIGIBILITY_STEPS[Math.min(ELIGIBILITY_STEPS.length - 1, ELIGIBILITY_STEPS.indexOf(p) + 1)])}
               >+</button>
             </div>
-          </section>
 
-          <section className="panel" style={{ marginBottom: 20 }}>
-            <h2>When can people join?</h2>
-            <ul className="check-list">
+            <div className="field-label">
+              When can people join?
+            </div>
+            <ul className="check-list" style={{ marginBottom: 26 }}>
               {JOIN_POLICIES.map(p => (
                 <li key={p.id}>
                   <label className="check-row check-row-radio">
@@ -183,11 +200,10 @@ export default function NewTournament() {
                 </li>
               ))}
             </ul>
-          </section>
 
-          <section className="panel" style={{ marginBottom: 20 }}>
-            <h2>Standings reveal</h2>
-            <div className="section-sub">Make it exciting — hide progress between reveals instead of updating live.</div>
+            <div className="field-label">
+              Standings reveal
+            </div>
             <ul className="check-list">
               {REVEAL_POLICIES.map(p => (
                 <li key={p.id}>
@@ -202,15 +218,14 @@ export default function NewTournament() {
               ))}
             </ul>
             {revealPolicy === 'interval' && (
-              <div className="field" style={{ marginTop: 12 }}>
+              <div className="field" style={{ marginTop: 12, marginBottom: 0 }}>
                 <label>Reveal every</label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <input
                     type="number"
                     min={1}
                     max={28}
-                    className="search-input"
-                    style={{ width: 90, marginBottom: 0 }}
+                    style={{ width: 90 }}
                     value={revealIntervalDays}
                     onChange={e => setRevealIntervalDays(Math.max(1, parseInt(e.target.value, 10) || 1))}
                   />
@@ -221,7 +236,10 @@ export default function NewTournament() {
           </section>
 
           <section className="panel" style={{ marginBottom: 20 }}>
-            <h2>Invite friends</h2>
+            <div className="section-head">
+              <span className="section-head-num">04</span>
+              <h2>Who's in</h2>
+            </div>
             <div className="section-sub">You're added automatically as the owner. Everyone else is invited, not added — they join once they accept.</div>
             {friends.length === 0 ? (
               <div className="panel-empty">No friends yet — add some first, or create this just for yourself for now.</div>
