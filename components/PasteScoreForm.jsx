@@ -55,7 +55,7 @@ export default function PasteScoreForm({ gameId, onSave, onCancel, autoFocus = f
   return (
     <div className="paste-score-form">
       <textarea
-        placeholder="Paste your LinkedIn share here…"
+        placeholder="Paste LinkedIn share"
         value={text}
         onChange={e => setText(e.target.value)}
         autoFocus={autoFocus}
