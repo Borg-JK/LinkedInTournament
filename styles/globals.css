@@ -264,6 +264,23 @@ button, input, select {
 .dropdown-item:hover { background: var(--surface2); }
 .dropdown-item-danger { color: var(--loss); }
 
+.dropdown-section-label {
+  padding: 8px 14px 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.dropdown-item-active { color: var(--gold); font-weight: 700; }
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--border-soft);
+  margin: 6px 4px;
+}
+
 .app-page {
   min-height: 100vh;
 }
