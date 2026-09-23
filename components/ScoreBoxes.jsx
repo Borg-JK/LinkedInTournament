@@ -28,8 +28,12 @@ function ScoreBox({ game, existing, loadError, onRetry, defaultMode }) {
 
   async function handleDelete() {
     if (!window.confirm(`Delete today's ${game.label} time?`)) return;
-    await deleteScore(user.uid, game.id, todayIso());
-    setEditing(false);
+    try {
+      await deleteScore(user.uid, game.id, todayIso());
+      setEditing(false);
+    } catch (err) {
+      window.alert(err.message || 'Could not delete that score. Try again.');
+    }
   }
 
   const showForm = editing || existing === null;
