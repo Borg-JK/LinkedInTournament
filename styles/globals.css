@@ -1308,6 +1308,16 @@ button, input, select {
 }
 .player-name-cell { text-align: left !important; }
 
+.score-history-scroll {
+  max-height: 420px;
+  overflow-y: auto;
+}
+.score-history-date {
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--ed-card-text);
+}
+
 /* Hall of Fame */
 .hall-month { margin-bottom: 48px; }
 .hall-month-divider { display: flex; align-items: center; gap: 18px; margin-bottom: 24px; }

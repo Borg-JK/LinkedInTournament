@@ -13,6 +13,7 @@ import {
 import { monthsBetween, monthLabel, monthBounds } from '../lib/months';
 import { GAMES } from '../lib/games';
 import { colorForUid } from '../lib/colors';
+import { formatSeconds } from '../lib/time';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend);
 
@@ -83,6 +84,45 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
     const dowRank = computeAvgRankByDow(rows.entriesByUid, participants, start, end, joinedAtByUid);
     return { participants, dates, composition, progression, dowRank };
   }, [isOverall, rows, tournament.scoringMetric, start, end, joinedAtByUid]);
+
+  // Day-by-day ledger — exactly what fed the leaderboard above, so a
+  // number that looks off can actually be traced back to the score and
+  // rank it came from, same purpose as the original dashboard's per-player
+  // "Match History" table. Built straight from the same result.daily the
+  // charts already use, cross-referenced against entriesByUid for the raw
+  // submitted time (daily only carries the derived points/ratio).
+  const history = useMemo(() => {
+    if (isOverall || !rows.result?.daily) return null;
+    const timeFor = (uid, date) => rows.entriesByUid[uid]?.find(e => e.date === date)?.timeSeconds ?? null;
+    return [...rows.result.daily]
+      .sort((a, b) => (a.date < b.date ? 1 : -1))
+      .map(day => {
+        let entries;
+        if (tournament.scoringMetric === 'simple') {
+          const rankByUid = {};
+          day.submitters.forEach((uid, i) => { rankByUid[uid] = i + 1; });
+          entries = [...day.submitters, ...day.missing].map(uid => ({
+            uid,
+            timeSeconds: timeFor(uid, day.date),
+            rank: rankByUid[uid] || null,
+            value: day.dayPts[uid] ?? 0,
+          }));
+        } else {
+          // Missed days aren't listed here — their penalty is each
+          // player's own day-of-week average, not a single fixed number
+          // this table can show cleanly.
+          entries = Object.entries(day.ratioByUid)
+            .sort((a, b) => a[1] - b[1])
+            .map(([uid, ratio], i) => ({
+              uid,
+              timeSeconds: timeFor(uid, day.date),
+              rank: i + 1,
+              value: ratio,
+            }));
+        }
+        return { date: day.date, entries };
+      });
+  }, [isOverall, rows, tournament.scoringMetric]);
 
   return (
     <>
@@ -273,6 +313,42 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
             </div>
           </div>
         </>
+      )}
+
+      {history && history.length > 0 && (
+        <div className="leaderboard-card">
+          <div className="lb-header">
+            <div className="lb-title">Score History</div>
+            <div className="lb-meta">Day by day — every submitted time and the {isRatioLike ? 'ratio' : 'points'} it earned</div>
+          </div>
+          <div className="score-history-scroll">
+            <table className="lb-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th className="player-name-cell">Player</th>
+                  <th>Time</th>
+                  <th>Rank</th>
+                  <th>{isRatioLike ? 'Ratio' : 'Points'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {history.map(day => day.entries.map((e, i) => (
+                  <tr key={`${day.date}-${e.uid}`}>
+                    <td className="score-history-date">{i === 0 ? day.date : ''}</td>
+                    <td className="player-name-cell">
+                      <span className="player-dot" style={{ background: colorForUid(e.uid) }} />
+                      {names[e.uid] || '…'}
+                    </td>
+                    <td>{e.timeSeconds != null ? formatSeconds(e.timeSeconds) : '— missed'}</td>
+                    <td>{e.rank || '—'}</td>
+                    <td>{isRatioLike ? e.value.toFixed(3) : e.value}</td>
+                  </tr>
+                )))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
 
       <div className="leaderboard-card">
