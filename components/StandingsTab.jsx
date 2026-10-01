@@ -21,6 +21,11 @@ function rankClass(rank) {
   return rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
 }
 
+function dayLabel(dateIso) {
+  const [y, m, d] = dateIso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
 export default function StandingsTab({ tournament, names, byUidGame, myUid, periodEnd, joinedAtByUid, onGameThemeChange }) {
   const months = useMemo(() => monthsBetween(tournament.startDate, periodEnd), [tournament.startDate, periodEnd]);
   const [month, setMonth] = useState(months[0]);
@@ -123,6 +128,18 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
         return { date: day.date, entries };
       });
   }, [isOverall, rows, tournament.scoringMetric]);
+
+  // Which day's row the Score History dropdown is showing — follows the
+  // month selector above: whenever the available days change (a different
+  // month, a different game), snap to the most recent day in the new set
+  // unless the current selection is still valid there.
+  const [historyDay, setHistoryDay] = useState(null);
+  useEffect(() => {
+    if (!history || history.length === 0) { setHistoryDay(null); return; }
+    if (!history.some(d => d.date === historyDay)) setHistoryDay(history[0].date);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history]);
+  const historyForDay = history?.find(d => d.date === historyDay) || null;
 
   return (
     <>
@@ -319,35 +336,36 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
         <div className="leaderboard-card">
           <div className="lb-header">
             <div className="lb-title">Score History</div>
-            <div className="lb-meta">Day by day — every submitted time and the {isRatioLike ? 'ratio' : 'points'} it earned</div>
+            <select className="editorial-select" value={historyDay || ''} onChange={e => setHistoryDay(e.target.value)}>
+              {history.map(d => <option key={d.date} value={d.date}>{dayLabel(d.date)}</option>)}
+            </select>
           </div>
-          <div className="score-history-scroll">
-            <table className="lb-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th className="player-name-cell">Player</th>
-                  <th>Time</th>
-                  <th>Rank</th>
-                  <th>{isRatioLike ? 'Ratio' : 'Points'}</th>
+          <div className="lb-meta" style={{ marginBottom: 12 }}>
+            Every submitted time that day and the {isRatioLike ? 'ratio' : 'points'} it earned
+          </div>
+          <table className="lb-table">
+            <thead>
+              <tr>
+                <th className="player-name-cell">Player</th>
+                <th>Time</th>
+                <th>Rank</th>
+                <th>{isRatioLike ? 'Ratio' : 'Points'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(historyForDay?.entries || []).map(e => (
+                <tr key={e.uid}>
+                  <td className="player-name-cell">
+                    <span className="player-dot" style={{ background: colorForUid(e.uid) }} />
+                    {names[e.uid] || '…'}
+                  </td>
+                  <td>{e.timeSeconds != null ? formatSeconds(e.timeSeconds) : '— missed'}</td>
+                  <td>{e.rank || '—'}</td>
+                  <td>{isRatioLike ? e.value.toFixed(3) : e.value}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {history.map(day => day.entries.map((e, i) => (
-                  <tr key={`${day.date}-${e.uid}`}>
-                    <td className="score-history-date">{i === 0 ? day.date : ''}</td>
-                    <td className="player-name-cell">
-                      <span className="player-dot" style={{ background: colorForUid(e.uid) }} />
-                      {names[e.uid] || '…'}
-                    </td>
-                    <td>{e.timeSeconds != null ? formatSeconds(e.timeSeconds) : '— missed'}</td>
-                    <td>{e.rank || '—'}</td>
-                    <td>{isRatioLike ? e.value.toFixed(3) : e.value}</td>
-                  </tr>
-                )))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 

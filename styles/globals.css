@@ -698,7 +698,7 @@ button, input, select {
 
 .score-boxes-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 12px;
 }
 @media (max-width: 700px) {
@@ -1115,6 +1115,7 @@ button, input, select {
 .editorial[data-theme="mini"]    { --ed-bg:#d8e2d0; --ed-bg-soft:#e8efe2; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#2d6a4f; --ed-accent2:#1e5238; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
 .editorial[data-theme="zip"]     { --ed-bg:#f5d4ba; --ed-bg-soft:#fae3cf; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#c4521f; --ed-accent2:#a84015; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
 .editorial[data-theme="patches"] { --ed-bg:#d8dcc4; --ed-bg-soft:#e6e9d6; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#5c7a3a; --ed-accent2:#42591f; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
+.editorial[data-theme="wend"]    { --ed-bg:#d6e4f0; --ed-bg-soft:#e8f1f8; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#3a6ea5; --ed-accent2:#285279; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
 .editorial[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f5f1e8; --ed-text-muted:rgba(245,241,232,.6); --ed-accent:#d4af37; --ed-accent2:#f0d98a; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
 
 /* Header */
@@ -1168,7 +1169,8 @@ button, input, select {
 .editorial[data-theme="tango"] .editorial-back-btn,
 .editorial[data-theme="mini"] .editorial-back-btn,
 .editorial[data-theme="zip"] .editorial-back-btn,
-.editorial[data-theme="patches"] .editorial-back-btn {
+.editorial[data-theme="patches"] .editorial-back-btn,
+.editorial[data-theme="wend"] .editorial-back-btn {
   background: rgba(255,255,255,0.85);
   border-color: rgba(0,0,0,0.1);
 }
@@ -1241,7 +1243,8 @@ button, input, select {
 .editorial[data-theme="tango"] .ed-game-tab,
 .editorial[data-theme="mini"] .ed-game-tab,
 .editorial[data-theme="zip"] .ed-game-tab,
-.editorial[data-theme="patches"] .ed-game-tab {
+.editorial[data-theme="patches"] .ed-game-tab,
+.editorial[data-theme="wend"] .ed-game-tab {
   background: rgba(255,255,255,0.7);
   border-color: rgba(0,0,0,0.1);
 }
@@ -1307,16 +1310,6 @@ button, input, select {
   box-shadow: 0 0 0 2px rgba(255,255,255,0.6);
 }
 .player-name-cell { text-align: left !important; }
-
-.score-history-scroll {
-  max-height: 420px;
-  overflow-y: auto;
-}
-.score-history-date {
-  font-weight: 700;
-  white-space: nowrap;
-  color: var(--ed-card-text);
-}
 
 /* Hall of Fame */
 .hall-month { margin-bottom: 48px; }
