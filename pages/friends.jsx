@@ -95,7 +95,7 @@ export default function Friends() {
   const showingSearch = term.trim().length > 0;
 
   return (
-    <div className="app-page page-warm">
+    <div className="app-page">
       <TopNav />
       <main className="app-main">
         <div className="hero">

@@ -48,6 +48,26 @@ export default function TournamentEditorial({ tournament, myUid, manageHref }) {
     if (section !== 'standings') setThemeGame('overall');
   }, [section]);
 
+  // Mirror the active theme onto <html> while this page is mounted. The
+  // palettes are declared there (see globals.css), so this is what lets the
+  // document canvas and the iOS status bar take the game's color too —
+  // without it, overscrolling the page rubber-bands into the app's own
+  // background and the theme visibly breaks at the edges.
+  useEffect(() => {
+    const html = document.documentElement;
+    html.setAttribute('data-theme', themeGame);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    const previousColor = meta?.getAttribute('content');
+    // Read the color back out of the stylesheet rather than keeping a second
+    // copy of the palette here — the CSS stays the one place it's written down.
+    const edBg = getComputedStyle(html).getPropertyValue('--ed-bg').trim();
+    if (meta && edBg) meta.setAttribute('content', edBg);
+    return () => {
+      html.removeAttribute('data-theme');
+      if (meta && previousColor) meta.setAttribute('content', previousColor);
+    };
+  }, [themeGame]);
+
   const pairs = tournament.members.flatMap(uid => tournament.games.map(gameId => ({ uid, gameId })));
   const byUidGame = usePlayerGameScores(pairs);
   const dataReady = tournament.members.every(uid => tournament.games.every(g => byUidGame[uid]?.[g] !== undefined));
@@ -90,8 +110,8 @@ export default function TournamentEditorial({ tournament, myUid, manageHref }) {
             </button>
           ))}
           {manageHref && (
-            <a href={manageHref} className="t-section-tab" style={{ marginLeft: 'auto' }}>
-              <span className="t-section-tab-label" style={{ fontSize: '1rem' }}>Manage ⚙</span>
+            <a href={manageHref} className="t-section-tab t-section-tab-manage">
+              <span className="t-section-tab-label">Manage ⚙</span>
             </a>
           )}
         </div>

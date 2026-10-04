@@ -75,7 +75,7 @@ export default function SearchTournaments() {
   if (!profile) return null;
 
   return (
-    <div className="app-page page-warm">
+    <div className="app-page">
       <TopNav />
       <main className="app-main app-main-medium">
         <div className="hero">

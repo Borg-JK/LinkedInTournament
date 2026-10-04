@@ -233,7 +233,7 @@ export default function Home() {
   }
 
   return (
-    <div className="app-page page-warm">
+    <div className="app-page">
       <TopNav />
       <main className="app-main">
         <div className="home-tabs">

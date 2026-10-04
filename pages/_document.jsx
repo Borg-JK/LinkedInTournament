@@ -14,7 +14,11 @@ export default function Document() {
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-        <meta name="theme-color" content="#0a1240" />
+        {/* Matches --bg in globals.css: the strip of chrome above the page
+            (the iOS status bar, Android's toolbar) is part of the page as far
+            as anyone looking at it is concerned. TournamentEditorial rewrites
+            this while a per-game theme is on screen. */}
+        <meta name="theme-color" content="#1a1408" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

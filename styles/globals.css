@@ -1,13 +1,17 @@
 :root {
-  --bg: #0a1240;
-  --bg-soft: #141c4d;
+  /* The warm bronze/gold identity is the app's palette, full stop — the
+     navy it used to default to now belongs only to the Queens game theme.
+     One palette site-wide is what keeps the document background (overscroll,
+     the iOS status bar) from ever disagreeing with the page on top of it. */
+  --bg: #1a1408;
+  --bg-soft: #2a2110;
   --surface: #ffffff;
   --surface2: #f7f5ee;
   --border: rgba(0, 0, 0, 0.1);
   --border-soft: rgba(0, 0, 0, 0.06);
-  --gold: #d4af6a;
-  --gold2: #e8c989;
-  --gold-dim: rgba(212, 175, 106, 0.14);
+  --gold: #d4af37;
+  --gold2: #f0d98a;
+  --gold-dim: rgba(212, 175, 55, 0.14);
   --text: #1a1a1a;
   --text-soft: #4a4a4a;
   --text-muted: #7d7d7d;
@@ -22,27 +26,24 @@
   --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.28);
   --shadow-card: 0 4px 28px rgba(0, 0, 0, 0.16);
 
-  /* The tournament "Overall" theme's warm bronze/gold palette — same
-     colors as .editorial[data-theme="overall"], reused site-wide via
-     .page-warm so pages that opt in share that same identity instead of
-     the cooler navy the app otherwise defaults to. */
-  --warm-bg: #1a1408;
-  --warm-bg-soft: #2a2110;
-  --warm-nav: rgba(26, 20, 8, 0.9);
-  --warm-accent: #d4af37;
-  --warm-accent2: #f0d98a;
-
-  --topnav-bg: rgba(10, 18, 64, 0.88);
+  --topnav-bg: rgba(26, 20, 8, 0.9);
+  --nav-rule: rgba(240, 217, 138, 0.22);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body { min-height: 100%; }
 
+/* The background lives on <body> and nowhere else, so it propagates to the
+   document canvas: overscroll past the top or bottom, and any gap a page's
+   own box doesn't cover, stays the page's own color instead of flashing a
+   different one. Pages paint themselves only where their color differs
+   (the per-game tournament themes, which set html[data-theme] to match). */
 body {
   background:
     radial-gradient(1100px 520px at 50% -8%, var(--bg-soft), transparent),
     var(--bg);
+  background-attachment: fixed;
   color: var(--text-on-dark);
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
@@ -202,7 +203,7 @@ button, input, select {
   width: 100%;
   background: var(--topnav-bg);
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
 }
 
 .topnav-inner {
@@ -212,7 +213,7 @@ button, input, select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid var(--nav-rule);
 }
 
 .topnav-brand {
@@ -300,22 +301,6 @@ button, input, select {
 
 .app-page {
   min-height: 100vh;
-}
-
-/* Opts a whole page into the tournament "Overall" theme's warm bronze/gold
-   identity instead of the app's default navy — redefines the same custom
-   properties everything else already reads (--bg, --gold, --topnav-bg), so
-   every child (topnav, buttons, chip-links, card accents) retints for
-   free with no per-component changes. */
-.page-warm {
-  --bg: var(--warm-bg);
-  --bg-soft: var(--warm-bg-soft);
-  --topnav-bg: var(--warm-nav);
-  --gold: var(--warm-accent);
-  --gold2: var(--warm-accent2);
-  background:
-    radial-gradient(1200px 560px at 50% -10%, var(--bg-soft), transparent),
-    var(--bg);
 }
 
 .app-main {
@@ -709,15 +694,13 @@ button, input, select {
   background: linear-gradient(165deg, var(--sb-bg-soft, var(--surface2)) 0%, var(--sb-bg, var(--surface)) 100%);
   color: var(--sb-text, var(--text));
   border-radius: 14px;
-  border: 2px solid var(--sb-accent, var(--gold));
-  padding: 14px 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--sb-accent, var(--gold)) 55%, transparent);
+  padding: 16px 10px 14px;
   text-align: center;
   min-width: 0;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.25) inset,
-    0 -8px 16px rgba(0, 0, 0, 0.12) inset,
-    0 10px 22px rgba(0, 0, 0, 0.3),
-    0 2px 5px rgba(0, 0, 0, 0.18);
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 8px 20px rgba(0, 0, 0, 0.22);
 }
 
 .score-box-head {
@@ -939,11 +922,20 @@ button, input, select {
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--text);
+  /* Keeps clear of the pin and info buttons in the top-right corner. On a
+     phone a name like "Test (Ratio Score)" is as wide as the card, and
+     without this it ran straight underneath them. */
+  max-width: calc(100% - 92px);
 }
 
 .tournament-card-games {
   font-size: 0.88rem;
   color: var(--text-muted);
+}
+
+@media (max-width: 520px) {
+  .tournament-card { padding: 22px 18px; }
+  .tournament-card-name { font-size: 1.2rem; }
 }
 
 .tournament-info-btn {
@@ -1100,6 +1092,14 @@ button, input, select {
    body.theme-X class toggling.
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* Transitioned on the same curve as .editorial below, so the page and the
+   document edge change color together when the game tab changes rather than
+   the edge snapping 300ms ahead of the page. */
+html[data-theme] body {
+  background: var(--ed-bg);
+  transition: background 0.3s ease;
+}
+
 .editorial {
   min-height: 100vh;
   padding: 0 28px 80px;
@@ -1110,13 +1110,18 @@ button, input, select {
 }
 .editorial-inner { max-width: 1240px; margin: 0 auto; }
 
-.editorial[data-theme="queens"]  { --ed-bg:#0a1240; --ed-bg-soft:#1a2354; --ed-text:#f5f1e8; --ed-text-muted:rgba(245,241,232,.62); --ed-accent:#d4af6a; --ed-accent2:#e8c989; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
-.editorial[data-theme="tango"]   { --ed-bg:#f5e6b8; --ed-bg-soft:#faf0d0; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#c9942a; --ed-accent2:#a87c1f; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
-.editorial[data-theme="mini"]    { --ed-bg:#d8e2d0; --ed-bg-soft:#e8efe2; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#2d6a4f; --ed-accent2:#1e5238; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
-.editorial[data-theme="zip"]     { --ed-bg:#f5d4ba; --ed-bg-soft:#fae3cf; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#c4521f; --ed-accent2:#a84015; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
-.editorial[data-theme="patches"] { --ed-bg:#d8dcc4; --ed-bg-soft:#e6e9d6; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#5c7a3a; --ed-accent2:#42591f; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
-.editorial[data-theme="wend"]    { --ed-bg:#d6e4f0; --ed-bg-soft:#e8f1f8; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#3a6ea5; --ed-accent2:#285279; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
-.editorial[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f5f1e8; --ed-text-muted:rgba(245,241,232,.6); --ed-accent:#d4af37; --ed-accent2:#f0d98a; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
+/* Each game's palette is declared on <html>, not on .editorial, so the same
+   --ed-* values reach <body> and paint the document canvas: scrolling past
+   the top of a Tango page rubber-bands into Tango cream, not into whatever
+   the app's own background happens to be. TournamentEditorial mirrors its
+   active theme onto <html> for exactly this reason. */
+html[data-theme="queens"]  { --ed-bg:#0a1240; --ed-bg-soft:#1a2354; --ed-text:#f5f1e8; --ed-text-muted:rgba(245,241,232,.62); --ed-accent:#d4af6a; --ed-accent2:#e8c989; --ed-on-accent:#1a1508; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
+html[data-theme="tango"]   { --ed-bg:#f5e6b8; --ed-bg-soft:#faf0d0; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#c9942a; --ed-accent2:#a87c1f; --ed-on-accent:#1a1508; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
+html[data-theme="mini"]    { --ed-bg:#d8e2d0; --ed-bg-soft:#e8efe2; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#2d6a4f; --ed-accent2:#1e5238; --ed-on-accent:#ffffff; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
+html[data-theme="zip"]     { --ed-bg:#f5d4ba; --ed-bg-soft:#fae3cf; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#c4521f; --ed-accent2:#a84015; --ed-on-accent:#ffffff; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
+html[data-theme="patches"] { --ed-bg:#d8dcc4; --ed-bg-soft:#e6e9d6; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#5c7a3a; --ed-accent2:#42591f; --ed-on-accent:#ffffff; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
+html[data-theme="wend"]    { --ed-bg:#d6e4f0; --ed-bg-soft:#e8f1f8; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#3a6ea5; --ed-accent2:#285279; --ed-on-accent:#ffffff; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
+html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f5f1e8; --ed-text-muted:rgba(245,241,232,.6); --ed-accent:#d4af37; --ed-accent2:#f0d98a; --ed-on-accent:#1a1508; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
 
 /* Header */
 .tournament-header {
@@ -1176,6 +1181,22 @@ button, input, select {
 }
 .editorial-back-btn:hover { transform: translateX(-2px); }
 
+/* On a phone the header is a column, and "back" belongs above the title the
+   way it does in every other mobile app — column-reverse gets it there
+   without moving it in the markup, where it reads correctly as a sibling of
+   the title. Shrunk too: it's a way out, not the point of the page. */
+@media (max-width: 640px) {
+  .editorial { padding: 0 18px 60px; }
+  .tournament-header {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 22px 0 24px;
+  }
+  .editorial-back-btn { padding: 9px 18px; font-size: 0.85rem; }
+  .tournament-sub { font-size: 0.88rem; margin-top: 10px; }
+}
+
 /* Section tabs (Standings / Hall of Fame / Battle / Scoring) */
 .tournament-section-tabs {
   display: flex;
@@ -1203,7 +1224,29 @@ button, input, select {
 .t-section-tab:hover { color: var(--ed-text); }
 .t-section-tab.active { color: var(--ed-text); border-bottom-color: var(--ed-accent); }
 .t-section-tab.active .t-section-tab-num { opacity: 1; color: var(--ed-accent); }
-@media (max-width: 640px) { .t-section-tab { padding: 10px 14px 12px; } .t-section-tab-label { font-size: 1rem; } }
+/* Manage sits apart from the numbered sections — it's an owner's tool, not
+   a fifth thing to read. */
+.t-section-tab-manage { margin-left: auto; }
+.t-section-tab-manage .t-section-tab-label { font-size: 1rem; }
+
+/* Four numbered tabs plus Manage don't fit a phone, and wrapping them left a
+   ragged second row with Manage shoved to its far end. One swipeable row
+   keeps the sequence readable and the rule under it unbroken. */
+@media (max-width: 640px) {
+  .tournament-section-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    margin: 0 -18px 26px;
+    padding: 0 18px;
+  }
+  .tournament-section-tabs::-webkit-scrollbar { display: none; }
+  .t-section-tab { flex: none; padding: 10px 14px 12px; }
+  .t-section-tab:first-child { padding-left: 0; }
+  .t-section-tab-label { font-size: 1rem; }
+  .t-section-tab-manage { margin-left: 8px; }
+}
 
 .reveal-banner {
   padding: 12px 18px;
@@ -1248,9 +1291,12 @@ button, input, select {
   background: rgba(255,255,255,0.7);
   border-color: rgba(0,0,0,0.1);
 }
-.ed-game-tab.active {
+/* Carries the same specificity as the per-theme .ed-game-tab rules above and
+   comes after them — otherwise on the light themes those rules out-weighed
+   .active and the selected game read as just another pill. */
+.editorial[data-theme] .ed-game-tab.active {
   background: var(--ed-accent);
-  color: #1a1508;
+  color: var(--ed-on-accent, #1a1508);
   border-color: transparent;
   box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
@@ -1264,10 +1310,43 @@ button, input, select {
   margin-bottom: 20px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.12);
 }
-@media (max-width: 640px) { .leaderboard-card { padding: 20px 18px; } }
+@media (max-width: 640px) {
+  .leaderboard-card { padding: 20px 18px; }
+  .lb-table th { padding: 8px 7px; letter-spacing: 0.08em; }
+  .lb-table td { padding: 11px 7px; }
+  .lb-table td:last-child { font-size: 1rem; }
+}
 .lb-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; }
 .lb-title { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 500; color: var(--ed-card-text); letter-spacing: -0.01em; }
 .lb-meta { font-size: 0.78rem; color: var(--ed-card-muted); letter-spacing: 0.03em; }
+
+/* A wide standings table (eight columns once a tournament runs five games)
+   is wider than a phone. Scrolling it inside its own card keeps it off the
+   page's horizontal scrollbar — without this the overflowing columns used to
+   spill out past the card and sit unreadable on the page background. The
+   negative margin lets the row run to the card's edges, so it reads as
+   something to swipe rather than something that got cut off. */
+.lb-table-scroll {
+  overflow-x: auto;
+  margin: 0 -30px;
+  padding: 0 30px;
+  overscroll-behavior-x: contain;
+  /* Shadows that show up only on the side that still has columns hidden:
+     the two `local` layers are card-colored covers that scroll with the
+     content, the two `scroll` layers are the shadows they uncover. A column
+     clipped at the card's edge otherwise just looks like a mistake. */
+  background:
+    linear-gradient(to right, var(--ed-card, #fff) 40%, rgba(255, 255, 255, 0)) left center,
+    linear-gradient(to left, var(--ed-card, #fff) 40%, rgba(255, 255, 255, 0)) right center,
+    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0)) left center,
+    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0)) right center;
+  background-size: 30px 100%, 30px 100%, 12px 100%, 12px 100%;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
+}
+@media (max-width: 640px) {
+  .lb-table-scroll { margin: 0 -18px; padding: 0 18px; }
+}
 
 .lb-table { width: 100%; border-collapse: collapse; }
 .lb-table th {
@@ -1283,7 +1362,21 @@ button, input, select {
   border-bottom: 1px solid rgba(0,0,0,0.04);
   font-size: 0.9rem;
   color: var(--ed-card-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
+/* The player column is the one that's allowed to wrap — it's the only cell
+   holding something longer than a two-digit number. */
+.lb-table td.player-name-cell { white-space: normal; min-width: 7.5em; }
+
+/* Dot and name are one unit: left to itself the dot would wrap onto its own
+   line above a long username. */
+.player-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+}
+.player-chip .player-dot { margin-right: 0; flex: none; align-self: center; }
 .lb-table td:not(:nth-child(2)) { text-align: center; }
 .lb-table td:last-child {
   text-align: right;
@@ -1559,3 +1652,39 @@ button, input, select {
 }
 .history-entry-form .score-box-btn { width: auto; padding: 5px 12px; font-size: 0.78rem; }
 .history-entry-form .score-box-error { margin: 0; }
+
+/* ── Safe areas ─────────────────────────────────────────────────────
+   The app renders full-bleed on a phone (viewport-fit=cover in _app, a
+   translucent status bar in _document), so the gutters have to clear the
+   notch and the rounded corners themselves. env() resolves to 0 in an
+   ordinary browser tab, which makes every one of these a no-op there and
+   the real inset only in the installed app and in landscape.
+   Last in the file on purpose: these widen the gutters set above. */
+.topnav { padding-top: env(safe-area-inset-top); }
+
+/* The tournament page has no top nav of its own — its header is the first
+   thing on screen, so it carries the top inset instead. */
+.editorial { padding-top: env(safe-area-inset-top); }
+
+.topnav-inner,
+.app-main {
+  padding-inline: max(32px, env(safe-area-inset-left)) max(32px, env(safe-area-inset-right));
+}
+.editorial {
+  padding-inline: max(28px, env(safe-area-inset-left)) max(28px, env(safe-area-inset-right));
+}
+.page {
+  padding-inline: max(20px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-right));
+}
+
+@media (max-width: 860px) {
+  .topnav-inner,
+  .app-main {
+    padding-inline: max(20px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-right));
+  }
+}
+@media (max-width: 640px) {
+  .editorial {
+    padding-inline: max(18px, env(safe-area-inset-left)) max(18px, env(safe-area-inset-right));
+  }
+}
