@@ -186,42 +186,46 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
             No participants qualified for this month.
           </div>
         ) : (
-          <table className="lb-table">
-            <thead>
-              <tr>
-                <th></th>
-                <th className="player-name-cell">Player</th>
-                {isOverall
-                  ? tournament.games.map(gId => (
-                      <th key={gId}>{GAMES.find(g => g.id === gId)?.label.slice(0, 1) || gId}</th>
-                    ))
-                  : <th>Days played</th>}
-                <th>{isOverall ? 'Total pts' : (isRatioLike ? 'Avg ratio' : 'Total pts')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.ranked.map(r => {
-                const displayValue = isOverall
-                  ? r.value
-                  : (isRatioLike ? (r.value / (r.played || 1)).toFixed(3) : r.value);
-                return (
-                  <tr key={r.uid}>
-                    <td><span className={`rank-badge ${rankClass(r.rank)}`}>{r.rank}</span></td>
-                    <td className="player-name-cell">
-                      <span className="player-dot" style={{ background: colorForUid(r.uid) }} />
-                      {names[r.uid] || '…'}
-                    </td>
-                    {isOverall
-                      ? tournament.games.map(gId => (
-                          <td key={gId}>{r.perGame?.[gId] ? Math.round(r.perGame[gId].value) : '—'}</td>
-                        ))
-                      : <td>{r.played || 0} / {r.dailyCount}</td>}
-                    <td>{displayValue}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="lb-table-scroll">
+            <table className="lb-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th className="player-name-cell">Player</th>
+                  {isOverall
+                    ? tournament.games.map(gId => (
+                        <th key={gId}>{GAMES.find(g => g.id === gId)?.label.slice(0, 1) || gId}</th>
+                      ))
+                    : <th>Days played</th>}
+                  <th>{isOverall ? 'Total pts' : (isRatioLike ? 'Avg ratio' : 'Total pts')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.ranked.map(r => {
+                  const displayValue = isOverall
+                    ? r.value
+                    : (isRatioLike ? (r.value / (r.played || 1)).toFixed(3) : r.value);
+                  return (
+                    <tr key={r.uid}>
+                      <td><span className={`rank-badge ${rankClass(r.rank)}`}>{r.rank}</span></td>
+                      <td className="player-name-cell">
+                        <span className="player-chip">
+                          <span className="player-dot" style={{ background: colorForUid(r.uid) }} />
+                          {names[r.uid] || '…'}
+                        </span>
+                      </td>
+                      {isOverall
+                        ? tournament.games.map(gId => (
+                            <td key={gId}>{r.perGame?.[gId] ? Math.round(r.perGame[gId].value) : '—'}</td>
+                          ))
+                        : <td>{r.played || 0} / {r.dailyCount}</td>}
+                      <td>{displayValue}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
@@ -343,29 +347,33 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
           <div className="lb-meta" style={{ marginBottom: 12 }}>
             Every submitted time that day and the {isRatioLike ? 'ratio' : 'points'} it earned
           </div>
-          <table className="lb-table">
-            <thead>
-              <tr>
-                <th className="player-name-cell">Player</th>
-                <th>Time</th>
-                <th>Rank</th>
-                <th>{isRatioLike ? 'Ratio' : 'Points'}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(historyForDay?.entries || []).map(e => (
-                <tr key={e.uid}>
-                  <td className="player-name-cell">
-                    <span className="player-dot" style={{ background: colorForUid(e.uid) }} />
-                    {names[e.uid] || '…'}
-                  </td>
-                  <td>{e.timeSeconds != null ? formatSeconds(e.timeSeconds) : '— missed'}</td>
-                  <td>{e.rank || '—'}</td>
-                  <td>{isRatioLike ? e.value.toFixed(3) : e.value}</td>
+          <div className="lb-table-scroll">
+            <table className="lb-table">
+              <thead>
+                <tr>
+                  <th className="player-name-cell">Player</th>
+                  <th>Time</th>
+                  <th>Rank</th>
+                  <th>{isRatioLike ? 'Ratio' : 'Points'}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {(historyForDay?.entries || []).map(e => (
+                  <tr key={e.uid}>
+                    <td className="player-name-cell">
+                      <span className="player-chip">
+                        <span className="player-dot" style={{ background: colorForUid(e.uid) }} />
+                        {names[e.uid] || '…'}
+                      </span>
+                    </td>
+                    <td>{e.timeSeconds != null ? formatSeconds(e.timeSeconds) : '— missed'}</td>
+                    <td>{e.rank || '—'}</td>
+                    <td>{isRatioLike ? e.value.toFixed(3) : e.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
