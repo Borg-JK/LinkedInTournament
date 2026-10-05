@@ -8,7 +8,7 @@
   },
   "date_order": "MDY",
   "dashboard": "HTML/index.html",
-  "scrolls": 25,
+  "scrolls": 400,
   "interval_seconds": 300,
   "run_parser_after_scrape": true
 }
