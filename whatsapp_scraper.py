@@ -375,6 +375,91 @@ def latest_existing_game_date(path: Path) -> date | None:
     return max(dates) if dates else None
 
 
+def known_game_numbers(path: Path) -> set[int]:
+    messages = score_messages_for(path, read_existing_messages(path))
+    return {
+        game_number
+        for message in messages
+        if (game_number := game_number_from_body(path, message.body)) is not None
+    }
+
+
+def latest_existing_game_number(path: Path) -> int | None:
+    numbers = known_game_numbers(path)
+    return max(numbers) if numbers else None
+
+
+def find_missing_game_numbers(path: Path) -> list[int]:
+    """All game numbers between the earliest and latest known ones that we
+    don't have a message for yet -- i.e. every remaining hole in the history.
+    """
+    numbers = known_game_numbers(path)
+    if not numbers:
+        return []
+    lo, hi = min(numbers), max(numbers)
+    return [num for num in range(lo, hi + 1) if num not in numbers]
+
+
+def expected_game_number(path: Path, as_of: date) -> int | None:
+    """The game number that *should* exist for a given day, per the
+    (base number, base date) rule for this output file. Lets the scraper
+    know 'what day it is' relative to the puzzle numbering scheme.
+    """
+    rule = OUTPUT_GAME_DATE_RULES.get(path.name)
+    if rule is None:
+        return None
+    _pattern, base_num, base_date = rule
+    return base_num + (as_of - base_date).days
+
+
+def numbers_to_ranges(numbers: Iterable[int]) -> list[tuple[int, int]]:
+    ordered = sorted(numbers)
+    if not ordered:
+        return []
+    ranges: list[tuple[int, int]] = []
+    start = prev = ordered[0]
+    for num in ordered[1:]:
+        if num == prev + 1:
+            prev = num
+            continue
+        ranges.append((start, prev))
+        start = prev = num
+    ranges.append((start, prev))
+    return ranges
+
+
+def describe_data_gaps(path: Path, as_of: date | None = None) -> str:
+    """Human-readable summary of holes still missing from an output file and
+    whether it has caught up to today, so it's obvious when a backfill is
+    still incomplete instead of silently stalling.
+    """
+    as_of = as_of or date.today()
+    missing = find_missing_game_numbers(path)
+    lines: list[str] = []
+
+    if missing:
+        for start, end in numbers_to_ranges(missing):
+            start_date = date_from_game_number_value(path, start)
+            end_date = date_from_game_number_value(path, end)
+            if start == end:
+                lines.append(f"missing #{start} ({start_date:%Y-%m-%d})")
+            else:
+                lines.append(
+                    f"missing #{start}-#{end} ({start_date:%Y-%m-%d}..{end_date:%Y-%m-%d})"
+                )
+
+    expected = expected_game_number(path, as_of)
+    latest = latest_existing_game_number(path)
+    if expected is not None and latest is not None and latest < expected:
+        behind = expected - latest
+        lines.append(
+            f"behind schedule: latest #{latest}, expected #{expected} as of {as_of:%Y-%m-%d} "
+            f"({behind} day(s) not yet collected)"
+        )
+
+    return "; ".join(lines) if lines else "no known gaps, up to date"
+
+
 def scrape_checkpoint_date(path: Path) -> date | None:
     """
     Stop after the latest contiguous export history.
@@ -383,17 +468,7 @@ def scrape_checkpoint_date(path: Path) -> date | None:
     before the earliest missing number. This lets a later sync repair cases
     where WhatsApp Web skipped one loaded day while newer days were saved.
     """
-    messages = score_messages_for(path, read_existing_messages(path))
-    numbers = sorted({
-        game_number
-        for message in messages
-        if (game_number := game_number_from_body(path, message.body)) is not None
-    })
-    if not numbers:
-        return None
-
-    existing = set(numbers)
-    missing = [num for num in range(numbers[0], numbers[-1] + 1) if num not in existing]
+    missing = find_missing_game_numbers(path)
     if missing:
         missing_date = date_from_game_number_value(path, missing[0])
         if missing_date is not None:
@@ -603,12 +678,20 @@ async def scrape_chat(
     stop_at_date: date | None = None,
     expected_pattern: re.Pattern | None = None,
     date_order: DateOrder = "DMY",
+    stale_round_limit: int = 6,
 ) -> list[Message]:
     await open_chat(page, chat_name)
 
     by_key: dict[tuple[str, str, str, str], Message] = {}
     stale_rounds = 0
 
+    # `scrolls` is a safety ceiling, not the real stopping condition -- it
+    # only exists so a stuck page can't loop forever. The actual stop is
+    # either reaching the checkpoint date (all holes filled) or genuinely
+    # running out of history (stale_round_limit consecutive rounds with no
+    # new messages). Older bugs relied on a low `scrolls` value as the
+    # de-facto stop, which silently truncated backfills once enough time
+    # had passed that a gap needed more scrolling than that to reach.
     for _ in range(max(1, scrolls)):
         visible = await scrape_visible_messages(page, date_order=date_order)
         for message in visible:
@@ -625,10 +708,22 @@ async def scrape_chat(
             break
 
         if len(by_key) == before:
-            stale_rounds += 1
+            # WhatsApp Web sometimes needs a moment to lazily fetch older
+            # history from the server before new rows appear. Give it one
+            # extra beat before treating this round as truly stale.
+            await page.wait_for_timeout(1000)
+            retry_visible = await scrape_visible_messages(page, date_order=date_order)
+            for message in retry_visible:
+                by_key[message.key] = message
+            if has_reached_checkpoint(retry_visible, stop_at_date, output_path):
+                break
+            if len(by_key) == before:
+                stale_rounds += 1
+            else:
+                stale_rounds = 0
         else:
             stale_rounds = 0
-        if stale_rounds >= 4:
+        if stale_rounds >= stale_round_limit:
             break
 
     return sorted(by_key.values(), key=lambda message: message.sort_key())
@@ -663,7 +758,14 @@ async def run_scrape(config: dict, profile_dir: Path, headless: bool, prune_exis
     if not chats:
         raise SystemExit("No chats configured. Add a 'chats' object to the scraper config.")
 
-    scrolls = int(config.get("scrolls", 25))
+    # `scrolls` is a safety ceiling on how far back a single sync will look,
+    # not a target -- see scrape_chat(). It needs to be generous enough to
+    # scroll all the way back through a multi-week gap (e.g. after the
+    # scraper wasn't run for a while), since that distance only grows for
+    # as long as the gap remains unfilled.
+    scrolls = int(config.get("scrolls", 400))
+    today = date.today()
+    print(f"Today is {today:%Y-%m-%d}.")
 
     async with async_playwright() as p:
         context = await p.chromium.launch_persistent_context(
@@ -698,6 +800,8 @@ async def run_scrape(config: dict, profile_dir: Path, headless: bool, prune_exis
             added, total, skipped = write_merged_export(output_path, messages, prune_existing=prune_existing)
             skipped_note = f", skipped {skipped} non-game message(s)" if skipped else ""
             print(f"  saved {output_file}: +{added} new, {total} total{skipped_note}")
+            if expected_pattern is not None:
+                print(f"  {describe_data_gaps(output_path, as_of=today)}")
 
         await context.close()
 
@@ -855,6 +959,50 @@ class ScraperSelfTests(unittest.TestCase):
         self.assertFalse(
             has_reached_checkpoint(messages, date(2026, 6, 11), Path("queens.txt"))
         )
+
+    def test_find_missing_game_numbers_reports_every_hole(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "zip.txt"
+            path.write_text(
+                "[24/06/2026, 09:06:00] Adam: Zip #464 | 0:11\n"
+                "[26/06/2026, 09:07:00] Evie: Zip #466 | 0:12\n"
+                "[30/06/2026, 09:08:00] Igor: Zip #470 | 0:09\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(find_missing_game_numbers(path), [465, 467, 468, 469])
+
+    def test_expected_game_number_matches_todays_puzzle(self):
+        self.assertEqual(
+            expected_game_number(Path("zip.txt"), date(2026, 6, 25)),
+            465,
+        )
+
+    def test_numbers_to_ranges_groups_consecutive_runs(self):
+        self.assertEqual(
+            numbers_to_ranges([465, 467, 468, 469]),
+            [(465, 465), (467, 469)],
+        )
+
+    def test_describe_data_gaps_reports_holes_and_being_behind(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "zip.txt"
+            path.write_text(
+                "[24/06/2026, 09:06:00] Adam: Zip #464 | 0:11\n"
+                "[26/06/2026, 09:07:00] Evie: Zip #466 | 0:12\n",
+                encoding="utf-8",
+            )
+            summary = describe_data_gaps(path, as_of=date(2026, 6, 30))
+            self.assertIn("missing #465", summary)
+            self.assertIn("behind schedule", summary)
+
+    def test_describe_data_gaps_reports_up_to_date(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "zip.txt"
+            path.write_text("[25/06/2026, 09:06:00] Adam: Zip #465 | 0:11\n", encoding="utf-8")
+            self.assertEqual(
+                describe_data_gaps(path, as_of=date(2026, 6, 25)),
+                "no known gaps, up to date",
+            )
 
 
 def run_self_tests() -> None:
