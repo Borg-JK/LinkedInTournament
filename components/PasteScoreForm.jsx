@@ -6,11 +6,11 @@
 // match the box this was pasted into.
 import { useState } from 'react';
 import { parseShareText } from '../lib/shareParser';
-import { GAMES } from '../lib/games';
+import { GAMES, dateForPuzzleNumber, todayIso } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import InlineTimeEditor from './InlineTimeEditor';
 
-export default function PasteScoreForm({ gameId, onSave, onCancel, autoFocus = false }) {
+export default function PasteScoreForm({ gameId, dateIso, onSave, onCancel, autoFocus = false }) {
   const [text, setText] = useState('');
   const [parsed, setParsed] = useState(null);
   const [manual, setManual] = useState(false);
@@ -30,7 +30,9 @@ export default function PasteScoreForm({ gameId, onSave, onCancel, autoFocus = f
     setSaveError('');
     setBusy(true);
     try {
-      await onSave(parsed.timeSeconds, parsed.qualifier);
+      // The puzzle number goes through too: it names the day this score
+      // belongs to exactly, which the caller trusts over the day on screen.
+      await onSave(parsed.timeSeconds, parsed.qualifier, parsed.puzzleNum);
     } catch (err) {
       setSaveError(err.message || 'Could not save. Try again.');
     } finally {
@@ -55,11 +57,14 @@ export default function PasteScoreForm({ gameId, onSave, onCancel, autoFocus = f
   }
 
   if (parsed?.ok) {
+    const parsedDate = dateForPuzzleNumber(gameId, parsed.puzzleNum);
+    const landsElsewhere = parsedDate && parsedDate <= todayIso() && parsedDate !== dateIso;
     return (
       <div className="paste-score-form">
         <div className="paste-score-preview">
           {label} #{parsed.puzzleNum} — {formatSeconds(parsed.timeSeconds)}
           {parsed.qualifier ? ` (${parsed.qualifier})` : ''}
+          {landsElsewhere && <div className="paste-score-day">saves to {parsedDate}</div>}
         </div>
         <div className="paste-score-actions">
           <button type="button" className="score-box-btn" onClick={handleConfirm} disabled={busy}>{busy ? '…' : 'Confirm'}</button>

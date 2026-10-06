@@ -1653,6 +1653,113 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .history-entry-form .score-box-btn { width: auto; padding: 5px 12px; font-size: 0.78rem; }
 .history-entry-form .score-box-error { margin: 0; }
 
+/* ── Puzzle-day selector above the score boxes ─────────────────────── */
+
+.score-day { display: block; }
+
+.score-day-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-bottom: 14px;
+}
+
+.score-day-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-on-dark-muted);
+  font-weight: 600;
+}
+
+.score-day-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.score-day-tabs .home-tab { padding: 8px 16px; font-size: 0.84rem; }
+
+.score-day-count {
+  margin-left: auto;
+  font-size: 0.82rem;
+  color: var(--text-on-dark-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Only on screen between midnight and the 09:00 publish time, when "today's
+   puzzle" carrying yesterday's date genuinely needs explaining. */
+.score-day-note {
+  margin: -4px 0 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--gold-dim);
+  border: 1px solid rgba(240, 217, 138, 0.3);
+  color: var(--text-on-dark);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+/* Says where a pasted score actually landed when its puzzle number pointed
+   at a different day than the one on screen. */
+.score-box-rehomed {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--sb-text-muted, var(--text-muted));
+}
+
+.paste-score-day {
+  margin-top: 3px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--sb-accent, var(--gold));
+}
+
+@media (max-width: 520px) {
+  .score-day-count { margin-left: 0; width: 100%; }
+}
+
+/* ── History: fill in any past day ─────────────────────────────────── */
+
+.day-fill-list {
+  list-style: none;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.day-fill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 2px;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+.day-fill-row:last-child { border-bottom: none; }
+
+.day-fill-game {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: var(--text);
+  min-width: 0;
+}
+.day-fill-game .player-dot { margin-right: 5px; }
+
+.day-fill-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+}
+
+.day-fill-empty {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
 /* ── Safe areas ─────────────────────────────────────────────────────
    The app renders full-bleed on a phone (viewport-fit=cover in _app, a
    translucent status bar in _document), so the gutters have to clear the

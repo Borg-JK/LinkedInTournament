@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
 import { submitScore } from '../lib/useScores';
 import { parseShareText } from '../lib/shareParser';
-import { GAMES, todayIso } from '../lib/games';
+import { GAMES, todayIso, dateForPuzzleNumber, activePuzzleDayIso } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
 import InlineTimeEditor from './InlineTimeEditor';
@@ -20,6 +20,7 @@ export default function SharedScoreIntake() {
   const { user } = useAuth();
   const [pending, setPending] = useState(null); // parseShareText() result, or null
   const [saved, setSaved] = useState(false);
+  const [savedDate, setSavedDate] = useState(null);
   const [dismissed, setDismissed] = useState(false);
   const [manualGame, setManualGame] = useState(GAMES[0].id);
 
@@ -36,16 +37,31 @@ export default function SharedScoreIntake() {
 
   if (!pending || dismissed || !user) return null;
 
-  async function handleSave(seconds, gameId, qualifier) {
-    await submitScore(user.uid, gameId, todayIso(), seconds, qualifier);
+  // Same rule as the score boxes: the share's own puzzle number decides
+  // which day this belongs to, so a score shared at 08:30 lands on the
+  // puzzle it was actually played on rather than on today. Falls back to the
+  // live puzzle day when there's no usable number (manual entry below, or a
+  // number that resolves into the future and so can't be right).
+  function dateFor(gameId, puzzleNum) {
+    const fromNum = puzzleNum != null ? dateForPuzzleNumber(gameId, puzzleNum) : null;
+    if (fromNum && fromNum <= todayIso()) return fromNum;
+    return activePuzzleDayIso();
+  }
+
+  async function handleSave(seconds, gameId, qualifier, puzzleNum) {
+    const target = dateFor(gameId, puzzleNum);
+    await submitScore(user.uid, gameId, target, seconds, qualifier);
+    setSavedDate(target);
     setSaved(true);
-    setTimeout(() => setDismissed(true), 1600);
+    setTimeout(() => setDismissed(true), 2600);
   }
 
   if (saved) {
     return (
       <section className="panel" style={{ marginBottom: 24, borderColor: 'var(--gold)' }}>
-        <div className="section-sub" style={{ margin: 0 }}>Saved from your LinkedIn share ✓</div>
+        <div className="section-sub" style={{ margin: 0 }}>
+          Saved from your LinkedIn share ✓{savedDate ? ` — logged under ${savedDate}` : ''}
+        </div>
       </section>
     );
   }
@@ -61,9 +77,10 @@ export default function SharedScoreIntake() {
           <div className="section-sub">
             Detected <strong style={{ color: theme?.accent }}>{label}</strong> #{pending.puzzleNum} — {formatSeconds(pending.timeSeconds)}
             {pending.qualifier ? ` (${pending.qualifier})` : ''}
+            {' · '}logs under {dateFor(pending.gameId, pending.puzzleNum)}
           </div>
           <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
-            <button className="btn-sm" onClick={() => handleSave(pending.timeSeconds, pending.gameId, pending.qualifier)}>
+            <button className="btn-sm" onClick={() => handleSave(pending.timeSeconds, pending.gameId, pending.qualifier, pending.puzzleNum)}>
               Save this score
             </button>
             <button className="btn-sm btn-sm-ghost" onClick={() => setDismissed(true)}>Discard</button>
