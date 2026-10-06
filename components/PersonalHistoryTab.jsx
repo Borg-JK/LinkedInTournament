@@ -8,14 +8,24 @@ import {
 import { Line } from 'react-chartjs-2';
 import { useAuth } from '../lib/useAuth';
 import { usePlayerGameScores, submitScore, deleteScore } from '../lib/useScores';
-import { GAMES, puzzleNumberFor, todayIso, yesterdayIso } from '../lib/games';
+import { GAMES, puzzleNumberFor, todayIso, activePuzzleDayIso } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
-import { buildMonthlyHistory, averageByMonthForGame } from '../lib/personalHistory';
+import { buildMonthlyHistory, averageByMonthForGame, buildDayPicker } from '../lib/personalHistory';
 import { monthLabel } from '../lib/months';
 import InlineTimeEditor from './InlineTimeEditor';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip);
+
+// "Mon 5 Oct · 4/6" — the counts are the whole point of the dropdown, so
+// they're in the option text itself rather than hidden until you pick one.
+function dayOptionLabel(day, liveDay) {
+  const [y, m, d] = day.date.split('-').map(Number);
+  const when = new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+  const suffix = day.date === liveDay ? ' (today)' : '';
+  const filled = day.filled === 0 ? 'nothing yet' : `${day.filled}/${day.total}`;
+  return `${when}${suffix} · ${filled}`;
+}
 
 export default function PersonalHistoryTab() {
   const { user } = useAuth();
@@ -23,7 +33,10 @@ export default function PersonalHistoryTab() {
   const [chartGame, setChartGame] = useState(GAMES[0].id);
   const [historyGame, setHistoryGame] = useState(GAMES[0].id);
   const [editingKey, setEditingKey] = useState(null); // `${gameId}|${date}`
-  const [backfillGame, setBackfillGame] = useState(null);
+  // Which past day the "fill in a day" picker is showing. Defaults to the
+  // live puzzle day, which before 09:00 is still yesterday's date.
+  const [liveDay] = useState(() => activePuzzleDayIso());
+  const [pickedDay, setPickedDay] = useState(() => activePuzzleDayIso());
 
   async function handleSaveEdit(gameId, date, seconds) {
     await submitScore(uid, gameId, date, seconds);
@@ -37,12 +50,6 @@ export default function PersonalHistoryTab() {
     if (editingKey === `${gameId}|${date}`) setEditingKey(null);
   }
 
-  const yesterday = yesterdayIso();
-
-  async function handleBackfillSave(gameId, seconds) {
-    await submitScore(uid, gameId, yesterday, seconds);
-    setBackfillGame(null);
-  }
 
   const pairs = useMemo(() => (uid ? GAMES.map(g => ({ uid, gameId: g.id })) : []), [uid]);
   const byUidGame = usePlayerGameScores(pairs);
@@ -63,33 +70,72 @@ export default function PersonalHistoryTab() {
 
   if (!ready) return <div className="list-empty">Loading…</div>;
 
-  const missingYesterday = GAMES.filter(g => !entriesByGame[g.id].some(e => e.date === yesterday));
+  // 120 days back is far enough to cover "I forgot for a while" without
+  // turning the dropdown into something you have to scroll forever.
+  const dayOptions = buildDayPicker(entriesByGame, liveDay, 120);
+  const pickedCounts = dayOptions.find(d => d.date === pickedDay);
 
-  const backfillPanel = missingYesterday.length > 0 && (
-    <section className="panel" style={{ marginBottom: 24 }}>
-      <h2>Missed yesterday?</h2>
-      <div className="section-sub">
-        Fill in a time for {yesterday} — you can only backfill one day back, so don't let it slip further.
-      </div>
-      {backfillGame ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-          <span style={{ fontWeight: 700 }}>{GAMES.find(g => g.id === backfillGame)?.label}</span>
-          <InlineTimeEditor
-            onSave={seconds => handleBackfillSave(backfillGame, seconds)}
-            onCancel={() => setBackfillGame(null)}
-            saveLabel="Add"
-            autoFocus
-          />
-        </div>
-      ) : (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-          {missingYesterday.map(g => (
-            <button key={g.id} type="button" className="chip-link" onClick={() => setBackfillGame(g.id)}>
-              + {g.label}
-            </button>
+  const dayFillPanel = (
+    <section className="panel panel-accent" style={{ marginBottom: 24 }}>
+      <div className="panel-head-row" style={{ flexWrap: 'wrap', rowGap: 10 }}>
+        <h2>Fill in a day</h2>
+        <select
+          className="daily-compare-select"
+          style={{ width: 'auto', marginBottom: 0 }}
+          value={pickedDay}
+          onChange={e => setPickedDay(e.target.value)}
+        >
+          {dayOptions.map(d => (
+            <option key={d.date} value={d.date}>
+              {dayOptionLabel(d, liveDay)}
+            </option>
           ))}
-        </div>
-      )}
+        </select>
+      </div>
+      <div className="section-sub">
+        Any day you like — the dropdown says how many games you logged on each, so a day you
+        forgot is easy to spot. {pickedCounts ? `${pickedCounts.filled} of ${pickedCounts.total} filled in on this one.` : ''}
+      </div>
+
+      <ul className="day-fill-list">
+        {GAMES.map(g => {
+          const entry = (entriesByGame[g.id] || []).find(e => e.date === pickedDay) || null;
+          const key = `${g.id}|${pickedDay}`;
+          const isEditing = editingKey === key;
+          const gTheme = themeFor(g.id);
+          return (
+            <li key={g.id} className="day-fill-row">
+              <span className="day-fill-game">
+                <span className="player-dot" style={{ background: gTheme.accent }} />
+                {g.label}
+                <span className="lb-meta"> #{puzzleNumberFor(g.id, pickedDay)}</span>
+              </span>
+
+              {isEditing ? (
+                <InlineTimeEditor
+                  initialSeconds={entry?.timeSeconds}
+                  onSave={seconds => handleSaveEdit(g.id, pickedDay, seconds)}
+                  onCancel={() => setEditingKey(null)}
+                  className="history-entry-form"
+                  saveLabel={entry ? 'Save' : 'Add'}
+                  autoFocus
+                />
+              ) : entry ? (
+                <span className="day-fill-actions">
+                  <span className="history-entry-time">{formatSeconds(entry.timeSeconds)}</span>
+                  <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
+                  <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(g.id, pickedDay)}>Delete</button>
+                </span>
+              ) : (
+                <span className="day-fill-actions">
+                  <span className="day-fill-empty">not filled in</span>
+                  <button className="chip-link" onClick={() => setEditingKey(key)}>+ Add</button>
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 
@@ -97,13 +143,15 @@ export default function PersonalHistoryTab() {
     return (
       <>
         <div className="panel-empty">No scores yet — enter a time above and your history builds up here.</div>
-        {backfillPanel}
+        {dayFillPanel}
       </>
     );
   }
 
   return (
     <>
+      {dayFillPanel}
+
       <section className="panel" style={{ marginBottom: 24 }}>
         <div className="panel-head-row">
           <h2>Trend</h2>
@@ -213,7 +261,6 @@ export default function PersonalHistoryTab() {
         );
       })}
 
-      {backfillPanel}
     </>
   );
 }
