@@ -123,11 +123,15 @@ export default function PersonalHistoryTab() {
             {months.map(m => <option key={m} value={m}>{monthLabel(m)}</option>)}
           </select>
         </label>
-        {gameTabs}
       </div>
 
       <section className="panel panel-accent" style={{ marginBottom: 24 }}>
-        <h2>{gameLabel} · {monthLabel(activeMonth)}</h2>
+        {/* The game picker lives in here, not up with the month: it only
+            changes this chart, while the month changes the whole tab. */}
+        <div className="panel-head-row" style={{ flexWrap: 'wrap', rowGap: 12 }}>
+          <h2>{gameLabel} · {monthLabel(activeMonth)}</h2>
+          {gameTabs}
+        </div>
         <div className="section-sub">
           Your time every day this month — a gap is a day you didn&apos;t play.
         </div>
