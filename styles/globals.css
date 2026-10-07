@@ -1614,9 +1614,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   gap: 6px;
 }
 .history-game-tab {
-  padding: 5px 13px;
+  padding: 8px 16px;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   font-weight: 700;
   font-family: 'DM Sans', sans-serif;
   cursor: pointer;
@@ -1753,20 +1753,6 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   font-weight: 600;
 }
 
-/* The game pills sit on the dark page here rather than inside a white
-   panel, so they need the light-on-dark treatment the panel gave them. */
-.history-controls .history-game-tab {
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-on-dark-muted);
-}
-.history-controls .history-game-tab:hover { color: var(--text-on-dark); }
-.history-controls .history-game-tab.active {
-  background: var(--hg-accent, var(--gold));
-  color: var(--hg-text, #1a1508);
-  border-color: transparent;
-}
-
 @media (max-width: 520px) {
   .history-controls { gap: 10px 12px; }
   .history-control { width: 100%; }
@@ -1888,7 +1874,6 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 }
 
 .history-controls .daily-compare-select { font-size: 0.98rem; padding: 11px 18px; border-radius: 999px; }
-.history-controls .history-game-tab { font-size: 0.88rem; padding: 8px 16px; }
 
 @media (max-width: 640px) {
   .day-fill-panel { padding: 26px 20px; }
