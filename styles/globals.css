@@ -1775,46 +1775,131 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 
 /* ── History: fill in any past day ─────────────────────────────────── */
 
-.day-fill-list {
-  list-style: none;
-  margin-top: 16px;
+/* One card per game rather than a row per game: on a wide screen a row put
+   the game name and its time at opposite ends of a 1900px panel with
+   nothing in between, which is a long way for an eye to travel to answer
+   "did I log Zip?". Cards keep each game's name, number and time together
+   as one object, and read the same at any width. */
+.day-fill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.day-fill-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 16px 18px;
+  border-radius: 16px;
+  border: 1.5px solid var(--border-soft);
+  border-top: 4px solid var(--df-accent, var(--gold));
+  background: var(--surface2);
+  text-align: center;
 }
 
-.day-fill-row {
+/* A day with no time on it should be visibly lighter than one that's done,
+   so a half-filled day reads at a glance instead of needing to be read. */
+.day-fill-card-missing {
+  background: transparent;
+  border-style: dashed;
+  border-top-style: solid;
+}
+
+.day-fill-card-head {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 2px;
-  border-bottom: 1px solid var(--border-soft);
-  font-size: 0.9rem;
-  flex-wrap: wrap;
+  gap: 2px;
 }
-.day-fill-row:last-child { border-bottom: none; }
 
-.day-fill-game {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+.day-fill-card-game {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.12rem;
   font-weight: 600;
   color: var(--text);
-  min-width: 0;
-}
-.day-fill-game .player-dot { margin-right: 5px; }
-
-.day-fill-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  flex: none;
+  line-height: 1.2;
 }
 
-.day-fill-empty {
+.day-fill-card-num {
+  font-size: 0.82rem;
   color: var(--text-muted);
-  font-size: 0.85rem;
-  font-style: italic;
+  font-variant-numeric: tabular-nums;
+}
+
+.day-fill-card-time {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--df-accent, var(--gold));
+  font-variant-numeric: tabular-nums;
+}
+
+.day-fill-card-empty {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1;
+  padding: 7px 0;
+}
+
+.day-fill-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.day-fill-card-actions .chip-link { font-size: 0.9rem; }
+
+.day-fill-card-add {
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 1.5px solid var(--df-accent, var(--gold));
+  background: transparent;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.day-fill-card-add:hover {
+  background: var(--df-accent, var(--gold));
+  color: #1a1508;
+}
+
+/* The shared time editor sits inside a card here, so give it room to
+   breathe rather than the compact score-box treatment. */
+.day-fill-card .score-box-form { width: 100%; gap: 8px; }
+.day-fill-card .score-box-form input { max-width: 110px; font-size: 1.05rem; padding: 10px 8px; }
+.day-fill-card .score-box-btn { max-width: 110px; padding: 9px 12px; font-size: 0.88rem; }
+
+/* This panel is the one people actually act in, so it carries a size up
+   from the reading-only panels around it — the old row list was set at a
+   scale that made a six-game day genuinely hard to scan. */
+.day-fill-panel { padding: 34px 32px; }
+.day-fill-panel h2 { font-size: 1.5rem; }
+.day-fill-panel .section-sub { font-size: 1rem; line-height: 1.6; }
+.day-fill-panel .daily-compare-select {
+  font-size: 1rem;
+  padding: 12px 18px;
+  border-radius: 999px;
+}
+
+.history-controls .daily-compare-select { font-size: 0.98rem; padding: 11px 18px; border-radius: 999px; }
+.history-controls .history-game-tab { font-size: 0.88rem; padding: 8px 16px; }
+
+@media (max-width: 640px) {
+  .day-fill-panel { padding: 26px 20px; }
+  .day-fill-panel h2 { font-size: 1.3rem; }
+  /* 140px, not 150: at 390px wide the panel leaves 310px of content, and
+     two 150px columns plus the gap need 312 — which quietly dropped the
+     grid to one card per row. */
+  .day-fill-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .day-fill-card { padding: 16px 12px 14px; }
+  .day-fill-card-time { font-size: 1.7rem; }
+  .day-fill-card-game { font-size: 1rem; }
 }
 
 /* ── Safe areas ─────────────────────────────────────────────────────

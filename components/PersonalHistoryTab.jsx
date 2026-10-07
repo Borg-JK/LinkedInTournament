@@ -178,7 +178,7 @@ export default function PersonalHistoryTab() {
         )}
       </section>
 
-      <section className="panel panel-accent" style={{ marginBottom: 24 }}>
+      <section className="panel panel-accent day-fill-panel">
         <div className="panel-head-row" style={{ flexWrap: 'wrap', rowGap: 10 }}>
           <h2>Fill in a day</h2>
           <select
@@ -198,83 +198,53 @@ export default function PersonalHistoryTab() {
           {activeDayRow ? ` ${activeDayRow.filled} of ${activeDayRow.total} filled in on this one.` : ''}
         </div>
 
-        <ul className="day-fill-list">
+        <div className="day-fill-grid">
           {GAMES.map(g => {
             const entry = (entriesByGame[g.id] || []).find(e => e.date === activeDay) || null;
             const key = `${g.id}|${activeDay}`;
             const isEditing = editingKey === key;
             const gTheme = themeFor(g.id);
             return (
-              <li key={g.id} className="day-fill-row">
-                <span className="day-fill-game">
-                  <span className="player-dot" style={{ background: gTheme.accent }} />
-                  {g.label}
-                  <span className="lb-meta"> #{puzzleNumberFor(g.id, activeDay)}</span>
-                </span>
+              <div
+                key={g.id}
+                className={`day-fill-card${entry ? '' : ' day-fill-card-missing'}`}
+                style={{ '--df-accent': gTheme.accent }}
+              >
+                <div className="day-fill-card-head">
+                  <span className="day-fill-card-game">{g.label}</span>
+                  <span className="day-fill-card-num">#{puzzleNumberFor(g.id, activeDay)}</span>
+                </div>
 
                 {isEditing ? (
                   <InlineTimeEditor
                     initialSeconds={entry?.timeSeconds}
                     onSave={seconds => handleSaveEdit(g.id, activeDay, seconds)}
                     onCancel={() => setEditingKey(null)}
-                    className="history-entry-form"
                     saveLabel={entry ? 'Save' : 'Add'}
                     autoFocus
                   />
                 ) : entry ? (
-                  <span className="day-fill-actions">
-                    <span className="history-entry-time">{formatSeconds(entry.timeSeconds)}</span>
-                    <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
-                    <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(g.id, activeDay)}>Delete</button>
-                  </span>
+                  <>
+                    <div className="day-fill-card-time">{formatSeconds(entry.timeSeconds)}</div>
+                    <div className="day-fill-card-actions">
+                      <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
+                      <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(g.id, activeDay)}>Delete</button>
+                    </div>
+                  </>
                 ) : (
-                  <span className="day-fill-actions">
-                    <span className="day-fill-empty">not filled in</span>
-                    <button className="chip-link" onClick={() => setEditingKey(key)}>+ Add</button>
-                  </span>
+                  <>
+                    <div className="day-fill-card-empty">Not filled in</div>
+                    <button type="button" className="day-fill-card-add" onClick={() => setEditingKey(key)}>
+                      Add a time
+                    </button>
+                  </>
                 )}
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </section>
 
-      <section className="panel">
-        <h2>Every {gameLabel} time in {monthLabel(activeMonth)}</h2>
-        {stats ? (
-          <ul className="history-entry-list">
-            {stats.entries.map(e => {
-              const key = `${game}|${e.date}`;
-              const isEditing = editingKey === key;
-              return (
-                <li key={e.date} className="history-entry-row">
-                  <span className="history-entry-date">{e.date}</span>
-                  <span className="lb-meta">#{puzzleNumberFor(game, e.date)}</span>
-                  {isEditing ? (
-                    <InlineTimeEditor
-                      initialSeconds={e.timeSeconds}
-                      onSave={seconds => handleSaveEdit(game, e.date, seconds)}
-                      onCancel={() => setEditingKey(null)}
-                      className="history-entry-form"
-                      autoFocus
-                    />
-                  ) : (
-                    <>
-                      <span className="history-entry-time">{formatSeconds(e.timeSeconds)}</span>
-                      <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
-                      <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(game, e.date)}>Delete</button>
-                    </>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <div className="panel-empty" style={{ marginTop: 10 }}>
-            No {gameLabel} entries in {monthLabel(activeMonth)} — use the day picker above to add one.
-          </div>
-        )}
-      </section>
     </>
   );
 }
