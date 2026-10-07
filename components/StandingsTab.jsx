@@ -1,21 +1,27 @@
 // components/StandingsTab.jsx
 import { useState, useMemo, useEffect } from 'react';
-import {
-  Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend,
-} from 'chart.js';
-import { Bar, Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 import { computeStandings, rankStandings } from '../lib/scoring';
 import { computeTournamentStandings } from '../lib/standings';
-import {
-  RANK_LABELS, RANK_COLORS, DOW_ORDER_SHORT, dateRange,
-  computeRankComposition, computeRankProgressionSimple, computeCumulativeRatio, computeAvgRankByDow,
-} from '../lib/standingsCharts';
+import { RANK_LABELS, RANK_COLORS, computeRankComposition } from '../lib/standingsCharts';
 import { monthsBetween, monthLabel, monthBounds } from '../lib/months';
 import { GAMES } from '../lib/games';
 import { colorForUid } from '../lib/colors';
 import { formatSeconds } from '../lib/time';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+
+// Spelled out on a wide screen, abbreviated on a phone — see .lb-col-* in
+// globals.css. Both are in the markup so this survives server rendering.
+function ColLabel({ long, short }) {
+  return (
+    <>
+      <span className="lb-col-long">{long}</span>
+      <span className="lb-col-short">{short}</span>
+    </>
+  );
+}
 
 function rankClass(rank) {
   return rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
@@ -72,22 +78,17 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
     return { ranked, perGameForOverall: false, entriesByUid, result };
   }, [tournament, byUidGame, game, isOverall, start, end, joinedAtByUid]);
 
-  // The three charts that used to sit under a per-game leaderboard on the
-  // original dashboard — rank composition, rank progression, avg rank by
-  // day of week. Only meaningful for a specific game (not Overall, which
-  // isn't a single race with day-by-day finishing positions).
+  // Rank composition — how often each player finished in each position —
+  // is the one chart that survived; it answers a question the leaderboard
+  // can't. Only meaningful for a specific game (not Overall, which isn't a
+  // single race with day-by-day finishing positions).
   const charts = useMemo(() => {
     if (isOverall || !rows.result || rows.ranked.length === 0) return null;
     const participants = rows.result.participants;
-    const dates = dateRange(start, end);
     const composition = tournament.scoringMetric === 'simple'
       ? computeRankComposition(rows.entriesByUid, participants, start, end, joinedAtByUid)
       : null;
-    const progression = tournament.scoringMetric === 'simple'
-      ? computeRankProgressionSimple(rows.entriesByUid, participants, start, end, joinedAtByUid, dates)
-      : computeCumulativeRatio(rows.result.daily, participants, dates);
-    const dowRank = computeAvgRankByDow(rows.entriesByUid, participants, start, end, joinedAtByUid);
-    return { participants, dates, composition, progression, dowRank };
+    return { participants, composition };
   }, [isOverall, rows, tournament.scoringMetric, start, end, joinedAtByUid]);
 
   // Day-by-day ledger — exactly what fed the leaderboard above, so a
@@ -196,8 +197,12 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
                     ? tournament.games.map(gId => (
                         <th key={gId}>{GAMES.find(g => g.id === gId)?.label.slice(0, 1) || gId}</th>
                       ))
-                    : <th>Days played</th>}
-                  <th>{isOverall ? 'Total pts' : (isRatioLike ? 'Avg ratio' : 'Total pts')}</th>
+                    : <th><ColLabel long="Days played" short="Days" /></th>}
+                  <th>
+                    {isOverall || !isRatioLike
+                      ? <ColLabel long="Total pts" short="Pts" />
+                      : <ColLabel long="Avg ratio" short="Ratio" />}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -274,65 +279,6 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
             </div>
           )}
 
-          <div className="leaderboard-card">
-            <div className="lb-header">
-              <div className="lb-title">Daily Rank Progression</div>
-              <div className="lb-meta">{isRatioLike ? 'Cumulative ratio over time — lower is better' : 'Smoothed daily rank — lower is better'}</div>
-            </div>
-            <div style={{ position: 'relative', height: 280 }}>
-              <Line
-                data={{
-                  labels: charts.dates.map(d => `${d.slice(8, 10)}/${d.slice(5, 7)}`),
-                  datasets: charts.participants.map(uid => ({
-                    label: names[uid] || '…',
-                    data: charts.progression[uid],
-                    borderColor: colorForUid(uid),
-                    backgroundColor: 'transparent',
-                    tension: 0.3,
-                    pointRadius: 0,
-                    borderWidth: 2.5,
-                    spanGaps: true,
-                  })),
-                }}
-                options={{
-                  maintainAspectRatio: false,
-                  plugins: { legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } } },
-                  scales: {
-                    x: { ticks: { maxTicksLimit: 12 } },
-                    y: isRatioLike ? {} : { reverse: true, min: 1, ticks: { stepSize: 1 } },
-                  },
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="leaderboard-card">
-            <div className="lb-header">
-              <div className="lb-title">Avg Rank by Day of Week</div>
-              <div className="lb-meta">1 = fastest</div>
-            </div>
-            <div style={{ position: 'relative', height: 260 }}>
-              <Line
-                data={{
-                  labels: DOW_ORDER_SHORT,
-                  datasets: charts.participants.map(uid => ({
-                    label: names[uid] || '…',
-                    data: charts.dowRank[uid],
-                    borderColor: colorForUid(uid),
-                    backgroundColor: 'transparent',
-                    tension: 0.3,
-                    pointRadius: 4,
-                    borderWidth: 2.5,
-                  })),
-                }}
-                options={{
-                  maintainAspectRatio: false,
-                  plugins: { legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } } },
-                  scales: { y: { reverse: true, min: 1, ticks: { stepSize: 1 } } },
-                }}
-              />
-            </div>
-          </div>
         </>
       )}
 
@@ -354,7 +300,7 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
                   <th className="player-name-cell">Player</th>
                   <th>Time</th>
                   <th>Rank</th>
-                  <th>{isRatioLike ? 'Ratio' : 'Points'}</th>
+                  <th>{isRatioLike ? 'Ratio' : <ColLabel long="Points" short="Pts" />}</th>
                 </tr>
               </thead>
               <tbody>
