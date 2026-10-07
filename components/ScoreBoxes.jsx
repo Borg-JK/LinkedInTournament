@@ -161,19 +161,23 @@ export default function ScoreBoxes() {
       <div className="score-day-bar">
         <span className="score-day-label">Scores for</span>
         <div className="score-day-tabs">
+          {/* Name and date are separate spans so a phone can stack them —
+              "Today" over "Wed 7 Oct" — and still fit both days on one row. */}
           <button
             type="button"
-            className={`home-tab${dateIso === liveDay ? ' active' : ''}`}
+            className={`home-tab score-day-tab${dateIso === liveDay ? ' active' : ''}`}
             onClick={() => setDateIso(liveDay)}
           >
-            Today&apos;s puzzle · {dayLabel(liveDay)}
+            <span className="score-day-tab-name">Today</span>
+            <span className="score-day-tab-date">{dayLabel(liveDay)}</span>
           </button>
           <button
             type="button"
-            className={`home-tab${dateIso === previousDay ? ' active' : ''}`}
+            className={`home-tab score-day-tab${dateIso === previousDay ? ' active' : ''}`}
             onClick={() => setDateIso(previousDay)}
           >
-            Yesterday · {dayLabel(previousDay)}
+            <span className="score-day-tab-name">Yesterday</span>
+            <span className="score-day-tab-date">{dayLabel(previousDay)}</span>
           </button>
         </div>
         {!loading && <span className="score-day-count">{filledIn} of {GAMES.length} filled in</span>}

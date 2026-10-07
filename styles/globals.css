@@ -1689,6 +1689,14 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .score-day-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 .score-day-tabs .home-tab { padding: 8px 16px; font-size: 0.84rem; }
 
+/* One line with a separator where there's room; two lines on a phone. */
+.score-day-tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.score-day-tab-date::before { content: '· '; opacity: 0.7; }
+
 .score-day-count {
   margin-left: auto;
   font-size: 0.82rem;
@@ -1727,6 +1735,27 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 
 @media (max-width: 520px) {
   .score-day-count { margin-left: 0; width: 100%; }
+
+  /* Two equal columns rather than wrapping: both days stay reachable
+     without the second one dropping to a line of its own. */
+  .score-day-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+  .score-day-tab {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .score-day-tab-name { font-size: 0.95rem; font-weight: 700; }
+  .score-day-tab-date { font-size: 0.78rem; font-weight: 600; opacity: 0.75; }
+  /* The date is its own line now, so it doesn't need a separator in front. */
+  .score-day-tab-date::before { content: none; }
 }
 
 /* ── History: the month + game picker that drives the whole tab ────── */
