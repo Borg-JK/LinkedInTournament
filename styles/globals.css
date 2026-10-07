@@ -1310,11 +1310,24 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   margin-bottom: 20px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.12);
 }
+/* Column headings that abbreviate on a phone. "Days played" and "Total pts"
+   spelled out cost ~35px of table width between them, which was the
+   difference between these tables fitting and their last column sitting
+   half off the card edge. */
+.lb-col-short { display: none; }
+
 @media (max-width: 640px) {
   .leaderboard-card { padding: 20px 18px; }
-  .lb-table th { padding: 8px 7px; letter-spacing: 0.08em; }
-  .lb-table td { padding: 11px 7px; }
-  .lb-table td:last-child { font-size: 1rem; }
+  .lb-table th { padding: 8px 5px; letter-spacing: 0.06em; }
+  .lb-table td { padding: 11px 5px; }
+  .lb-table td:last-child { font-size: 1rem; padding-right: 2px; }
+  .lb-table th:last-child { padding-right: 2px; }
+  /* The rank badge is a fixed 28px — it doesn't need a column's worth of
+     padding around it on a narrow screen. */
+  .lb-table th:first-child, .lb-table td:first-child { padding-left: 0; padding-right: 2px; }
+  .lb-table td.player-name-cell { min-width: 0; }
+  .lb-col-long { display: none; }
+  .lb-col-short { display: inline; }
 }
 .lb-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; }
 .lb-title { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 500; color: var(--ed-card-text); letter-spacing: -0.01em; }
@@ -1714,6 +1727,50 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 
 @media (max-width: 520px) {
   .score-day-count { margin-left: 0; width: 100%; }
+}
+
+/* ── History: the month + game picker that drives the whole tab ────── */
+
+.history-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  margin-bottom: 20px;
+}
+
+.history-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.history-control-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-on-dark-muted);
+  font-weight: 600;
+}
+
+/* The game pills sit on the dark page here rather than inside a white
+   panel, so they need the light-on-dark treatment the panel gave them. */
+.history-controls .history-game-tab {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-on-dark-muted);
+}
+.history-controls .history-game-tab:hover { color: var(--text-on-dark); }
+.history-controls .history-game-tab.active {
+  background: var(--hg-accent, var(--gold));
+  color: var(--hg-text, #1a1508);
+  border-color: transparent;
+}
+
+@media (max-width: 520px) {
+  .history-controls { gap: 10px 12px; }
+  .history-control { width: 100%; }
+  .history-control .daily-compare-select { flex: 1; }
 }
 
 /* ── History: fill in any past day ─────────────────────────────────── */

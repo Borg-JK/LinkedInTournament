@@ -1,6 +1,11 @@
 // components/PersonalHistoryTab.jsx
 // Your own game history and trends, independent of any tournament — reads
 // only your own scores/{uid}/... data.
+//
+// One month and one game drive the whole tab, picked once at the top,
+// rather than every month being stacked as its own section: the chart, the
+// entry list and the day picker below all answer questions about that one
+// month.
 import { useState, useMemo } from 'react';
 import {
   Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Tooltip,
@@ -11,14 +16,14 @@ import { usePlayerGameScores, submitScore, deleteScore } from '../lib/useScores'
 import { GAMES, puzzleNumberFor, todayIso, activePuzzleDayIso } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
-import { buildMonthlyHistory, averageByMonthForGame, buildDayPicker } from '../lib/personalHistory';
-import { monthLabel } from '../lib/months';
+import { buildMonthlyHistory, monthDays, buildDayPicker, dailyTimesForGame } from '../lib/personalHistory';
+import { monthsBetween, monthLabel } from '../lib/months';
 import InlineTimeEditor from './InlineTimeEditor';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip);
 
-// "Mon 5 Oct · 4/6" — the counts are the whole point of the dropdown, so
-// they're in the option text itself rather than hidden until you pick one.
+// "Wed 7 Oct · 3/6" — the counts are the whole point of the day dropdown,
+// so they ride in the option text rather than appearing only once picked.
 function dayOptionLabel(day, liveDay) {
   const [y, m, d] = day.date.split('-').map(Number);
   const when = new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
@@ -30,12 +35,11 @@ function dayOptionLabel(day, liveDay) {
 export default function PersonalHistoryTab() {
   const { user } = useAuth();
   const uid = user?.uid;
-  const [chartGame, setChartGame] = useState(GAMES[0].id);
-  const [historyGame, setHistoryGame] = useState(GAMES[0].id);
   const [editingKey, setEditingKey] = useState(null); // `${gameId}|${date}`
-  // Which past day the "fill in a day" picker is showing. Defaults to the
-  // live puzzle day, which before 09:00 is still yesterday's date.
+  // The live puzzle day, which before 09:00 is still yesterday's date.
   const [liveDay] = useState(() => activePuzzleDayIso());
+  const [game, setGame] = useState(GAMES[0].id);
+  const [month, setMonth] = useState(() => activePuzzleDayIso().slice(0, 7));
   const [pickedDay, setPickedDay] = useState(() => activePuzzleDayIso());
 
   async function handleSaveEdit(gameId, date, seconds) {
@@ -50,7 +54,6 @@ export default function PersonalHistoryTab() {
     if (editingKey === `${gameId}|${date}`) setEditingKey(null);
   }
 
-
   const pairs = useMemo(() => (uid ? GAMES.map(g => ({ uid, gameId: g.id })) : []), [uid]);
   const byUidGame = usePlayerGameScores(pairs);
   const ready = GAMES.every(g => byUidGame[uid]?.[g.id] !== undefined);
@@ -62,205 +65,216 @@ export default function PersonalHistoryTab() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [ready, byUidGame]);
 
-  const trend = useMemo(() => (ready ? averageByMonthForGame(entriesByGame[chartGame] || []) : []),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [ready, byUidGame, chartGame]);
-
-  const theme = themeFor(chartGame);
-
   if (!ready) return <div className="list-empty">Loading…</div>;
 
-  // 120 days back is far enough to cover "I forgot for a while" without
-  // turning the dropdown into something you have to scroll forever.
-  const dayOptions = buildDayPicker(entriesByGame, liveDay, 120);
-  const pickedCounts = dayOptions.find(d => d.date === pickedDay);
+  // Every month from the first score ever logged through the current one, so
+  // a month you sat out is still selectable rather than missing.
+  const allDates = GAMES.flatMap(g => entriesByGame[g.id].map(e => e.date));
+  const firstEver = allDates.length > 0 ? allDates.reduce((a, b) => (a < b ? a : b)) : liveDay;
+  const months = monthsBetween(firstEver, liveDay); // newest first
+  const activeMonth = months.includes(month) ? month : months[0];
 
-  const dayFillPanel = (
-    <section className="panel panel-accent" style={{ marginBottom: 24 }}>
-      <div className="panel-head-row" style={{ flexWrap: 'wrap', rowGap: 10 }}>
-        <h2>Fill in a day</h2>
-        <select
-          className="daily-compare-select"
-          style={{ width: 'auto', marginBottom: 0 }}
-          value={pickedDay}
-          onChange={e => setPickedDay(e.target.value)}
-        >
-          {dayOptions.map(d => (
-            <option key={d.date} value={d.date}>
-              {dayOptionLabel(d, liveDay)}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="section-sub">
-        Any day you like — the dropdown says how many games you logged on each, so a day you
-        forgot is easy to spot. {pickedCounts ? `${pickedCounts.filled} of ${pickedCounts.total} filled in on this one.` : ''}
-      </div>
+  // Days of the selected month, stopped at today for the current one.
+  const dates = monthDays(activeMonth, liveDay);
+  const dayRows = buildDayPicker(entriesByGame, dates);
+  const dayRowsNewestFirst = [...dayRows].reverse();
+  // Switching month leaves the previously picked day outside it — fall back
+  // to the most recent day of whatever month is now showing.
+  const activeDay = dates.includes(pickedDay) ? pickedDay : dates[dates.length - 1];
+  const activeDayRow = dayRows.find(d => d.date === activeDay);
 
-      <ul className="day-fill-list">
-        {GAMES.map(g => {
-          const entry = (entriesByGame[g.id] || []).find(e => e.date === pickedDay) || null;
-          const key = `${g.id}|${pickedDay}`;
-          const isEditing = editingKey === key;
-          const gTheme = themeFor(g.id);
-          return (
-            <li key={g.id} className="day-fill-row">
-              <span className="day-fill-game">
-                <span className="player-dot" style={{ background: gTheme.accent }} />
-                {g.label}
-                <span className="lb-meta"> #{puzzleNumberFor(g.id, pickedDay)}</span>
-              </span>
+  const theme = themeFor(game);
+  const gameLabel = GAMES.find(g => g.id === game)?.label || game;
+  const stats = monthly.find(m => m.month === activeMonth)?.games[game] || null;
 
-              {isEditing ? (
-                <InlineTimeEditor
-                  initialSeconds={entry?.timeSeconds}
-                  onSave={seconds => handleSaveEdit(g.id, pickedDay, seconds)}
-                  onCancel={() => setEditingKey(null)}
-                  className="history-entry-form"
-                  saveLabel={entry ? 'Save' : 'Add'}
-                  autoFocus
-                />
-              ) : entry ? (
-                <span className="day-fill-actions">
-                  <span className="history-entry-time">{formatSeconds(entry.timeSeconds)}</span>
-                  <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
-                  <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(g.id, pickedDay)}>Delete</button>
-                </span>
-              ) : (
-                <span className="day-fill-actions">
-                  <span className="day-fill-empty">not filled in</span>
-                  <button className="chip-link" onClick={() => setEditingKey(key)}>+ Add</button>
-                </span>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </section>
+  const series = dailyTimesForGame(entriesByGame[game] || [], dates);
+  const playedCount = series.filter(v => v != null).length;
+
+  const gameTabs = (
+    <div className="history-game-tabs">
+      {GAMES.map(g => {
+        const gTheme = themeFor(g.id);
+        return (
+          <button
+            key={g.id}
+            type="button"
+            className={`history-game-tab${game === g.id ? ' active' : ''}`}
+            style={{ '--hg-accent': gTheme.accent, '--hg-text': gTheme.onDark ? '#fff' : '#1a1508' }}
+            onClick={() => setGame(g.id)}
+          >
+            {g.label}
+          </button>
+        );
+      })}
+    </div>
   );
-
-  if (monthly.length === 0) {
-    return (
-      <>
-        <div className="panel-empty">No scores yet — enter a time above and your history builds up here.</div>
-        {dayFillPanel}
-      </>
-    );
-  }
 
   return (
     <>
-      {dayFillPanel}
-
-      <section className="panel" style={{ marginBottom: 24 }}>
-        <div className="panel-head-row">
-          <h2>Trend</h2>
-          <select className="daily-compare-select" style={{ width: 'auto', marginBottom: 0 }} value={chartGame} onChange={e => setChartGame(e.target.value)}>
-            {GAMES.map(g => <option key={g.id} value={g.id}>{g.label}</option>)}
+      <div className="history-controls">
+        <label className="history-control">
+          <span className="history-control-label">Month</span>
+          <select
+            className="daily-compare-select"
+            style={{ width: 'auto', marginBottom: 0 }}
+            value={activeMonth}
+            onChange={e => setMonth(e.target.value)}
+          >
+            {months.map(m => <option key={m} value={m}>{monthLabel(m)}</option>)}
           </select>
+        </label>
+        {gameTabs}
+      </div>
+
+      <section className="panel panel-accent" style={{ marginBottom: 24 }}>
+        <h2>{gameLabel} · {monthLabel(activeMonth)}</h2>
+        <div className="section-sub">
+          Your time every day this month — a gap is a day you didn&apos;t play.
         </div>
-        <div className="section-sub">Average time per month</div>
-        {trend.length < 2 ? (
-          <div className="panel-empty">Play a couple more months to see a trend here.</div>
+        {playedCount === 0 ? (
+          <div className="panel-empty">No {gameLabel} times logged in {monthLabel(activeMonth)}.</div>
         ) : (
-          <div style={{ height: 240 }}>
+          <div style={{ height: 260 }}>
             <Line
               data={{
-                labels: trend.map(t => monthLabel(t.month)),
+                labels: dates.map(d => Number(d.slice(8, 10))),
                 datasets: [{
-                  label: GAMES.find(g => g.id === chartGame)?.label,
-                  data: trend.map(t => t.avgSeconds),
+                  label: gameLabel,
+                  data: series,
                   borderColor: theme.accent,
-                  backgroundColor: 'transparent',
-                  tension: 0.3,
-                  pointRadius: 4,
+                  backgroundColor: theme.accent,
+                  tension: 0.25,
+                  pointRadius: 3.5,
                   borderWidth: 2.5,
+                  spanGaps: false,
                 }],
               }}
               options={{
                 maintainAspectRatio: false,
                 plugins: {
                   legend: { display: false },
-                  tooltip: { callbacks: { label: c => ` ${formatSeconds(c.parsed.y)}` } },
+                  tooltip: {
+                    callbacks: {
+                      title: items => `${monthLabel(activeMonth)} ${items[0].label}`,
+                      label: c => ` ${formatSeconds(c.parsed.y)}`,
+                    },
+                  },
                 },
-                scales: { y: { ticks: { callback: v => formatSeconds(v) } } },
+                scales: {
+                  x: { title: { display: true, text: 'Day of month' }, ticks: { maxTicksLimit: 16 } },
+                  y: { ticks: { callback: v => formatSeconds(v) } },
+                },
               }}
             />
           </div>
         )}
+
+        {stats && (
+          <div className="section-sub" style={{ margin: '14px 0 0' }}>
+            Avg {formatSeconds(stats.avgSeconds)} · Best {formatSeconds(stats.bestSeconds)} ·
+            {' '}{stats.daysPlayed}/{stats.activeDays} days played
+            {stats.daysMissed > 0 ? ` · ${stats.daysMissed} missed` : ''}
+          </div>
+        )}
       </section>
 
-      {monthly.map(({ month, games }) => {
-        const stats = games[historyGame];
-        const label = GAMES.find(g => g.id === historyGame)?.label || historyGame;
-        return (
-          <section className="panel" key={month} style={{ marginBottom: 20 }}>
-            <div className="panel-head-row" style={{ flexWrap: 'wrap', rowGap: 10 }}>
-              <h2 style={{ marginBottom: 0 }}>{monthLabel(month)}</h2>
-              <div className="history-game-tabs">
-                {GAMES.map(g => {
-                  const gTheme = themeFor(g.id);
-                  const active = historyGame === g.id;
-                  return (
-                    <button
-                      key={g.id}
-                      type="button"
-                      className={`history-game-tab${active ? ' active' : ''}`}
-                      style={{
-                        '--hg-accent': gTheme.accent,
-                        '--hg-text': gTheme.onDark ? '#fff' : '#1a1508',
-                      }}
-                      onClick={() => setHistoryGame(g.id)}
-                    >
-                      {g.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+      <section className="panel panel-accent" style={{ marginBottom: 24 }}>
+        <div className="panel-head-row" style={{ flexWrap: 'wrap', rowGap: 10 }}>
+          <h2>Fill in a day</h2>
+          <select
+            className="daily-compare-select"
+            style={{ width: 'auto', marginBottom: 0 }}
+            value={activeDay || ''}
+            onChange={e => setPickedDay(e.target.value)}
+          >
+            {dayRowsNewestFirst.map(d => (
+              <option key={d.date} value={d.date}>{dayOptionLabel(d, liveDay)}</option>
+            ))}
+          </select>
+        </div>
+        <div className="section-sub">
+          Pick any day of {monthLabel(activeMonth)} — the dropdown says how many games you logged on
+          each, so a day you forgot is easy to spot.
+          {activeDayRow ? ` ${activeDayRow.filled} of ${activeDayRow.total} filled in on this one.` : ''}
+        </div>
 
-            {stats ? (
-              <>
-                <div className="section-sub" style={{ margin: '10px 0 10px' }}>
-                  Avg {formatSeconds(stats.avgSeconds)} · Best {formatSeconds(stats.bestSeconds)} ·
-                  {' '}{stats.daysPlayed}/{stats.activeDays} days played
-                  {stats.daysMissed > 0 ? ` · ${stats.daysMissed} missed` : ''}
-                </div>
-                <ul className="history-entry-list">
-                  {stats.entries.map(e => {
-                    const key = `${historyGame}|${e.date}`;
-                    const isEditing = editingKey === key;
-                    return (
-                      <li key={e.date} className="history-entry-row">
-                        <span className="history-entry-date">{e.date}</span>
-                        <span className="lb-meta">#{puzzleNumberFor(historyGame, e.date)}</span>
-                        {isEditing ? (
-                          <InlineTimeEditor
-                            initialSeconds={e.timeSeconds}
-                            onSave={seconds => handleSaveEdit(historyGame, e.date, seconds)}
-                            onCancel={() => setEditingKey(null)}
-                            className="history-entry-form"
-                            autoFocus
-                          />
-                        ) : (
-                          <>
-                            <span className="history-entry-time">{formatSeconds(e.timeSeconds)}</span>
-                            <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
-                            <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(historyGame, e.date)}>Delete</button>
-                          </>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </>
-            ) : (
-              <div className="panel-empty" style={{ marginTop: 10 }}>No {label} entries this month.</div>
-            )}
-          </section>
-        );
-      })}
+        <ul className="day-fill-list">
+          {GAMES.map(g => {
+            const entry = (entriesByGame[g.id] || []).find(e => e.date === activeDay) || null;
+            const key = `${g.id}|${activeDay}`;
+            const isEditing = editingKey === key;
+            const gTheme = themeFor(g.id);
+            return (
+              <li key={g.id} className="day-fill-row">
+                <span className="day-fill-game">
+                  <span className="player-dot" style={{ background: gTheme.accent }} />
+                  {g.label}
+                  <span className="lb-meta"> #{puzzleNumberFor(g.id, activeDay)}</span>
+                </span>
 
+                {isEditing ? (
+                  <InlineTimeEditor
+                    initialSeconds={entry?.timeSeconds}
+                    onSave={seconds => handleSaveEdit(g.id, activeDay, seconds)}
+                    onCancel={() => setEditingKey(null)}
+                    className="history-entry-form"
+                    saveLabel={entry ? 'Save' : 'Add'}
+                    autoFocus
+                  />
+                ) : entry ? (
+                  <span className="day-fill-actions">
+                    <span className="history-entry-time">{formatSeconds(entry.timeSeconds)}</span>
+                    <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
+                    <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(g.id, activeDay)}>Delete</button>
+                  </span>
+                ) : (
+                  <span className="day-fill-actions">
+                    <span className="day-fill-empty">not filled in</span>
+                    <button className="chip-link" onClick={() => setEditingKey(key)}>+ Add</button>
+                  </span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+
+      <section className="panel">
+        <h2>Every {gameLabel} time in {monthLabel(activeMonth)}</h2>
+        {stats ? (
+          <ul className="history-entry-list">
+            {stats.entries.map(e => {
+              const key = `${game}|${e.date}`;
+              const isEditing = editingKey === key;
+              return (
+                <li key={e.date} className="history-entry-row">
+                  <span className="history-entry-date">{e.date}</span>
+                  <span className="lb-meta">#{puzzleNumberFor(game, e.date)}</span>
+                  {isEditing ? (
+                    <InlineTimeEditor
+                      initialSeconds={e.timeSeconds}
+                      onSave={seconds => handleSaveEdit(game, e.date, seconds)}
+                      onCancel={() => setEditingKey(null)}
+                      className="history-entry-form"
+                      autoFocus
+                    />
+                  ) : (
+                    <>
+                      <span className="history-entry-time">{formatSeconds(e.timeSeconds)}</span>
+                      <button className="chip-link" onClick={() => setEditingKey(key)}>Edit</button>
+                      <button className="chip-link chip-link-danger" onClick={() => handleDeleteEntry(game, e.date)}>Delete</button>
+                    </>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <div className="panel-empty" style={{ marginTop: 10 }}>
+            No {gameLabel} entries in {monthLabel(activeMonth)} — use the day picker above to add one.
+          </div>
+        )}
+      </section>
     </>
   );
 }
