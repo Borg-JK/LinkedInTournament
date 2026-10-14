@@ -32,3 +32,9 @@ old/
 presentation.ipynb
 results.xlsx
 .vercel
+
+# Playwright regression suite (tests/regression.spec.js)
+.next-regression/
+test-results/
+playwright-report/
+firebase-debug.log

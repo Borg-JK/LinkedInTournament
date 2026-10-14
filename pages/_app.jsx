@@ -3,6 +3,14 @@ import Head from 'next/head';
 import '../styles/globals.css';
 import { AuthProvider } from '../lib/useAuth';
 
+// Regression-suite hook: exposes Chart.js's live instance registry so
+// tests/regression.spec.mjs can snapshot every chart's datasets. Behind the
+// same build-time flag as the emulators in lib/firebase.js, and a dynamic
+// import, so production neither runs it nor pulls chart.js into this bundle.
+if (process.env.NEXT_PUBLIC_USE_EMULATORS === '1' && typeof window !== 'undefined') {
+  import('chart.js').then(({ Chart }) => { window.__ltCharts = Chart.instances; });
+}
+
 export default function MyApp({ Component, pageProps }) {
   return (
     <AuthProvider>
