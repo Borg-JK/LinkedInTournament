@@ -246,7 +246,7 @@ export default function Home() {
             <SharedScoreIntake />
 
             {!invitesLoading && invites.length > 0 && (
-              <section className="panel panel-accent" style={{ marginBottom: 24 }}>
+              <section className="panel" style={{ marginBottom: 24 }}>
                 <h2>Tournament invites</h2>
                 <div className="section-sub">{invites.length} pending</div>
                 <ul className="people-list">

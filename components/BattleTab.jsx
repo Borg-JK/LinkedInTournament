@@ -7,7 +7,7 @@ import {
 import { Bar, Line } from 'react-chartjs-2';
 import { monthsBetween, monthLabel, monthBounds } from '../lib/months';
 import { GAMES } from '../lib/games';
-import { colorForUid } from '../lib/colors';
+import { colorForUid, withAlpha } from '../lib/colors';
 import { formatSeconds } from '../lib/time';
 import { DOW_SHORT } from '../lib/scoring';
 import {
@@ -22,7 +22,7 @@ function StatCard({ uid, name, color, h2h, winKey, dom }) {
   const winRate = totalGames > 0 ? Math.round((totalWins / totalGames) * 100) : 0;
 
   return (
-    <div className="battle-card" style={{ borderColor: `${color}55` }}>
+    <div className="battle-card" style={{ borderColor: withAlpha(color, 0.35) }}>
       <div className="battle-card-head">
         <span style={{ width: 14, height: 14, borderRadius: '50%', background: color, display: 'inline-block' }} />
         <span className="battle-card-name">{name}</span>
@@ -158,7 +158,7 @@ export default function BattleTab({ tournament, names, byUidGame, periodEnd }) {
                       label: `${n1} − ${n2}`,
                       data: diff.map(d => d.cumulative),
                       borderColor: c1,
-                      backgroundColor: `${c1}33`,
+                      backgroundColor: withAlpha(c1, 0.2),
                       fill: 'origin',
                       tension: 0.3,
                       pointRadius: 0,

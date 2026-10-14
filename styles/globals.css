@@ -389,7 +389,7 @@ button, input, select {
   margin-bottom: 20px;
 }
 
-/* A gold top edge for the panels that are the actual point of the page
+/* A gold top edge for the one panel per page that's the actual point of it
    (Tournaments, invites) — echoes the same accent used on tournament
    cards and the daily-compare sidebar, tying the home page to the same
    visual language as the tournament pages instead of reading as a plain
@@ -1478,10 +1478,11 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px;
   text-align: center; padding: 12px;
 }
-.trophy-placeholder-text { font-size: 0.68rem; text-transform: uppercase; letter-spacing: var(--track-label); font-weight: 600; opacity: 0.6; }
+.trophy-placeholder-text { font-size: 0.68rem; text-transform: uppercase; letter-spacing: var(--track-label); font-weight: 600; opacity: 0.85; }
 .trophy-avatar {
   width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
   font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 700; color: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85), 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 .trophy-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 500; color: #1a1a1a; text-align: center; margin-top: auto; }
 .trophy-pts { font-size: 0.75rem; color: #8a7a4a; text-align: center; margin-top: 5px; }
@@ -1499,16 +1500,16 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 @media (max-width: 640px) { .battle-cards { grid-template-columns: 1fr; } }
 .battle-card { border-radius: 14px; padding: 18px 20px; border: 2px solid; background: rgba(0,0,0,0.02); }
 .battle-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-.battle-card-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--ed-card-text); }
+.battle-card-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--ed-text); overflow-wrap: anywhere; }
 .battle-stat-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
 .battle-stat { text-align: center; min-width: 60px; }
 .battle-stat-value { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 600; }
-.battle-stat-label { font-size: 0.7rem; color: var(--ed-card-muted); text-transform: uppercase; letter-spacing: var(--track-label); }
+.battle-stat-label { font-size: 0.7rem; color: var(--ed-text-muted); text-transform: uppercase; letter-spacing: var(--track-label); }
 .battle-game-bar-row { margin-bottom: 8px; }
 .battle-game-bar-head { display: flex; justify-content: space-between; margin-bottom: 3px; font-size: 0.78rem; }
-.battle-game-bar-head span:first-child { color: var(--ed-card-muted); font-weight: 600; }
+.battle-game-bar-head span:first-child { color: var(--ed-text-muted); font-weight: 600; }
 .battle-game-bar-head span:last-child { font-weight: 700; }
-.battle-game-bar-track { height: 4px; background: rgba(0,0,0,0.08); border-radius: 999px; overflow: hidden; }
+.battle-game-bar-track { height: 4px; background: color-mix(in srgb, var(--ed-text) 12%, transparent); border-radius: 999px; overflow: hidden; }
 .battle-game-bar-fill { height: 100%; border-radius: 999px; }
 .battle-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
 @media (max-width: 800px) { .battle-grid-2 { grid-template-columns: 1fr; } }

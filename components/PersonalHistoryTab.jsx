@@ -125,7 +125,7 @@ export default function PersonalHistoryTab() {
         </label>
       </div>
 
-      <section className="panel panel-accent" style={{ marginBottom: 24 }}>
+      <section className="panel" style={{ marginBottom: 24 }}>
         {/* The game picker lives in here, not up with the month: it only
             changes this chart, while the month changes the whole tab. */}
         <div className="panel-head-row" style={{ flexWrap: 'wrap', rowGap: 12 }}>

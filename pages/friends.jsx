@@ -181,7 +181,7 @@ export default function Friends() {
             </section>
 
             {incomingRequests.length > 0 && (
-              <section className="panel panel-accent">
+              <section className="panel">
                 <div className="section-head">
                   <span className="section-head-num">02</span>
                   <h2>Requests</h2>
