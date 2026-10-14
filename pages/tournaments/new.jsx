@@ -160,13 +160,9 @@ export default function NewTournament() {
             </div>
             <div className="section-sub">Participation, joining, and how much suspense the reveal has.</div>
 
-            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 18, marginBottom: 12 }}>
-              <span className="field-label" style={{ marginBottom: 0 }}>
-                Eligibility threshold
-              </span>
-              <span className="section-sub" style={{ margin: 0, textAlign: 'right', maxWidth: 260 }}>
-                Minimum participation to qualify for standings
-              </span>
+            <div className="field-label-group">
+              <span className="field-label">Eligibility threshold</span>
+              <span className="field-help">Minimum participation to qualify for standings</span>
             </div>
             <div className="stepper" style={{ marginBottom: 26 }}>
               <button

@@ -140,6 +140,18 @@ button, input, select {
 
 .field { margin-bottom: 18px; }
 
+/* A label with a line of help under it — the same stack every other field
+   on the form uses, rather than the help text pushed to the far right and
+   wrapping right-aligned. */
+.field-label-group { margin: 18px 0 12px; }
+.field-label-group .field-label { margin-bottom: 4px; }
+.field-help {
+  display: block;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
 .field label,
 .field-label {
   display: block;
@@ -1420,6 +1432,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   border-bottom: 1px solid var(--ed-border);
 }
 .lb-table th:not(:nth-child(2)) { text-align: center; }
+/* Numeric columns are now only as wide as their content, so a two-word
+   heading like "Days played" must not wrap onto two lines. */
+.lb-table th { white-space: nowrap; }
 .lb-table th:last-child { text-align: right; }
 .lb-table td {
   padding: 13px 12px;
@@ -1431,7 +1446,11 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 }
 /* The player column is the one that's allowed to wrap — it's the only cell
    holding something longer than a two-digit number. */
-.lb-table td.player-name-cell { white-space: normal; min-width: 7.5em; }
+.lb-table td.player-name-cell { white-space: normal; min-width: 7.5em; width: 100%; }
+@media (min-width: 641px) {
+  .lb-table th:not(:nth-child(2)):not(:first-child),
+  .lb-table td:not(.player-name-cell):not(:first-child) { padding-left: 20px; padding-right: 20px; }
+}
 
 /* Dot and name are one unit: left to itself the dot would wrap onto its own
    line above a long username. */
@@ -1570,6 +1589,13 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   border-top: 5px solid var(--dc-accent, var(--gold));
   box-shadow: var(--shadow-card);
   padding: 22px 18px;
+}
+@media (min-width: 861px) {
+  .daily-compare {
+    align-self: flex-start;
+    position: sticky;
+    top: calc(96px + env(safe-area-inset-top, 0px));
+  }
 }
 @media (max-width: 860px) {
   .home-columns { flex-direction: column; }
