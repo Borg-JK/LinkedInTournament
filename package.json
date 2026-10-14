@@ -8,7 +8,8 @@
     "start": "next start",
     "migrate:legacy": "node scripts/migrate-legacy-data.js",
     "test:regression": "METADATA_SERVER_DETECTION=none npx --yes firebase-tools@15 emulators:exec --only auth,firestore --project demo-lt \"node scripts/seed-emulator.mjs && playwright test\"",
-    "test:regression:update": "UPDATE_BASELINE=1 npm run test:regression"
+    "test:regression:update": "UPDATE_BASELINE=1 npm run test:regression",
+    "test:worst-case": "METADATA_SERVER_DETECTION=none WORST_CASE=1 npx --yes firebase-tools@15 emulators:exec --only auth,firestore --project demo-lt \"SEED_SET=worst node scripts/seed-emulator.mjs && playwright test\""
   },
   "dependencies": {
     "chart.js": "^4.4.1",

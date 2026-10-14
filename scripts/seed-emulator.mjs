@@ -163,6 +163,8 @@ async function seed() {
     }
   }
 
+  if (process.env.SEED_SET === 'worst') await seedWorstCase(writer, tsAt);
+
   // Borg is invited to (not yet in) Wend Only — exercises the invites panel.
   writer.set(db.doc('users/u_borg/tournamentInvites/t_solo'), {
     tournamentName: 'Wend Only', invitedBy: 'u_ana', sentAt: tsAt('2026-10-12'), status: 'pending',
@@ -172,6 +174,69 @@ async function seed() {
 
   await writer.close();
   console.log(`Seeded ${PLAYERS.length} players, ${tournaments.length} tournaments, scores ${FIRST_DAY}..${LAST_DAY}.`);
+}
+
+// ── Worst case (SEED_SET=worst) ──────────────────────────────────────────
+// The break-ui stress set for the standings and head-to-head views: the
+// realistic worst value for every field they render, spread across rows the
+// way real data is, in one extra tournament. Usernames are unbounded — there
+// is no length check in onboarding or the security rules — so these are long
+// but believable, not random. Off by default: the regression baseline never
+// sees this data.
+const WORST_PLAYERS = [
+  { uid: 'w_aleks', username: 'Aleksandra Wiśniewska-Kowalczyk' },   // long, hyphen, diacritics
+  { uid: 'w_handle', username: 'thisisaverylongusernamethatisallowed' }, // unbreakable
+  { uid: 'w_j', username: 'J' },                                      // one letter
+  { uid: 'w_dang', username: 'Đặng Thị Ngọc Hân' },                    // stacked diacritics
+  { uid: 'w_wang', username: '王秀英' },                                // CJK, no spaces
+  { uid: 'w_fox', username: '🦊 Fox' },                                 // emoji first: initials
+  { uid: 'w_monty', username: 'Christopher Alexander Montgomery III' },
+  { uid: 'w_dana', username: 'dana' },
+  { uid: 'w_tie1', username: 'Twin One' },                             // ties with Twin Two
+  { uid: 'w_tie2', username: 'Twin Two' },
+  { uid: 'w_once', username: 'Seán O\'Brien-Ó Súilleabháin' },         // a single entry
+  { uid: 'w_none', username: 'Konstantin Oberhauser-Wettstein' },     // zero entries
+];
+
+async function seedWorstCase(writer, tsAt) {
+  const rand = prng(424242);
+  for (const p of WORST_PLAYERS) {
+    await auth.createUser({ uid: p.uid, email: `${p.uid}@test.local`, emailVerified: true });
+    writer.set(db.doc(`users/${p.uid}`), { email: `${p.uid}@test.local`, username: p.username, friends: [], createdAt: tsAt(FIRST_DAY) });
+    writer.set(db.doc(`usernames/${p.username.toLowerCase()}`), { uid: p.uid, createdAt: tsAt(FIRST_DAY) });
+    writer.set(db.doc(`users/u_borg/friends/${p.uid}`), { since: tsAt(FIRST_DAY) });
+    writer.set(db.doc(`users/${p.uid}/friends/u_borg`), { since: tsAt(FIRST_DAY) });
+  }
+  const games = ['queens', 'zip'];
+  for (const date of days(FIRST_DAY, LAST_DAY)) {
+    for (const game of games) {
+      for (const p of WORST_PLAYERS) {
+        const roll = rand(); const jitter = rand();
+        if (p.uid === 'w_none') continue;                                  // never plays
+        if (p.uid === 'w_once' && !(date === '2026-10-02' && game === 'queens')) continue;
+        if (date === SOLO_DAY) continue;  // Borg alone that day (see the main seed): a one-player day
+        if (roll > 0.8) continue;
+        let seconds = Math.round(BASE_SECONDS[game] * (0.6 + jitter * 1.4));
+        if (p.uid === 'w_tie2') seconds = null;                            // mirror Twin One below
+        if (p.uid === 'w_dana' && date === '2026-10-05' && game === 'queens') seconds = 3787; // timer left running: 63:07
+        if (seconds != null) {
+          writer.set(db.doc(`scores/${p.uid}/${game}/${date}`), { timeSeconds: seconds, puzzleNum: puzzleNumberFor(game, date), submittedAt: tsAt(date) });
+          if (p.uid === 'w_tie1') {
+            writer.set(db.doc(`scores/w_tie2/${game}/${date}`), { timeSeconds: seconds, puzzleNum: puzzleNumberFor(game, date), submittedAt: tsAt(date) });
+          }
+        }
+      }
+    }
+  }
+  const members = ['u_borg', ...WORST_PLAYERS.map(p => p.uid)];
+  writer.set(db.doc('tournaments/t_worst'), {
+    name: 'The Wiśniewska-Kowalczyk Memorial Autumn Invitational 2026', nameLower: 'the wiśniewska-kowalczyk memorial autumn invitational 2026',
+    ownerId: 'u_borg', members, games, scoringMetric: 'simple', eligibilityThresholdPct: 5, joinPolicy: 'anytime',
+    revealPolicy: 'live', revealIntervalDays: 5, startDate: FIRST_DAY, status: 'active', createdAt: tsAt(FIRST_DAY),
+  });
+  for (const uid of members) {
+    writer.set(db.doc(`tournaments/t_worst/members/${uid}`), { joinedAt: tsAt(FIRST_DAY), role: uid === 'u_borg' ? 'owner' : 'member' });
+  }
 }
 
 await seed();

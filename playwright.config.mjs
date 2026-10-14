@@ -8,6 +8,9 @@ const PORT = 3123;
 
 export default defineConfig({
   testDir: 'tests',
+  // The worst-case stress run (break-ui) needs its own seed, so it only runs
+  // when asked; the regression suite never sees that data.
+  testMatch: process.env.WORST_CASE === '1' ? 'worst-case.spec.mjs' : 'regression.spec.mjs',
   // One long serial walk through every view — the views share a signed-in
   // session and the order doesn't matter, so parallelism would only add
   // flakiness against a single emulator.
