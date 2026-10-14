@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import '../lib/chartTheme';
 import { computeStandings, rankStandings } from '../lib/scoring';
 import { computeTournamentStandings } from '../lib/standings';
 import { RANK_LABELS, RANK_COLORS, computeRankComposition } from '../lib/standingsCharts';
@@ -256,7 +257,7 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
                     indexAxis: 'y',
                     maintainAspectRatio: false,
                     plugins: {
-                      legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } },
+                      legend: { position: 'top', labels: { boxWidth: 8, boxHeight: 8 } },
                       tooltip: {
                         callbacks: {
                           label: c => {

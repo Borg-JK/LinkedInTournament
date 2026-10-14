@@ -11,6 +11,7 @@ import {
   Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Tooltip,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import '../lib/chartTheme';
 import { useAuth } from '../lib/useAuth';
 import { usePlayerGameScores, submitScore, deleteScore } from '../lib/useScores';
 import { GAMES, puzzleNumberFor, todayIso, activePuzzleDayIso } from '../lib/games';

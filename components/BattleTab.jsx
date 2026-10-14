@@ -5,6 +5,7 @@ import {
   PointElement, Tooltip, Legend, Filler,
 } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
+import '../lib/chartTheme';
 import { monthsBetween, monthLabel, monthBounds } from '../lib/months';
 import { GAMES } from '../lib/games';
 import { colorForUid, withAlpha } from '../lib/colors';
@@ -15,6 +16,13 @@ import {
 } from '../lib/battle';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend, Filler);
+
+// For the gap chart's rotated axis title only: it runs along the chart's
+// left edge, and a long username ran off the canvas on a phone. Names are
+// shown in full everywhere else.
+function shortName(name) {
+  return name && name.length > 14 ? `${name.slice(0, 13)}…` : name;
+}
 
 function StatCard({ uid, name, color, h2h, winKey, dom }) {
   let totalWins = 0, totalGames = 0;
@@ -121,7 +129,7 @@ export default function BattleTab({ tournament, names, byUidGame, periodEnd }) {
                 options={{
                   maintainAspectRatio: false,
                   plugins: {
-                    legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } },
+                    legend: { position: 'top', labels: { boxWidth: 8, boxHeight: 8 } },
                     tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y != null ? formatSeconds(c.parsed.y) : '—'}` } },
                   },
                   scales: { y: { ticks: { callback: v => formatSeconds(v) } } },
@@ -142,7 +150,7 @@ export default function BattleTab({ tournament, names, byUidGame, periodEnd }) {
                       { label: n2, backgroundColor: c2, data: Array.from({ length: placement.maxRank }, (_, i) => placement.counts2[i + 1] || 0) },
                     ],
                   }}
-                  options={{ maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }}
+                  options={{ maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { boxWidth: 8, boxHeight: 8 } } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }}
                 />
               </div>
             </div>
@@ -168,7 +176,7 @@ export default function BattleTab({ tournament, names, byUidGame, periodEnd }) {
                   options={{
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: { y: { title: { display: true, text: `${n1} ahead ↑ / ${n2} ahead ↓` } } },
+                    scales: { y: { title: { display: true, text: `${shortName(n1)} ahead ↑ / ${shortName(n2)} ahead ↓` } } },
                   }}
                 />
               </div>
