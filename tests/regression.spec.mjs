@@ -387,11 +387,22 @@ const SCREEN_VIEWS = [
   { name: 'wend-only-non-member', go: async p => { await p.goto('/tournaments/t_solo'); } },
 ];
 
+// A full-page screenshot makes Chromium resize the viewport to the page's
+// full height mid-capture. That can change the width charts see (the
+// scrollbar disappears), every responsive chart resizes, which clears its
+// canvas, and the redraw lands on the next animation frame — after the
+// capture. So do that resize ourselves, let the charts redraw, then capture
+// at the size the page already is.
 async function shoot(page, viewport, name) {
   await settle(page);
   await settleCharts(page);
+  const fullHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+  await page.setViewportSize({ width: viewport.width, height: Math.max(viewport.height, fullHeight) });
+  await page.waitForTimeout(250);
+  await settleCharts(page);
   fs.mkdirSync(SCREENS, { recursive: true });
   await page.screenshot({ path: path.join(SCREENS, `${name}--${viewport.name}.png`), fullPage: true, animations: 'disabled' });
+  await page.setViewportSize({ width: viewport.width, height: viewport.height });
 }
 
 async function recordScreenshots(browser) {
