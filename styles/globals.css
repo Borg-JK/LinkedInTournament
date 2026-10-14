@@ -670,9 +670,10 @@ button, input, select {
 
 .panel-head-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px 12px;
   margin-bottom: 6px;
 }
 .panel-head-row h2 { margin-bottom: 0; }
@@ -1279,6 +1280,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   line-height: 0.95;
   letter-spacing: var(--track-display);
   text-wrap: balance;
+  overflow-wrap: anywhere;
   color: var(--ed-text);
 }
 .tournament-title em { font-style: italic; font-weight: 400; color: var(--ed-accent2); }
@@ -1396,6 +1398,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 /* Controls row: month select + game pills */
 .editorial-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
 .editorial-select {
+  max-width: 100%;
+  min-width: 0;
+  text-overflow: ellipsis;
   padding: 10px 16px;
   border-radius: 999px;
   border: 1.5px solid var(--ed-text-muted);
@@ -1460,9 +1465,20 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   /* The rank badge is a fixed 28px — it doesn't need a column's worth of
      padding around it on a narrow screen. */
   .lb-table th:first-child, .lb-table td:first-child { padding-left: 0; padding-right: 2px; }
-  .lb-table td.player-name-cell { min-width: 0; }
+  /* About one long word wide: ordinary names wrap at their spaces, and only
+     a genuinely unbreakable username breaks mid-word. Any narrower and
+     "Christopher Alexander Montgomery III" shattered into fragments. */
+  .lb-table td.player-name-cell { min-width: 6.5em; }
   .lb-col-long { display: none; }
   .lb-col-short { display: inline; }
+}
+/* The narrowest phones (320–360px) need the numeric columns a little tighter
+   still, so a two-game table's points stay on screen without scrolling. */
+@media (max-width: 360px) {
+  .lb-table th, .lb-table td { padding-left: 3px; padding-right: 3px; }
+  .lb-table td { font-size: 0.86rem; }
+  .lb-table td:last-child { font-size: 0.95rem; }
+  .rank-badge { width: 24px; height: 24px; font-size: 0.75rem; }
 }
 .lb-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; }
 .lb-title { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 500; color: var(--ed-card-text); letter-spacing: -0.01em; }
@@ -1518,7 +1534,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 }
 /* The player column is the one that's allowed to wrap — it's the only cell
    holding something longer than a two-digit number. */
-.lb-table td.player-name-cell { white-space: normal; min-width: 7.5em; width: 100%; }
+.lb-table td.player-name-cell { white-space: normal; min-width: 7.5em; width: 100%; overflow-wrap: anywhere; }
 @media (min-width: 641px) {
   .lb-table th:not(:nth-child(2)):not(:first-child),
   .lb-table td:not(.player-name-cell):not(:first-child) { padding-left: 20px; padding-right: 20px; }
@@ -1530,6 +1546,8 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   display: inline-flex;
   align-items: baseline;
   gap: 9px;
+  min-width: 0;
+  max-width: 100%;
 }
 .player-chip .player-dot { margin-right: 0; flex: none; align-self: center; }
 .lb-table td:not(:nth-child(2)) { text-align: center; }
@@ -1558,13 +1576,15 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   box-shadow: 0 0 0 2px rgba(255,255,255,0.6);
 }
 .player-name-cell { text-align: left !important; }
+.player-dot { flex-shrink: 0; }
+.pill-static { max-width: 100%; overflow-wrap: anywhere; }
 
 /* Hall of Fame */
 .hall-month { margin-bottom: 48px; }
-.hall-month-divider { display: flex; align-items: center; gap: 18px; margin-bottom: 24px; }
+.hall-month-divider { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-bottom: 24px; }
 .hall-month-label { font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 2.6vw, 1.8rem); font-weight: 500; color: var(--ed-text); white-space: nowrap; }
 .hall-month-label em { font-style: italic; font-weight: 400; color: var(--ed-accent2); }
-.hall-month-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.25), rgba(255,255,255,0.04)); }
+.hall-month-line { flex: 1 1 24px; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.25), rgba(255,255,255,0.04)); }
 .hall-month-status {
   font-size: 0.72rem; text-transform: uppercase; letter-spacing: var(--track-label);
   color: var(--ed-text-muted); font-weight: 500;
@@ -1611,8 +1631,11 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 
 /* Battle */
 .battle-controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 22px; }
-.battle-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-@media (max-width: 640px) { .battle-cards { grid-template-columns: 1fr; } }
+.battle-cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-bottom: 20px; }
+@media (max-width: 640px) {
+  .battle-cards { grid-template-columns: minmax(0, 1fr); }
+  .battle-controls .editorial-select { flex: 1 1 100%; }
+}
 .battle-card { border-radius: 14px; padding: 18px 20px; border: 2px solid; background: rgba(0,0,0,0.02); }
 .battle-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .battle-card-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--ed-text); overflow-wrap: anywhere; }
@@ -1626,8 +1649,8 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .battle-game-bar-head span:last-child { font-weight: 700; }
 .battle-game-bar-track { height: 4px; background: color-mix(in srgb, var(--ed-text) 12%, transparent); border-radius: 999px; overflow: hidden; }
 .battle-game-bar-fill { height: 100%; border-radius: 999px; }
-.battle-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 20px; }
-@media (max-width: 800px) { .battle-grid-2 { grid-template-columns: 1fr; } }
+.battle-grid-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; margin-bottom: 20px; }
+@media (max-width: 800px) { .battle-grid-2 { grid-template-columns: minmax(0, 1fr); } }
 
 /* Scoring tab */
 .scoring-block { margin-bottom: 18px; }

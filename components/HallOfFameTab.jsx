@@ -10,8 +10,22 @@ import { computeMonthWinnerForGame, computeMonthWinnerOverall } from '../lib/hal
 import { GAMES } from '../lib/games';
 import { colorForUid } from '../lib/colors';
 
+
+// The first user-perceived character of a name, for the trophy avatar.
+// charAt(0) returned half an emoji ("🦊 Fox" gave a lone surrogate, drawn as
+// a broken glyph) and the first code point of a ZWJ sequence like 👩🏽‍💻.
+// Display only — the name itself is untouched.
+function firstGrapheme(name) {
+  const text = (name || '').trim();
+  if (!text) return '?';
+  if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+    return new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(text)[Symbol.iterator]().next().value.segment;
+  }
+  return Array.from(text)[0];
+}
+
 function TrophyCard({ gameId, label, winner, isOverall }) {
-  const initial = winner ? (winner.name || '?').charAt(0).toUpperCase() : null;
+  const initial = winner ? firstGrapheme(winner.name).toUpperCase() : null;
   return (
     <div className="trophy" data-game={gameId}>
       <div className="trophy-game" style={isOverall ? { color: 'var(--ed-accent2)', fontWeight: 700 } : undefined}>
