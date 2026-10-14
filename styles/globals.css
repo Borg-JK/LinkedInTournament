@@ -399,7 +399,7 @@ button, input, select {
   color: var(--text);
   border-radius: var(--radius);
   box-shadow: var(--shadow-card);
-  padding: 32px;
+  padding: clamp(20px, 5vw, 32px);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -944,101 +944,114 @@ button, input, select {
 }
 .placement-pill-lg { padding: 7px 16px; font-size: 0.95rem; }
 
-/* ── Tournament cards (home page) ──────────────────────────────────── */
+/* ── Tournament list (home page) ──────────────────────────────────── */
 
+/* A list of rows, not cards inside a card. Each row reads left to right:
+   the tournament's colour, its name and games, where you stand, then its
+   two controls — all in one grid, so a long name wraps inside its own
+   column instead of running under the pin and info buttons. */
 .tournament-card-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .tournament-card-wrap {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: 8px;
+  padding-right: 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-soft);
+  background: var(--surface2);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
 .tournament-card {
   --tournament-accent: var(--gold);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "name rank" "games rank";
   align-items: center;
-  text-align: center;
-  gap: 8px;
-  padding: 26px 24px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border-soft);
-  border-top: 4px solid var(--tournament-accent);
-  background: var(--surface2);
+  gap: 3px 16px;
+  min-width: 0;
+  padding: 16px 4px 16px 18px;
+  /* The colour the owner picked for this tournament, as the row's edge. */
+  border-left: 4px solid var(--tournament-accent);
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-}
-.tournament-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-card);
-  border-color: var(--tournament-accent);
 }
 
 .tournament-card-name {
+  grid-area: name;
   font-family: 'Fraunces', serif;
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.18rem;
+  font-weight: 600;
+  line-height: 1.2;
   color: var(--text);
-  /* Keeps clear of the pin and info buttons in the top-right corner. On a
-     phone a name like "Test (Ratio Score)" is as wide as the card, and
-     without this it ran straight underneath them. */
-  max-width: calc(100% - 92px);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .tournament-card-games {
-  font-size: 0.88rem;
+  grid-area: games;
+  font-size: 0.85rem;
   color: var(--text-muted);
 }
 
-@media (max-width: 520px) {
-  .tournament-card { padding: 22px 18px; }
-  .tournament-card-name { font-size: 1.2rem; }
-}
+.tournament-card .placement-pill,
+.tournament-card .pill-static { grid-area: rank; justify-self: end; white-space: nowrap; }
 
-.tournament-info-btn {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border);
-  background: var(--surface);
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-.tournament-info-btn:hover { background: var(--surface); color: var(--text); border-color: var(--gold); }
-
+.tournament-info-btn,
 .tournament-pin-btn {
-  position: absolute;
-  top: 14px;
-  right: 52px;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
+  flex: none;
   border-radius: 50%;
-  border: 1.5px solid var(--border);
+  border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
 }
-.tournament-pin-btn:hover { color: var(--text); border-color: var(--gold); }
 .tournament-pin-btn.active {
   background: var(--gold);
   color: #1a1508;
   border-color: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tournament-card-wrap:hover {
+    border-color: var(--border);
+    box-shadow: 0 6px 20px rgba(26, 20, 8, 0.10);
+  }
+  .tournament-info-btn:hover,
+  .tournament-pin-btn:not(.active):hover { color: var(--text); border-color: var(--gold); }
+}
+
+/* On a phone the placement moves under the name, so the name and the
+   games list get the row's full width instead of a sliver beside the pill
+   and both buttons. */
+@media (max-width: 520px) {
+  .tournament-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "name" "games" "rank";
+    padding: 14px 2px 14px 14px;
+    gap: 2px;
+  }
+  .tournament-card .placement-pill,
+  .tournament-card .pill-static { justify-self: start; margin-top: 8px; }
+  .tournament-card-name { font-size: 1.08rem; }
+  .tournament-card-games { font-size: 0.82rem; }
+  .tournament-card-wrap { padding-right: 10px; column-gap: 6px; align-items: start; padding-top: 12px; }
+  .tournament-card-wrap > .tournament-card { margin-top: -12px; }
 }
 
 .color-swatch-row {
@@ -1062,8 +1075,8 @@ button, input, select {
 
 .tournament-info-popover {
   position: absolute;
-  top: 52px;
-  right: 14px;
+  top: calc(100% + 6px);
+  right: 0;
   width: 300px;
   max-width: calc(100vw - 60px);
   background: var(--surface);
@@ -1744,6 +1757,32 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .history-entry-form .score-box-btn { width: auto; padding: 5px 12px; font-size: 0.78rem; }
 .history-entry-form .score-box-error { margin: 0; }
 
+/* ── One pill system ──────────────────────────────────────────────────
+   The home tabs, the day tabs, the tournament game pills and the History
+   game pills had four different heights, paddings, border weights and type
+   sizes. Each keeps its own colours — they sit on different backgrounds —
+   but they now share one geometry, so a pill looks like a pill anywhere in
+   the app. Placed after every pill's base rule so it wins, and before the
+   phone-only day-tab stacking further down, which still overrides it. */
+.home-tab,
+.ed-game-tab,
+.history-game-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border-width: 1.5px;
+  border-style: solid;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
 /* ── Puzzle-day selector above the score boxes ─────────────────────── */
 
 .score-day { display: block; }
@@ -1765,7 +1804,6 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 }
 
 .score-day-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
-.score-day-tabs .home-tab { padding: 8px 16px; font-size: 0.84rem; }
 
 /* One line with a separator where there's room; two lines on a phone. */
 .score-day-tab {
@@ -1823,6 +1861,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
     width: 100%;
   }
   .score-day-tab {
+    min-height: 48px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
