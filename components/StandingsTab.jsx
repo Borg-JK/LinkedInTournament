@@ -239,7 +239,7 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
           {charts.composition && (
             <div className="leaderboard-card">
               <div className="lb-header">
-                <div className="lb-title">Rank Composition</div>
+                <div className="lb-title">Rank composition</div>
                 <div className="lb-meta">How often each player finished in each position</div>
               </div>
               <div style={{ position: 'relative', height: Math.max(200, charts.participants.length * 44 + 40) }}>
@@ -285,7 +285,7 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
       {history && history.length > 0 && (
         <div className="leaderboard-card">
           <div className="lb-header">
-            <div className="lb-title">Score History</div>
+            <div className="lb-title">Score history</div>
             <select className="editorial-select" value={historyDay || ''} onChange={e => setHistoryDay(e.target.value)}>
               {history.map(d => <option key={d.date} value={d.date}>{dayLabel(d.date)}</option>)}
             </select>

@@ -26,6 +26,14 @@
   --shadow-md: 0 12px 40px rgba(0, 0, 0, 0.28);
   --shadow-card: 0 4px 28px rgba(0, 0, 0, 0.16);
 
+  /* Tracking is size- and case-specific (see the apple-design notes on
+     UI typography): uppercase labels need air to stay legible, eyebrows a
+     little more for the editorial flourish, display serif slightly negative
+     as it grows. Two caps values instead of the nine that had accumulated. */
+  --track-label: 0.1em;
+  --track-eyebrow: 0.2em;
+  --track-display: -0.02em;
+
   --topnav-bg: rgba(26, 20, 8, 0.9);
   --nav-rule: rgba(240, 217, 138, 0.22);
 }
@@ -55,6 +63,22 @@ h1, h2, h3 {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 600;
   letter-spacing: -0.01em;
+  /* Tight leading for display type; balance so a heading never leaves one
+     word stranded on its last line. */
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+/* Running copy wraps without orphans and gets reading-comfortable leading. */
+p, .section-sub, .subtitle, .tournament-sub, .lb-meta {
+  text-wrap: pretty;
+}
+
+/* Every number that's compared against another number lines up. */
+.score-box-time, .day-fill-card-time, .trophy-pts, .battle-stat-value,
+.placement-pill, .daily-compare-time, .history-entry-time, .score-day-count,
+.stepper-value, .nav-badge {
+  font-variant-numeric: tabular-nums;
 }
 
 a { color: inherit; }
@@ -109,7 +133,7 @@ button, input, select {
   font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--track-label);
   color: var(--text-muted);
   margin-bottom: 8px;
 }
@@ -284,10 +308,10 @@ button, input, select {
 
 .dropdown-section-label {
   padding: 8px 14px 4px;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--track-label);
   color: var(--text-muted);
 }
 
@@ -324,7 +348,7 @@ button, input, select {
 .hero-eyebrow {
   font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.24em;
+  letter-spacing: var(--track-eyebrow);
   color: var(--gold2);
   font-weight: 600;
   margin-bottom: 10px;
@@ -334,6 +358,8 @@ button, input, select {
   font-size: 2.6rem;
   color: var(--text-on-dark);
   margin-bottom: 10px;
+  letter-spacing: var(--track-display);
+  line-height: 1.05;
 }
 
 .hero p {
@@ -718,7 +744,7 @@ button, input, select {
 }
 
 .score-box-num {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   color: var(--sb-text-muted, var(--text-muted));
 }
 
@@ -788,7 +814,7 @@ button, input, select {
 .score-box-mode-toggle {
   display: block;
   margin: 8px auto 0;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   color: var(--sb-text-muted, var(--text-muted));
 }
 
@@ -836,7 +862,7 @@ button, input, select {
   text-align: left;
   font-size: 0.76rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--track-label);
   color: var(--text-muted);
   font-weight: 600;
   padding: 0 10px 8px;
@@ -1058,7 +1084,7 @@ button, input, select {
   text-align: right;
   font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: var(--track-label);
   color: var(--text-muted);
   font-weight: 600;
   padding: 0 8px 8px;
@@ -1135,7 +1161,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .tournament-eyebrow {
   font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.24em;
+  letter-spacing: var(--track-eyebrow);
   color: var(--ed-text-muted);
   margin-bottom: 12px;
   font-weight: 500;
@@ -1145,12 +1171,13 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   font-size: clamp(2.2rem, 5.5vw, 3.8rem);
   font-weight: 500;
   line-height: 0.95;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--track-display);
+  text-wrap: balance;
   color: var(--ed-text);
 }
 .tournament-title em { font-style: italic; font-weight: 400; color: var(--ed-accent2); }
 .tournament-sub {
-  font-size: 0.94rem;
+  font-size: 0.95rem;
   color: var(--ed-text-muted);
   margin-top: 12px;
   max-width: 560px;
@@ -1363,8 +1390,8 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 
 .lb-table { width: 100%; border-collapse: collapse; }
 .lb-table th {
-  font-size: 0.68rem; font-weight: 600; color: var(--ed-card-muted);
-  letter-spacing: 0.12em; text-transform: uppercase;
+  font-size: 0.72rem; font-weight: 600; color: var(--ed-card-muted);
+  letter-spacing: var(--track-label); text-transform: uppercase;
   text-align: left; padding: 10px 12px;
   border-bottom: 1px solid var(--ed-border);
 }
@@ -1424,7 +1451,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .hall-month-label em { font-style: italic; font-weight: 400; color: var(--ed-accent2); }
 .hall-month-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.25), rgba(255,255,255,0.04)); }
 .hall-month-status {
-  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.16em;
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: var(--track-label);
   color: var(--ed-text-muted); font-weight: 500;
   padding: 5px 12px; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; white-space: nowrap;
 }
@@ -1445,19 +1472,19 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   display: flex;
   flex-direction: column;
 }
-.trophy-game { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.2em; color: #8a7a4a; font-weight: 600; margin-bottom: 8px; text-align: center; }
+.trophy-game { font-size: 0.68rem; text-transform: uppercase; letter-spacing: var(--track-label); color: #8a7a4a; font-weight: 600; margin-bottom: 8px; text-align: center; }
 .trophy-placeholder {
   width: 100%; aspect-ratio: 1/1; border-radius: 2px; margin-bottom: 12px;
   display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px;
   text-align: center; padding: 12px;
 }
-.trophy-placeholder-text { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; opacity: 0.6; }
+.trophy-placeholder-text { font-size: 0.68rem; text-transform: uppercase; letter-spacing: var(--track-label); font-weight: 600; opacity: 0.6; }
 .trophy-avatar {
   width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
   font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 700; color: #fff;
 }
 .trophy-name { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 500; color: #1a1a1a; text-align: center; margin-top: auto; }
-.trophy-pts { font-size: 0.68rem; color: #8a7a4a; text-align: center; margin-top: 5px; }
+.trophy-pts { font-size: 0.75rem; color: #8a7a4a; text-align: center; margin-top: 5px; }
 .trophy-pts strong { font-family: 'Fraunces', serif; font-weight: 600; color: #1a1a1a; font-size: 0.88rem; }
 .trophy[data-game="queens"]  .trophy-placeholder { background: linear-gradient(135deg, #2a3370, #0a1240); color: #e8c989; }
 .trophy[data-game="mini"]    .trophy-placeholder { background: linear-gradient(135deg, #4a8a6a, #2d6a4f); color: #fff; }
@@ -1476,9 +1503,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .battle-stat-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
 .battle-stat { text-align: center; min-width: 60px; }
 .battle-stat-value { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 600; }
-.battle-stat-label { font-size: 0.64rem; color: var(--ed-card-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.battle-stat-label { font-size: 0.7rem; color: var(--ed-card-muted); text-transform: uppercase; letter-spacing: var(--track-label); }
 .battle-game-bar-row { margin-bottom: 8px; }
-.battle-game-bar-head { display: flex; justify-content: space-between; margin-bottom: 3px; font-size: 0.74rem; }
+.battle-game-bar-head { display: flex; justify-content: space-between; margin-bottom: 3px; font-size: 0.78rem; }
 .battle-game-bar-head span:first-child { color: var(--ed-card-muted); font-weight: 600; }
 .battle-game-bar-head span:last-child { font-weight: 700; }
 .battle-game-bar-track { height: 4px; background: rgba(0,0,0,0.08); border-radius: 999px; overflow: hidden; }
@@ -1681,7 +1708,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .score-day-label {
   font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-label);
   color: var(--text-on-dark-muted);
   font-weight: 600;
 }
@@ -1721,14 +1748,14 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
    at a different day than the one on screen. */
 .score-box-rehomed {
   margin-top: 10px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   line-height: 1.4;
   color: var(--sb-text-muted, var(--text-muted));
 }
 
 .paste-score-day {
   margin-top: 3px;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--sb-accent, var(--gold));
 }
@@ -1777,7 +1804,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .history-control-label {
   font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-label);
   color: var(--text-on-dark-muted);
   font-weight: 600;
 }
