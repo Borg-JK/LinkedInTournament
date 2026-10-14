@@ -1933,12 +1933,16 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .score-day-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 
 /* One line with a separator where there's room; two lines on a phone. */
+/* Centred in the pill like every other pill — `baseline` here overrode the
+   pill system and pinned the text to the top edge. The dot carries its own
+   equal spacing on both sides, instead of a flex gap on one side and a
+   space character on the other. */
 .score-day-tab {
   display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
+  align-items: center;
+  gap: 0;
 }
-.score-day-tab-date::before { content: '· '; opacity: 0.7; }
+.score-day-tab-date::before { content: '·'; margin: 0 0.45em; opacity: 0.7; }
 
 .score-day-count {
   margin-left: auto;
