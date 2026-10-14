@@ -2,6 +2,7 @@
 // Full-width app header for authenticated pages: brand on the left, a
 // settings-gear dropdown (games played, sign out) on the right.
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
 import { useFriends } from '../lib/useFriends';
 import { useTournamentInvites, useWaitlist } from '../lib/useTournaments';
@@ -22,7 +23,18 @@ function GearIcon() {
   );
 }
 
+// Which top-level section a path belongs to, so the nav can say where you
+// are. Tournament pages (new, manage) sit under Tournaments; search is Find.
+function sectionFor(pathname) {
+  if (pathname.startsWith('/friends')) return 'friends';
+  if (pathname.startsWith('/tournaments/search')) return 'find';
+  return 'tournaments';
+}
+
 export default function TopNav() {
+  const { pathname } = useRouter();
+  const current = sectionFor(pathname);
+  const here = section => (current === section ? 'page' : undefined);
   const { profile, logout, setScoreEntryDefault } = useAuth();
   const scoreEntryDefault = profile?.scoreEntryDefault || 'paste';
 
@@ -60,14 +72,14 @@ export default function TopNav() {
         <a href="/" className="topnav-brand">LinkedIn Tournament</a>
 
         <div className="topnav-links">
-          <a href="/" className="topnav-link">
+          <a href="/" className="topnav-link" aria-current={here('tournaments')}>
             Tournaments
             {tournamentInvites.length > 0 && (
               <span className="nav-badge">{tournamentInvites.length}</span>
             )}
           </a>
-          <a href="/tournaments/search" className="topnav-link">Find</a>
-          <a href="/friends" className="topnav-link">
+          <a href="/tournaments/search" className="topnav-link" aria-current={here('find')}>Find</a>
+          <a href="/friends" className="topnav-link" aria-current={here('friends')}>
             Friends
             {incomingRequests.length > 0 && (
               <span className="nav-badge">{incomingRequests.length}</span>

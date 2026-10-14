@@ -83,6 +83,19 @@ p, .section-sub, .subtitle, .tournament-sub, .lb-meta {
 
 a { color: inherit; }
 
+/* One focus ring for every control, shown only for keyboard focus. The
+   gold is solved for, not picked: it's the lightness of the app's gold hue
+   that clears 3:1 non-text contrast on every surface the app has — white
+   panels, the dark page, Queens navy and the light game themes (worst case
+   3.6:1). The brighter brand gold fails on white. Text fields keep their own
+   border-colour focus treatment instead. */
+:root { --focus-ring: #8a6d14; }
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+input:focus-visible, textarea:focus-visible { outline: none; }
+
 button, input, select {
   font-family: inherit;
   font-size: inherit;
@@ -479,6 +492,11 @@ button, input, select {
 .topnav-link:hover { color: var(--text-on-dark); }
 .topnav-link:hover::after { right: 0; }
 
+/* Where you are: the current section keeps its underline and full
+   brightness, so the nav answers "where am I?" without hovering. */
+.topnav-link[aria-current="page"] { color: var(--text-on-dark); }
+.topnav-link[aria-current="page"]::after { right: 0; }
+
 .nav-badge {
   display: inline-flex;
   align-items: center;
@@ -577,7 +595,13 @@ button, input, select {
   padding: 0;
 }
 .chip-link:hover { text-decoration: underline; }
-.chip-link-danger { color: #b0453a; }
+.chip-link-danger { color: var(--text-muted); transition: color 120ms ease; }
+.score-box .chip-link-danger { color: var(--sb-text-muted, var(--text-muted)); }
+.chip-link-danger:focus-visible,
+.chip-link-danger:active { color: #b0453a; }
+@media (hover: hover) and (pointer: fine) {
+  .chip-link-danger:hover { color: #b0453a; }
+}
 
 .panel-head-row {
   display: flex;
