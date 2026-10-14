@@ -13,6 +13,7 @@ import StandingsTab from './StandingsTab';
 import HallOfFameTab from './HallOfFameTab';
 import BattleTab from './BattleTab';
 import ScoringTab from './ScoringTab';
+import Skeleton from './Skeleton';
 
 const SECTIONS = [
   { id: 'standings', num: '01', label: 'Standings' },
@@ -125,7 +126,7 @@ export default function TournamentEditorial({ tournament, myUid, manageHref }) {
         )}
 
         {!dataReady ? (
-          <div className="leaderboard-card"><div className="lb-meta">Loading…</div></div>
+          <div className="leaderboard-card"><Skeleton variant="rows" count={5} /></div>
         ) : (
           <>
             {section === 'standings' && <StandingsTab {...tabProps} />}

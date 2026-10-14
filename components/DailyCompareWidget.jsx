@@ -8,6 +8,7 @@ import { usePlayerGameScores } from '../lib/useScores';
 import { GAMES, todayIso } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
+import Skeleton from './Skeleton';
 
 export default function DailyCompareWidget() {
   const { user, profile } = useAuth();
@@ -50,7 +51,7 @@ export default function DailyCompareWidget() {
       </select>
 
       {!ready ? (
-        <div className="list-empty">Loading…</div>
+        <Skeleton variant="rows" count={3} />
       ) : ranked.length === 0 ? (
         <div className="panel-empty" style={{ fontSize: '0.85rem' }}>
           No one's submitted {GAMES.find(g => g.id === gameId)?.label} today yet.

@@ -19,6 +19,7 @@ import { themeFor } from '../lib/theme';
 import { buildMonthlyHistory, monthDays, buildDayPicker, dailyTimesForGame } from '../lib/personalHistory';
 import { monthsBetween, monthLabel } from '../lib/months';
 import InlineTimeEditor from './InlineTimeEditor';
+import Skeleton from './Skeleton';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip);
 
@@ -65,7 +66,14 @@ export default function PersonalHistoryTab() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [ready, byUidGame]);
 
-  if (!ready) return <div className="list-empty">Loading…</div>;
+  if (!ready) {
+    return (
+      <>
+        <section className="panel" style={{ marginBottom: 24 }}><Skeleton variant="block" /></section>
+        <section className="panel"><Skeleton variant="rows" count={3} /></section>
+      </>
+    );
+  }
 
   // Every month from the first score ever logged through the current one, so
   // a month you sat out is still selectable rather than missing.

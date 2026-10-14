@@ -13,6 +13,7 @@ import ScoreBoxes from '../components/ScoreBoxes';
 import DailyCompareWidget from '../components/DailyCompareWidget';
 import PersonalHistoryTab from '../components/PersonalHistoryTab';
 import SharedScoreIntake from '../components/SharedScoreIntake';
+import Skeleton from '../components/Skeleton';
 
 function InfoIcon() {
   return (
@@ -121,7 +122,7 @@ function TournamentRow({ tournament, uid, pref, onTogglePin, onSetColor }) {
           {tournament.games.map(gId => GAMES.find(g => g.id === gId)?.label || gId).join(', ')}
         </span>
         {!ready ? (
-          <span className="pill-static">…</span>
+          <span className="pill-static skeleton-pill"><span className="sr-only">Loading…</span></span>
         ) : mine ? (
           <span className="placement-pill placement-pill-lg">#{mine.rank} of {ranked.length}</span>
         ) : (
@@ -227,7 +228,7 @@ export default function Home() {
   if (loading || !profileChecked || !user || !profile) {
     return (
       <div className="page">
-        <div className="subtitle" style={{ marginTop: 64, color: 'var(--text-on-dark-muted)' }}>Loading…</div>
+        <Skeleton variant="lines" count={3} className="skeleton-page" />
       </div>
     );
   }
@@ -281,7 +282,7 @@ export default function Home() {
                   </div>
 
                   {tLoading ? (
-                    <div className="list-empty">Loading…</div>
+                    <Skeleton variant="rows" count={2} />
                   ) : tournaments.length === 0 ? (
                     <div className="panel-empty">No tournaments yet — create one, or find one to ask to join.</div>
                   ) : (

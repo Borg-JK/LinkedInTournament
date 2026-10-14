@@ -16,6 +16,7 @@ import { GAMES, GAME_IDS } from '../../../lib/games';
 import { SCORING_METRICS, ELIGIBILITY_STEPS } from '../../../lib/scoring';
 import { REVEAL_POLICIES, DEFAULT_REVEAL_POLICY, DEFAULT_REVEAL_INTERVAL_DAYS } from '../../../lib/reveal';
 import TopNav from '../../../components/TopNav';
+import Skeleton from '../../../components/Skeleton';
 
 function SettingsForm({ tournament, onSaved, onCancel }) {
   const [name, setName] = useState(tournament.name);
@@ -378,7 +379,7 @@ export default function ManageTournament() {
           <h2>Members</h2>
           <div className="section-sub">{tournament.members.length} in this tournament</div>
           {!members ? (
-            <div className="list-empty">Loading…</div>
+            <Skeleton variant="rows" count={3} />
           ) : (
             <ul className="people-list">
               {members.map(m => (
@@ -399,7 +400,7 @@ export default function ManageTournament() {
         <section className="panel">
           <h2>Invite friends</h2>
           {!invitableFriends ? (
-            <div className="list-empty">Loading…</div>
+            <Skeleton variant="rows" count={3} />
           ) : invitableFriends.length === 0 ? (
             <div className="panel-empty">Everyone on your friends list is already in, or already invited.</div>
           ) : (

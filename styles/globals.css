@@ -1757,6 +1757,57 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .history-entry-form .score-box-btn { width: auto; padding: 5px 12px; font-size: 0.78rem; }
 .history-entry-form .score-box-error { margin: 0; }
 
+/* ── Loading placeholders (components/Skeleton.jsx) ─────────────────── */
+
+/* Read by screen readers, not shown. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Blocks take their colour from the surrounding text, so one placeholder
+   reads correctly on a white panel, the dark page or a coloured score box.
+   A slow opacity pulse rather than a moving shimmer: it says "working"
+   without drawing the eye across the page. */
+.skeleton { position: relative; display: grid; gap: 12px; }
+.skeleton-bar,
+.skeleton-dot {
+  display: block;
+  background: color-mix(in srgb, currentColor 11%, transparent);
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+.skeleton-bar { height: 12px; border-radius: 999px; }
+.skeleton-lines .skeleton-bar:nth-child(2) { width: 92%; }
+.skeleton-lines .skeleton-bar:nth-child(3) { width: 74%; }
+.skeleton-lines .skeleton-bar:nth-child(4) { width: 58%; }
+.skeleton-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 48px;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 0;
+}
+.skeleton-dot { width: 28px; height: 28px; border-radius: 50%; }
+.skeleton-bar-short { width: 48px; }
+.skeleton-block .skeleton-fill { height: 220px; border-radius: var(--radius-sm); }
+.skeleton-time { justify-items: center; }
+.skeleton-time .skeleton-bar { width: 56px; height: 22px; margin: 4px auto 0; }
+.skeleton-pill { display: inline-block; width: 74px; height: 28px; border-radius: 999px;
+  background: color-mix(in srgb, currentColor 9%, transparent); animation: skeleton-pulse 1.6s ease-in-out infinite; }
+.skeleton-page { max-width: 420px; width: 100%; margin: 64px auto 0; color: var(--text-on-dark); }
+
+@keyframes skeleton-pulse {
+  50% { opacity: 0.5; }
+}
+
 /* ── One pill system ──────────────────────────────────────────────────
    The home tabs, the day tabs, the tournament game pills and the History
    game pills had four different heights, paddings, border weights and type

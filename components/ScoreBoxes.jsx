@@ -17,6 +17,7 @@ import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
 import InlineTimeEditor from './InlineTimeEditor';
 import PasteScoreForm from './PasteScoreForm';
+import Skeleton from './Skeleton';
 
 function dayLabel(dateIso) {
   const [y, m, d] = dateIso.split('-').map(Number);
@@ -92,7 +93,7 @@ function ScoreBox({ game, dateIso, existing, loadError, onRetry, defaultMode }) 
             <button type="button" className="chip-link" onClick={onRetry}>Retry</button>
           </div>
         ) : (
-          <div className="score-box-loading">…</div>
+          <div className="score-box-loading"><Skeleton variant="lines" count={1} className="skeleton-time" /></div>
         )
       ) : showForm ? (
         <>

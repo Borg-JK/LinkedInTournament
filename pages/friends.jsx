@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
 import { useFriends, useSuggestedFriends } from '../lib/useFriends';
 import TopNav from '../components/TopNav';
+import Skeleton from '../components/Skeleton';
 
 function statusFor(result, { isFriend, hasIncomingFrom, sentSet }) {
   if (isFriend(result.uid)) return 'friend';
@@ -212,7 +213,7 @@ export default function Friends() {
               {friends.length} friend{friends.length === 1 ? '' : 's'}
             </div>
             {friendsLoading ? (
-              <div className="list-empty">Loading…</div>
+              <Skeleton variant="rows" count={3} />
             ) : friends.length === 0 ? (
               <div className="daily-compare-hint">No friends yet — search to add some.</div>
             ) : (
