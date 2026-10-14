@@ -119,6 +119,7 @@ export default function BattleTab({ tournament, names, byUidGame, periodEnd }) {
             </div>
             <div style={{ height: 260 }}>
               <Line
+                updateMode="none"
                 data={{
                   labels: DOW_SHORT,
                   datasets: [
@@ -143,6 +144,7 @@ export default function BattleTab({ tournament, names, byUidGame, periodEnd }) {
               <div className="lb-title" style={{ marginBottom: 10 }}>Placement distribution</div>
               <div style={{ height: 240 }}>
                 <Bar
+                  updateMode="none"
                   data={{
                     labels: Array.from({ length: placement.maxRank }, (_, i) => `${i + 1}${['st', 'nd', 'rd'][i] || 'th'}`),
                     datasets: [
@@ -160,6 +162,7 @@ export default function BattleTab({ tournament, names, byUidGame, periodEnd }) {
               <div className="lb-meta" style={{ marginBottom: 10 }}>Cumulative — positive = {n1} ahead</div>
               <div style={{ height: 240 }}>
                 <Line
+                  updateMode="none"
                   data={{
                     labels: diff.map(d => { const [, m, dd] = d.date.split('-'); return `${dd}/${m}`; }),
                     datasets: [{

@@ -149,6 +149,7 @@ export default function PersonalHistoryTab() {
         ) : (
           <div style={{ height: 260 }}>
             <Line
+              updateMode="none"
               data={{
                 labels: dates.map(d => Number(d.slice(8, 10))),
                 datasets: [{

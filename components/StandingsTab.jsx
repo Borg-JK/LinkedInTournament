@@ -245,6 +245,7 @@ export default function StandingsTab({ tournament, names, byUidGame, myUid, peri
               </div>
               <div style={{ position: 'relative', height: Math.max(200, charts.participants.length * 44 + 40) }}>
                 <Bar
+                  updateMode="none"
                   data={{
                     labels: charts.participants.map(uid => names[uid] || '…'),
                     datasets: RANK_LABELS.map((label, ri) => ({

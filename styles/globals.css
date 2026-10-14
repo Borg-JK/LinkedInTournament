@@ -34,6 +34,13 @@
   --track-eyebrow: 0.2em;
   --track-display: -0.02em;
 
+  /* Motion. Curves from the animate skill's table, not hand-rolled:
+     a strong ease-out for anything entering or responding to a press. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --dur-press: 120ms;   /* press feedback: 100–160ms */
+  --dur-state: 150ms;   /* colour changes on pills, tabs, links */
+  --dur-pop: 160ms;     /* small popovers: 125–200ms */
+
   --topnav-bg: rgba(26, 20, 8, 0.9);
   --nav-rule: rgba(240, 217, 138, 0.22);
 }
@@ -202,8 +209,9 @@ button, input, select {
   box-shadow: 0 6px 18px rgba(212, 175, 106, 0.28);
 }
 
-.btn:hover { background: var(--gold2); }
-.btn:active { transform: translateY(1px); }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { background: var(--gold2); }
+}
 .btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
 .btn-ghost {
@@ -494,20 +502,26 @@ button, input, select {
   content: '';
   position: absolute;
   left: 0;
-  right: 100%;
+  right: 0;
   bottom: 0;
   height: 2px;
   background: var(--gold2);
   border-radius: 2px;
-  transition: right 0.2s ease;
+  /* Drawn with transform rather than by animating `right`, which forced a
+     layout on every frame. */
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 200ms var(--ease-out);
 }
-.topnav-link:hover { color: var(--text-on-dark); }
-.topnav-link:hover::after { right: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .topnav-link:hover { color: var(--text-on-dark); }
+  .topnav-link:hover::after { transform: scaleX(1); }
+}
 
 /* Where you are: the current section keeps its underline and full
    brightness, so the nav answers "where am I?" without hovering. */
 .topnav-link[aria-current="page"] { color: var(--text-on-dark); }
-.topnav-link[aria-current="page"]::after { right: 0; }
+.topnav-link[aria-current="page"]::after { transform: scaleX(1); }
 
 .nav-badge {
   display: inline-flex;
@@ -1168,11 +1182,11 @@ button, input, select {
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* Transitioned on the same curve as .editorial below, so the page and the
-   document edge change color together when the game tab changes rather than
-   the edge snapping 300ms ahead of the page. */
+   document edge change colour together when the game tab changes rather
+   than the edge snapping ahead of the page. */
 html[data-theme] body {
   background: var(--ed-bg);
-  transition: background 0.3s ease;
+  transition: background-color 180ms ease;
 }
 
 .editorial {
@@ -1181,7 +1195,10 @@ html[data-theme] body {
   font-family: 'DM Sans', -apple-system, sans-serif;
   background: var(--ed-bg);
   color: var(--ed-text);
-  transition: background 0.3s ease, color 0.3s ease;
+  /* Runs every time a game pill is picked, so it's kept short: long enough
+     that a dark-to-light theme change isn't a flash, short enough not to
+     trail behind the click. */
+  transition: background-color 180ms ease, color 180ms ease;
 }
 .editorial-inner { max-width: 1240px; margin: 0 auto; }
 
@@ -1255,7 +1272,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   background: rgba(255,255,255,0.85);
   border-color: rgba(0,0,0,0.1);
 }
-.editorial-back-btn:hover { transform: translateX(-2px); }
+@media (hover: hover) and (pointer: fine) {
+  .editorial-back-btn:hover { transform: translateX(-2px); }
+}
 
 /* On a phone the header is a column, and "back" belongs above the title the
    way it does in every other mobile app — column-reverse gets it there
@@ -2082,6 +2101,82 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   .day-fill-card { padding: 16px 12px 14px; }
   .day-fill-card-time { font-size: 1.7rem; }
   .day-fill-card-game { font-size: 1rem; }
+}
+
+/* ── Motion ──────────────────────────────────────────────────────────
+   Three kinds of motion, each because it does a job:
+
+   1. Press feedback — every pressable thing scales slightly on :active, so
+      the interface answers the moment a finger or click lands, not when it
+      lifts. 0.97 for buttons and pills; 0.99 for a whole tournament row,
+      where a bigger shrink would read as the layout jumping.
+   2. State colour — pills, tabs and links fade their colours over 150ms
+      when they become active. Short, because these are switched constantly.
+   3. Popovers — the tournament info card and the settings menu grow out of
+      the button that opened them. They close instantly: leaving should
+      never be slower than arriving.
+
+   Deliberately not animated: page changes, list and data entrances, chart
+   updates (see lib/chartTheme.js), anything on a keyboard shortcut. Those
+   are the views people flip through all day. */
+
+.btn, .btn-sm, .home-tab, .ed-game-tab, .history-game-tab, .score-box-btn,
+.day-fill-card-add, .stepper-btn, .gear-btn, .tournament-pin-btn,
+.tournament-info-btn, .editorial-back-btn, .t-section-tab, .color-swatch {
+  transition:
+    background-color var(--dur-state) ease,
+    border-color var(--dur-state) ease,
+    color var(--dur-state) ease,
+    box-shadow var(--dur-state) ease,
+    transform var(--dur-press) var(--ease-out);
+}
+
+.btn:active, .btn-sm:active, .home-tab:active, .ed-game-tab:active,
+.history-game-tab:active, .score-box-btn:active, .day-fill-card-add:active,
+.stepper-btn:active, .gear-btn:active, .tournament-pin-btn:active,
+.tournament-info-btn:active, .editorial-back-btn:active, .t-section-tab:active,
+.color-swatch:active {
+  transform: scale(0.97);
+}
+.btn:disabled:active, .btn-sm:disabled:active, .score-box-btn:disabled:active,
+.stepper-btn:disabled:active { transform: none; }
+
+.tournament-card-wrap { transition: border-color var(--dur-state) ease, box-shadow var(--dur-state) ease, transform var(--dur-press) var(--ease-out); }
+.tournament-card-wrap:has(.tournament-card:active) { transform: scale(0.99); }
+
+/* Popovers grow from their trigger (top right, where the info and gear
+   buttons sit), never from nothing — 0.96 and transparent, not scale(0). */
+.tournament-info-popover,
+.dropdown {
+  transform-origin: top right;
+  transition: opacity var(--dur-pop) var(--ease-out), transform var(--dur-pop) var(--ease-out);
+}
+@starting-style {
+  .tournament-info-popover,
+  .dropdown {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
+}
+
+/* Reduced motion is gentler motion, not none: colour and opacity changes
+   stay, because they explain a state change; movement and scaling go. */
+@media (prefers-reduced-motion: reduce) {
+  .btn:active, .btn-sm:active, .home-tab:active, .ed-game-tab:active,
+  .history-game-tab:active, .score-box-btn:active, .day-fill-card-add:active,
+  .stepper-btn:active, .gear-btn:active, .tournament-pin-btn:active,
+  .tournament-info-btn:active, .editorial-back-btn:active, .t-section-tab:active,
+  .color-swatch:active,
+  .tournament-card-wrap:has(.tournament-card:active) { transform: none; }
+  .editorial-back-btn:hover { transform: none; }
+  .topnav-link::after { transition: none; }
+  .skeleton-bar, .skeleton-dot, .skeleton-pill { animation: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  @starting-style {
+    .tournament-info-popover,
+    .dropdown { transform: none; }
+  }
 }
 
 /* ── Safe areas ─────────────────────────────────────────────────────
