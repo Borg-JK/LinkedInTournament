@@ -22,6 +22,8 @@ const T = '/tournaments/t_worst';
 
 const WIDTHS = [
   { name: '320', width: 320, height: 720, isMobile: true, hasTouch: true, deviceScaleFactor: 2 },
+  // iPhone SE (2nd/3rd gen): the narrowest current iPhone, 375 x 667.
+  { name: '375-se', width: 375, height: 667, isMobile: true, hasTouch: true, deviceScaleFactor: 2 },
   { name: '390', width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 2 },
   { name: '390-text200', width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 2, textScale: 2 },
   { name: '768', width: 768, height: 1024, isMobile: true, hasTouch: true, deviceScaleFactor: 1 },
