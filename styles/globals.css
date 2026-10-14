@@ -243,7 +243,6 @@ button, input, select {
   font-weight: 700;
   font-size: 0.96rem;
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.1s ease;
   box-shadow: 0 6px 18px rgba(212, 175, 106, 0.28);
 }
 
@@ -1021,7 +1020,6 @@ button, input, select {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-soft);
   background: var(--surface2);
-  transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
 .tournament-card {
@@ -1073,7 +1071,6 @@ button, input, select {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
 }
 .tournament-pin-btn.active {
   background: var(--gold);
@@ -1082,10 +1079,8 @@ button, input, select {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .tournament-card-wrap:hover {
-    border-color: var(--border);
-    box-shadow: 0 6px 20px rgba(26, 20, 8, 0.10);
-  }
+  .tournament-card-wrap:hover { border-color: var(--border); }
+  .tournament-card-wrap:hover::after { opacity: 1; }
   .tournament-info-btn:hover,
   .tournament-pin-btn:not(.active):hover { color: var(--text); border-color: var(--gold); }
 }
@@ -1301,7 +1296,6 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   font-weight: 700;
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
-  transition: transform 0.15s ease;
   text-decoration: none;
   display: inline-block;
   flex: none;
@@ -2127,7 +2121,6 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
 }
 @media (hover: hover) and (pointer: fine) { .day-fill-card-add:hover {
   background: var(--df-accent, var(--gold));
@@ -2190,7 +2183,6 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
     background-color var(--dur-state) ease,
     border-color var(--dur-state) ease,
     color var(--dur-state) ease,
-    box-shadow var(--dur-state) ease,
     transform var(--dur-press) var(--ease-out);
 }
 
@@ -2204,7 +2196,20 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .btn:disabled:active, .btn-sm:disabled:active, .score-box-btn:disabled:active,
 .stepper-btn:disabled:active { transform: none; }
 
-.tournament-card-wrap { transition: border-color var(--dur-state) ease, box-shadow var(--dur-state) ease, transform var(--dur-press) var(--ease-out); }
+/* The row's hover shadow sits on a pseudo-element and fades its opacity:
+   opacity is composited, while transitioning box-shadow itself repainted the
+   whole row on every frame. */
+.tournament-card-wrap { transition: border-color var(--dur-state) ease, transform var(--dur-press) var(--ease-out); }
+.tournament-card-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 6px 20px rgba(26, 20, 8, 0.10);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-state) ease;
+}
 .tournament-card-wrap:has(.tournament-card:active) { transform: scale(0.99); }
 
 /* Popovers grow from their trigger (top right, where the info and gear
