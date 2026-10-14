@@ -17,11 +17,14 @@ export default function MyApp({ Component, pageProps }) {
       {/* Replaces Next's default `width=device-width` (see next/head's
           defaultHead). Without initial-scale, iOS can hand the page a
           viewport it has already zoomed, which is how a layout that fits
-          ends up rendered a size too small. */}
+          ends up rendered a size too small. interactive-widget makes the
+          on-screen keyboard shrink the layout on Android the way it already
+          does on iOS, so a focused score field isn't left under the keys.
+          Zoom is deliberately not disabled — 16px fields fix the cause. */}
       <Head>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
+          content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
           key="viewport"
         />
       </Head>

@@ -89,6 +89,8 @@ export default function SearchTournaments() {
             type="text"
             className="search-input"
             placeholder="Search tournament name…"
+            enterKeyHint="search"
+            autoCorrect="off"
             value={term}
             onChange={e => onTermChange(e.target.value)}
           />

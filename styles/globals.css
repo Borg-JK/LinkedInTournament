@@ -49,6 +49,43 @@
 
 html, body { min-height: 100%; }
 
+/* ── Phone platform baseline (mobile-native) ─────────────────────────
+   Every :hover rule in this file lives inside
+   @media (hover: hover) and (pointer: fine): a phone fakes hover on tap and
+   then leaves it stuck. Touch gets its feedback from :active instead. */
+html {
+  /* The grey flash iOS and Android paint over anything tapped; every
+     control has its own :active state to replace it. */
+  -webkit-tap-highlight-color: transparent;
+  /* No font inflation when a phone turns to landscape. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Controls fire on tap without waiting to see if it's a double-tap zoom,
+   and a long press doesn't select their label. Only controls: text that's
+   content — names, scores, tournament titles — stays selectable. */
+button, select, label, summary, [role="button"],
+.home-tab, .ed-game-tab, .history-game-tab, .t-section-tab, .chip-link {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+a { touch-action: manipulation; }
+
+/* iOS zooms the page into any field under 16px and doesn't zoom back out —
+   which was every field here, the paste box at 11px. 16px on touch screens
+   only; desktop keeps the compact sizes. !important because this is a
+   platform floor, not a style: it has to beat each field's own size. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
 /* The background lives on <body> and nowhere else, so it propagates to the
    document canvas: overscroll past the top or bottom, and any gap a page's
    own box doesn't cover, stays the page's own color instead of flashing a
@@ -110,6 +147,7 @@ button, input, select {
 
 .page {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -220,7 +258,7 @@ button, input, select {
   color: var(--text);
   box-shadow: none;
 }
-.btn-ghost:hover { background: var(--surface2); }
+@media (hover: hover) and (pointer: fine) { .btn-ghost:hover { background: var(--surface2); } }
 
 .error {
   color: #c44545;
@@ -245,7 +283,7 @@ button, input, select {
   text-decoration: none;
   padding: 0;
 }
-.link-btn:hover { text-decoration: underline; }
+@media (hover: hover) and (pointer: fine) { .link-btn:hover { text-decoration: underline; } }
 
 @media (max-width: 420px) {
   .card { padding: 28px 22px; }
@@ -308,7 +346,7 @@ button, input, select {
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
-.gear-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
+@media (hover: hover) and (pointer: fine) { .gear-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); } }
 
 .dropdown {
   position: absolute;
@@ -336,7 +374,7 @@ button, input, select {
   border-radius: var(--radius-xs);
   cursor: pointer;
 }
-.dropdown-item:hover { background: var(--surface2); }
+@media (hover: hover) and (pointer: fine) { .dropdown-item:hover { background: var(--surface2); } }
 .dropdown-item-danger { color: var(--loss); }
 
 .dropdown-section-label {
@@ -358,6 +396,7 @@ button, input, select {
 
 .app-page {
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .app-main {
@@ -601,7 +640,7 @@ button, input, select {
   cursor: pointer;
   text-decoration: none;
 }
-.btn-sm:hover { background: var(--gold2); }
+@media (hover: hover) and (pointer: fine) { .btn-sm:hover { background: var(--gold2); } }
 .btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .btn-sm-ghost {
@@ -609,7 +648,7 @@ button, input, select {
   border: 1.5px solid var(--border);
   color: var(--text-soft);
 }
-.btn-sm-ghost:hover { background: var(--surface2); }
+@media (hover: hover) and (pointer: fine) { .btn-sm-ghost:hover { background: var(--surface2); } }
 
 .chip-link {
   background: none;
@@ -620,7 +659,7 @@ button, input, select {
   cursor: pointer;
   padding: 0;
 }
-.chip-link:hover { text-decoration: underline; }
+@media (hover: hover) and (pointer: fine) { .chip-link:hover { text-decoration: underline; } }
 .chip-link-danger { color: var(--text-muted); transition: color 120ms ease; }
 .score-box .chip-link-danger { color: var(--sb-text-muted, var(--text-muted)); }
 .chip-link-danger:focus-visible,
@@ -660,7 +699,7 @@ button, input, select {
   color: var(--text-soft);
   transition: border-color 0.15s ease, background 0.15s ease;
 }
-.check-row:hover { border-color: var(--gold); }
+@media (hover: hover) and (pointer: fine) { .check-row:hover { border-color: var(--gold); } }
 .check-row:has(input:checked) {
   border-color: var(--gold);
   background: var(--gold-dim);
@@ -735,7 +774,7 @@ button, input, select {
   font-weight: 700;
   cursor: pointer;
 }
-.stepper-btn:hover { border-color: var(--gold); }
+@media (hover: hover) and (pointer: fine) { .stepper-btn:hover { border-color: var(--gold); } }
 .stepper-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .stepper-value {
@@ -838,7 +877,7 @@ button, input, select {
   cursor: pointer;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
 }
-.score-box-btn:hover { background: var(--sb-accent2, var(--gold2)); }
+@media (hover: hover) and (pointer: fine) { .score-box-btn:hover { background: var(--sb-accent2, var(--gold2)); } }
 .score-box-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
 .score-box-done {
@@ -1128,7 +1167,7 @@ button, input, select {
   font-weight: 600;
   cursor: pointer;
 }
-.game-tab:hover { border-color: var(--tab-accent, var(--gold)); }
+@media (hover: hover) and (pointer: fine) { .game-tab:hover { border-color: var(--tab-accent, var(--gold)); } }
 
 .game-tab-active {
   border-color: var(--tab-accent, var(--gold));
@@ -1191,6 +1230,7 @@ html[data-theme] body {
 
 .editorial {
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 0 28px 80px;
   font-family: 'DM Sans', -apple-system, sans-serif;
   background: var(--ed-bg);
@@ -1316,7 +1356,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 }
 .t-section-tab-num { font-family: 'Fraunces', serif; font-size: 0.8rem; font-style: italic; opacity: 0.6; }
 .t-section-tab-label { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 500; letter-spacing: -0.01em; }
-.t-section-tab:hover { color: var(--ed-text); }
+@media (hover: hover) and (pointer: fine) { .t-section-tab:hover { color: var(--ed-text); } }
 .t-section-tab.active { color: var(--ed-text); border-bottom-color: var(--ed-accent); }
 .t-section-tab.active .t-section-tab-num { opacity: 1; color: var(--ed-accent); }
 /* Manage sits apart from the numbered sections — it's an owner's tool, not
@@ -1709,7 +1749,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   font-weight: 600;
   cursor: pointer;
 }
-.home-tab:hover { color: var(--text-on-dark); }
+@media (hover: hover) and (pointer: fine) { .home-tab:hover { color: var(--text-on-dark); } }
 .home-tab.active {
   background: var(--gold);
   border-color: transparent;
@@ -1734,7 +1774,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   background: transparent;
   color: var(--hg-accent, var(--text-soft));
 }
-.history-game-tab:hover { background: color-mix(in srgb, var(--hg-accent, var(--border)) 12%, transparent); }
+@media (hover: hover) and (pointer: fine) { .history-game-tab:hover { background: color-mix(in srgb, var(--hg-accent, var(--border)) 12%, transparent); } }
 .history-game-tab.active {
   background: var(--hg-accent, var(--gold));
   color: var(--hg-text, #1a1508);
@@ -2066,10 +2106,10 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.day-fill-card-add:hover {
+@media (hover: hover) and (pointer: fine) { .day-fill-card-add:hover {
   background: var(--df-accent, var(--gold));
   color: #1a1508;
-}
+} }
 
 /* The shared time editor sits inside a card here, so give it room to
    breathe rather than the compact score-box treatment. */
@@ -2176,6 +2216,28 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   @starting-style {
     .tournament-info-popover,
     .dropdown { transform: none; }
+  }
+}
+
+/* ── Installed app: keep the status bar readable on light themes ──────
+   Installed on iOS, the page runs under the status bar
+   (apple-mobile-web-app-status-bar-style: black-translucent) and the
+   clock and battery are drawn in white — invisible over Tango cream or
+   Mini green. iOS reads that setting once at launch and won't change it, so
+   instead a dark band is painted exactly the status bar's height on the
+   light game themes. Only when installed: in a browser tab the bar isn't
+   over the page, and on Android the inset is 0, so the band is empty. */
+@media (display-mode: standalone) {
+  html:is([data-theme="tango"], [data-theme="mini"], [data-theme="zip"], [data-theme="patches"], [data-theme="wend"]) body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: env(safe-area-inset-top, 0px);
+    background: var(--bg);
+    z-index: 100;
+    pointer-events: none;
   }
 }
 

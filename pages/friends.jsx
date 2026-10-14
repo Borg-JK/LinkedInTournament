@@ -118,6 +118,10 @@ export default function Friends() {
                 type="text"
                 className="search-input"
                 placeholder="Search username…"
+                enterKeyHint="search"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
                 value={term}
                 onChange={e => onTermChange(e.target.value)}
               />

@@ -76,6 +76,9 @@ export default function SignIn() {
                 <label htmlFor="pastedLink">Sign-in link</label>
                 <textarea
                   id="pastedLink"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
                   required
                   rows={3}
                   value={pastedLink}
@@ -96,6 +99,9 @@ export default function SignIn() {
               <label htmlFor="email">Email address</label>
               <input
                 id="email"
+                autoComplete="email"
+                enterKeyHint="send"
+                autoCapitalize="none"
                 type="email"
                 required
                 autoFocus

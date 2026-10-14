@@ -54,6 +54,11 @@ export default function Onboarding() {
             <label htmlFor="username">Username</label>
             <input
               id="username"
+              autoComplete="username"
+              enterKeyHint="go"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
               type="text"
               required
               autoFocus

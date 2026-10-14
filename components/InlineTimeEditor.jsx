@@ -33,6 +33,8 @@ export default function InlineTimeEditor({ initialSeconds, onSave, onCancel, sav
       <input
         type="text"
         inputMode="numeric"
+        enterKeyHint="done"
+        autoComplete="off"
         placeholder="1:05"
         value={formatDigitsForDisplay(digits)}
         onChange={e => { setDigits(digitsFromInput(e.target.value)); setError(''); }}

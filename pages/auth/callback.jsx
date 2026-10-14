@@ -59,6 +59,9 @@ export default function AuthCallback() {
                 <label htmlFor="email">Email address</label>
                 <input
                   id="email"
+                  autoComplete="email"
+                  enterKeyHint="go"
+                  autoCapitalize="none"
                   type="email"
                   required
                   autoFocus
