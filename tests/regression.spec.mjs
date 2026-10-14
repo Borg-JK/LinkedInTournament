@@ -117,13 +117,20 @@ async function settleCharts(page) {
   if (!(await page.locator('canvas').count())) return;
   await page.waitForTimeout(300);
   await page.evaluate(() => {
-    for (const chart of Object.values(window.__ltCharts || {})) {
+    const charts = Object.values(window.__ltCharts || {});
+    // Off for every chart, including ones created after this (via the
+    // shared defaults): with animation off, Chart.js draws synchronously,
+    // so a later resize — which clears the canvas — redraws at once rather
+    // than waiting on an animation loop the frozen clock never advances.
+    if (charts[0]) charts[0].constructor.defaults.animation = false;
+    for (const chart of charts) {
       if (!chart.canvas?.isConnected) continue;
       chart.stop();
+      chart.options.animation = false;
       chart.update('none');
     }
   });
-  await page.waitForTimeout(100);
+  await page.waitForTimeout(150);
 }
 
 // ── Extraction ───────────────────────────────────────────────────────────
