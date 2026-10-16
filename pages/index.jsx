@@ -8,7 +8,7 @@ import { useTournamentStandings } from '../lib/useTournamentStandings';
 import { SCORING_METRICS } from '../lib/scoring';
 import { REVEAL_POLICIES, DEFAULT_REVEAL_POLICY, DEFAULT_REVEAL_INTERVAL_DAYS } from '../lib/reveal';
 import { GAMES } from '../lib/games';
-import TopNav from '../components/TopNav';
+import AppShell from '../components/AppShell';
 import ScoreBoxes from '../components/ScoreBoxes';
 import DailyCompareWidget from '../components/DailyCompareWidget';
 import PersonalHistoryTab from '../components/PersonalHistoryTab';
@@ -169,8 +169,11 @@ export default function Home() {
   const { invites, loading: invitesLoading, acceptInvite, declineInvite } = useTournamentInvites();
   const { prefs: tournamentPrefs, setPinned, setColor } = useTournamentPrefs();
   const [busyId, setBusyId] = useState(null);
-  const [homeTab, setHomeTab] = useState('today');
   const router = useRouter();
+  // Today and History are separate destinations in the app shell's nav, so
+  // which one shows comes from the address (/?view=history) rather than
+  // from a pair of tabs on the page.
+  const homeTab = router.query.view === 'history' ? 'history' : 'today';
 
   // Pinned tournaments float to the top; the relative order within each
   // group (pinned / unpinned) otherwise follows useTournaments' own
@@ -234,14 +237,8 @@ export default function Home() {
   }
 
   return (
-    <div className="app-page">
-      <TopNav />
+    <AppShell>
       <main className="app-main">
-        <div className="home-tabs">
-          <button type="button" className={`home-tab${homeTab === 'today' ? ' active' : ''}`} onClick={() => setHomeTab('today')}>Today</button>
-          <button type="button" className={`home-tab${homeTab === 'history' ? ' active' : ''}`} onClick={() => setHomeTab('history')}>History</button>
-        </div>
-
         {homeTab === 'today' ? (
           <>
             <SharedScoreIntake />
@@ -311,6 +308,6 @@ export default function Home() {
           </div>
         )}
       </main>
-    </div>
+    </AppShell>
   );
 }

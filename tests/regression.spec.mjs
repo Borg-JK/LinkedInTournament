@@ -237,9 +237,8 @@ async function recordHomeToday(page, out) {
 }
 
 async function recordHomeHistory(page, out) {
-  await page.goto('/');
-  await settle(page);
-  await page.locator('.home-tab', { hasText: 'History' }).click();
+  // History is its own destination in the app shell's nav.
+  await page.goto('/?view=history');
   await settle(page);
 
   const month = page.locator('.history-control select');
@@ -368,7 +367,7 @@ async function recordFunctional(browser) {
 
 const SCREEN_VIEWS = [
   { name: 'home-today', go: async p => { await p.goto('/'); } },
-  { name: 'home-history', go: async p => { await p.goto('/'); await settle(p); await p.locator('.home-tab', { hasText: 'History' }).click(); } },
+  { name: 'home-history', go: async p => { await p.goto('/?view=history'); } },
   { name: 'friends', go: async p => { await p.goto('/friends'); } },
   { name: 'find-tournaments', go: async p => { await p.goto('/tournaments/search'); } },
   { name: 'new-tournament', go: async p => { await p.goto('/tournaments/new'); } },

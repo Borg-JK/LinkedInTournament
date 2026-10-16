@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../../lib/useAuth';
 import { searchTournaments, requestToJoin, cancelJoinRequest, hasPendingJoinRequest } from '../../lib/useTournaments';
 import { GAMES } from '../../lib/games';
-import TopNav from '../../components/TopNav';
+import AppShell from '../../components/AppShell';
 
 function statusFor(t, uid) {
   if (t.members?.includes(uid)) return 'member';
@@ -75,8 +75,7 @@ export default function SearchTournaments() {
   if (!profile) return null;
 
   return (
-    <div className="app-page">
-      <TopNav />
+    <AppShell>
       <main className="app-main app-main-medium">
         <div className="hero">
           <div className="hero-eyebrow">Discover</div>
@@ -131,6 +130,6 @@ export default function SearchTournaments() {
           )}
         </section>
       </main>
-    </div>
+    </AppShell>
   );
 }

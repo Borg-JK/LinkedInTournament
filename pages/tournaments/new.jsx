@@ -9,7 +9,7 @@ import { SCORING_METRICS, DEFAULT_SCORING_METRIC, ELIGIBILITY_STEPS, DEFAULT_ELI
 import { JOIN_POLICIES, DEFAULT_JOIN_POLICY } from '../../lib/useTournaments';
 import { REVEAL_POLICIES, DEFAULT_REVEAL_POLICY, DEFAULT_REVEAL_INTERVAL_DAYS } from '../../lib/reveal';
 import { todayIso } from '../../lib/games';
-import TopNav from '../../components/TopNav';
+import AppShell from '../../components/AppShell';
 
 export default function NewTournament() {
   const { user, profile, profileChecked, loading: authLoading } = useAuth();
@@ -66,8 +66,7 @@ export default function NewTournament() {
   if (!profile) return null;
 
   return (
-    <div className="app-page">
-      <TopNav />
+    <AppShell>
       <main className="app-main app-main-narrow">
         <div className="hero">
           <div className="hero-eyebrow">Start something</div>
@@ -260,6 +259,6 @@ export default function NewTournament() {
           </button>
         </form>
       </main>
-    </div>
+    </AppShell>
   );
 }

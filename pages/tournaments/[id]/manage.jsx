@@ -15,7 +15,7 @@ import { resolveUser } from '../../../lib/users';
 import { GAMES, GAME_IDS } from '../../../lib/games';
 import { SCORING_METRICS, ELIGIBILITY_STEPS } from '../../../lib/scoring';
 import { REVEAL_POLICIES, DEFAULT_REVEAL_POLICY, DEFAULT_REVEAL_INTERVAL_DAYS } from '../../../lib/reveal';
-import TopNav from '../../../components/TopNav';
+import AppShell from '../../../components/AppShell';
 import Skeleton from '../../../components/Skeleton';
 
 function SettingsForm({ tournament, onSaved, onCancel }) {
@@ -310,8 +310,7 @@ export default function ManageTournament() {
   const gameLabels = tournament.games.map(gId => GAMES.find(g => g.id === gId)?.label || gId);
 
   return (
-    <div className="app-page">
-      <TopNav />
+    <AppShell>
       <main className="app-main app-main-narrow">
         <div className="hero">
           <h1>Manage {tournament.name}</h1>
@@ -425,6 +424,6 @@ export default function ManageTournament() {
           </button>
         </div>
       </main>
-    </div>
+    </AppShell>
   );
 }

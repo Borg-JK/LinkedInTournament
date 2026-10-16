@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../lib/useAuth';
 import { useTournament, requestToJoin, cancelJoinRequest, hasPendingJoinRequest } from '../../lib/useTournaments';
-import TopNav from '../../components/TopNav';
+import AppShell from '../../components/AppShell';
 import TournamentEditorial from '../../components/TournamentEditorial';
 
 export default function TournamentDetail() {
@@ -57,15 +57,14 @@ export default function TournamentDetail() {
 
   if (!tournament) {
     return (
-      <div className="app-page">
-        <TopNav />
+      <AppShell>
         <main className="app-main app-main-narrow">
           <div className="panel">
             <h2>Not found</h2>
             <div className="section-sub">This tournament doesn't exist.</div>
           </div>
         </main>
-      </div>
+      </AppShell>
     );
   }
 
@@ -74,8 +73,7 @@ export default function TournamentDetail() {
   }
 
   return (
-    <div className="app-page">
-      <TopNav />
+    <AppShell>
       <main className="app-main app-main-narrow">
         <div className="hero">
           <h1>{tournament.name}</h1>
@@ -90,6 +88,6 @@ export default function TournamentDetail() {
           )}
         </section>
       </main>
-    </div>
+    </AppShell>
   );
 }

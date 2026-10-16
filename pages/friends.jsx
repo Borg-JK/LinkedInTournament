@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
 import { useFriends, useSuggestedFriends } from '../lib/useFriends';
-import TopNav from '../components/TopNav';
+import AppShell from '../components/AppShell';
 import Skeleton from '../components/Skeleton';
 
 function statusFor(result, { isFriend, hasIncomingFrom, sentSet }) {
@@ -96,8 +96,7 @@ export default function Friends() {
   const showingSearch = term.trim().length > 0;
 
   return (
-    <div className="app-page">
-      <TopNav />
+    <AppShell>
       <main className="app-main">
         <div className="hero">
           <div className="hero-eyebrow">Your network</div>
@@ -232,6 +231,6 @@ export default function Friends() {
           </aside>
         </div>
       </main>
-    </div>
+    </AppShell>
   );
 }

@@ -798,8 +798,10 @@ button, input, select {
 
 .score-boxes-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 12px;
+  /* Three across, two rows: tiles with room to read at a glance, as in the
+     app-shell layout, rather than six slivers. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 @media (max-width: 700px) {
   .score-boxes-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
@@ -2271,6 +2273,171 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
     z-index: 100;
     pointer-events: none;
   }
+}
+
+/* ── App shell (components/AppShell.jsx) ─────────────────────────────
+   A sidebar on desktop; a top bar and a bottom tab bar on a phone, where
+   the five destinations sit in thumb reach. One breakpoint (860px, the
+   app's existing tablet line) switches between them. */
+
+.shell {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+}
+
+.shell-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: calc(28px + env(safe-area-inset-top, 0px)) 16px 20px;
+  border-right: 1px solid var(--nav-rule);
+  background: color-mix(in srgb, var(--bg) 80%, #000);
+}
+.shell-brand {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  color: var(--gold2);
+  text-decoration: none;
+  padding: 0 10px;
+}
+.shell-nav { display: flex; flex-direction: column; gap: 2px; }
+.shell-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 42px;
+  padding: 0 12px;
+  border-radius: 10px;
+  color: var(--text-on-dark-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color var(--dur-state) ease, color var(--dur-state) ease;
+}
+.shell-nav-item[aria-current="page"] {
+  color: var(--text-on-dark);
+  background: color-mix(in srgb, var(--gold) 16%, transparent);
+}
+.shell-nav-item[aria-current="page"] svg { color: var(--gold2); }
+@media (hover: hover) and (pointer: fine) {
+  .shell-nav-item:not([aria-current="page"]):hover {
+    color: var(--text-on-dark);
+    background: color-mix(in srgb, var(--text-on-dark) 6%, transparent);
+  }
+}
+.shell-badge,
+.shell-tab-badge {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--loss);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.shell-badge { margin-left: auto; }
+
+.shell-me { position: relative; margin-top: auto; }
+.shell-me-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-on-dark-muted);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.shell-me-name { flex: 1; min-width: 0; color: var(--text-on-dark); font-weight: 600; overflow-wrap: anywhere; }
+@media (hover: hover) and (pointer: fine) {
+  .shell-me-btn:hover { background: color-mix(in srgb, var(--text-on-dark) 6%, transparent); }
+}
+/* The settings menu opens upward from the foot of the sidebar. */
+.dropdown-up {
+  top: auto;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  transform-origin: bottom left;
+}
+
+.shell-topbar { display: none; }
+.shell-content { min-width: 0; }
+.shell-tabbar { display: none; }
+
+@media (max-width: 860px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+  }
+  .shell-sidebar { display: none; }
+  .shell-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: calc(12px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right)) 12px max(20px, env(safe-area-inset-left));
+    background: var(--topnav-bg);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--nav-rule);
+  }
+  .shell-topbar .topnav-brand { font-size: 1.2rem; }
+  .shell-tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 6px max(4px, env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left));
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid var(--nav-rule);
+  }
+  .shell-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px 0;
+    color: var(--text-on-dark-muted);
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-weight: 600;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    transition: color var(--dur-state) ease, transform var(--dur-press) var(--ease-out);
+  }
+  .shell-tab:active { transform: scale(0.94); }
+  .shell-tab[aria-current="page"] { color: var(--gold2); }
+  .shell-tab-icon { position: relative; display: inline-flex; }
+  .shell-tab-badge { position: absolute; top: -5px; right: -11px; min-width: 17px; height: 17px; font-size: 0.64rem; padding: 0 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shell-tab:active { transform: none; }
 }
 
 /* ── Safe areas ─────────────────────────────────────────────────────
