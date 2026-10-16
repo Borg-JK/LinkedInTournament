@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
 import { useFriends } from '../lib/useFriends';
 import { useTournamentInvites, useWaitlist } from '../lib/useTournaments';
+import { useFeedBadge } from '../lib/feedSeen';
 import NavIcon from './NavIcon';
 
 // Which section a page belongs to. Tournament pages (new, manage, a
@@ -53,12 +54,13 @@ function SettingsMenu({ up = false, onClose }) {
   );
 }
 
-export default function AppShell({ children, feedBadge = 0 }) {
+export default function AppShell({ children }) {
   const { pathname, query } = useRouter();
   const { profile } = useAuth();
   const { incomingRequests } = useFriends();
   const { invites } = useTournamentInvites();
   useWaitlist(); // lazily promotes any waitlisted memberships whose wait is over
+  const feedBadge = useFeedBadge();
   const [menu, setMenu] = useState(null); // 'side' | 'top' | null
   const sideRef = useRef(null);
   const topRef = useRef(null);

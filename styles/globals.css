@@ -2440,6 +2440,161 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   .shell-tab:active { transform: none; }
 }
 
+/* ── Feed (pages/feed.jsx, components/FeedPost.jsx) ────────────────── */
+
+.app-main-feed { max-width: 720px; }
+.feed-list { display: flex; flex-direction: column; gap: 14px; }
+.feed-empty { background: var(--surface); color: var(--text-muted); }
+.feed-empty a { color: #8a6d14; font-weight: 600; }
+
+.feed-post {
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px 14px;
+  /* The game's own colour along the top, so you can tell Queens from Zip
+     before reading a word. */
+  border-top: 3px solid var(--game);
+  box-shadow: var(--shadow-sm);
+}
+
+.feed-post-head { display: flex; align-items: center; gap: 12px; }
+.feed-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  color: #1a1408;
+}
+.feed-post-who { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.feed-post-name { font-weight: 700; font-size: 0.98rem; overflow-wrap: anywhere; }
+.feed-post-meta { font-size: 0.8rem; color: var(--text-muted); }
+.feed-post-time {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.7rem;
+  line-height: 1;
+  color: color-mix(in srgb, var(--game) 78%, #1a1408);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.feed-post-vs { margin: 8px 0 0; font-size: 0.84rem; color: var(--text-muted); }
+.feed-post-vs-faster { color: var(--win); font-weight: 600; }
+
+.feed-reactions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.feed-react {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 34px;
+  min-width: 40px;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-state) ease,
+    border-color var(--dur-state) ease,
+    opacity var(--dur-state) ease,
+    transform var(--dur-press) var(--ease-out);
+}
+.feed-react:active { transform: scale(0.94); }
+.feed-react:disabled { cursor: default; }
+/* Not picked by anyone yet: present, so it can be tapped, but quiet. */
+.feed-react-empty { background: transparent; opacity: 0.6; }
+.feed-react-mine { background: var(--gold-dim); border-color: var(--gold); opacity: 1; }
+.feed-react-n { font-size: 0.82rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+@media (hover: hover) and (pointer: fine) {
+  .feed-react-empty:hover { opacity: 1; }
+}
+
+.feed-comments { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+.feed-comment {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.feed-comment-body { flex: 1; min-width: 0; overflow-wrap: anywhere; color: var(--text-soft); }
+.feed-comment-body strong { color: var(--text); }
+.feed-comment-meta { flex-shrink: 0; font-size: 0.76rem; color: var(--text-muted); }
+.feed-comment-delete {
+  flex-shrink: 0;
+  align-self: center;
+  display: inline-flex;
+  padding: 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .feed-comment-delete:hover { color: var(--loss); }
+}
+
+.feed-reply { display: flex; gap: 8px; margin-top: 12px; }
+.feed-reply-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 6px 2px;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: color var(--dur-state) ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .feed-reply-open:hover { color: var(--text); }
+}
+.feed-reply-input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color var(--dur-state) ease, background-color var(--dur-state) ease;
+}
+.feed-reply-input:focus { border-color: var(--gold); background: var(--surface); }
+.feed-reply-send {
+  flex-shrink: 0;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--gold);
+  color: #1a1508;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity var(--dur-state) ease, transform var(--dur-press) var(--ease-out);
+}
+.feed-reply-send:active:not(:disabled) { transform: scale(0.97); }
+.feed-reply-send:disabled { opacity: 0.45; cursor: default; }
+
+@media (prefers-reduced-motion: reduce) {
+  .feed-react:active, .feed-reply-send:active:not(:disabled) { transform: none; }
+}
+
 /* ── Safe areas ─────────────────────────────────────────────────────
    The app renders full-bleed on a phone (viewport-fit=cover in _app, a
    translucent status bar in _document), so the gutters have to clear the
