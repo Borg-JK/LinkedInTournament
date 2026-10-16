@@ -183,13 +183,6 @@ button, input, select {
   text-align: center;
   letter-spacing: -0.01em;
 }
-.brand-linkedin {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-family: inherit;
-}
 
 .subtitle {
   color: var(--text-muted);
@@ -306,19 +299,17 @@ button, input, select {
 
 /* ── App shell (authenticated, full-width pages) ───────────────── */
 
-/* LinkedIn's "in" mark, then the product name, in white on the nav blue. */
+/* The product name, in white on the nav blue. */
 .topnav-brand,
 .shell-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+  font-family: 'Fraunces', serif;
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
+  line-height: 1.1;
   letter-spacing: -0.01em;
   color: var(--nav-text);
   text-decoration: none;
 }
-.brand-mark { flex-shrink: 0; display: block; }
 
 .topnav-right {
   position: relative;

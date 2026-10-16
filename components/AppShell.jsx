@@ -13,7 +13,6 @@ import { useFriends } from '../lib/useFriends';
 import { useTournamentInvites, useWaitlist } from '../lib/useTournaments';
 import { useFeedBadge } from '../lib/feedSeen';
 import NavIcon from './NavIcon';
-import BrandMark from './BrandMark';
 
 // Which section a page belongs to. Tournament pages (new, manage, a
 // non-member's view) sit under Today, where your tournaments are listed.
@@ -90,7 +89,7 @@ export default function AppShell({ children }) {
   return (
     <div className="shell">
       <aside className="shell-sidebar">
-        <a href="/" className="shell-brand" aria-label="LinkedIn Tournament, home"><BrandMark size={30} /><span>Tournament</span></a>
+        <a href="/" className="shell-brand">LinkedIn<br />Tournament</a>
         <nav className="shell-nav" aria-label="Sections">
           {NAV.map(n => (
             <a key={n.id} href={n.href} className="shell-nav-item" aria-current={here(n.id)}>
@@ -117,7 +116,7 @@ export default function AppShell({ children }) {
       </aside>
 
       <header className="shell-topbar">
-        <a href="/" className="topnav-brand" aria-label="LinkedIn Tournament, home"><BrandMark size={28} /><span>Tournament</span></a>
+        <a href="/" className="topnav-brand">LinkedIn Tournament</a>
         <div className="topnav-right" ref={topRef}>
           <button
             type="button"
