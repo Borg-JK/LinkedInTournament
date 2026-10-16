@@ -23,6 +23,48 @@ service cloud.firestore {
                    && request.resource.data.timeSeconds > 0
                    && request.resource.data.puzzleNum is number;
       allow delete: if request.auth != null && request.auth.uid == uid;
+
+      // ── Feed: reactions and comments on a score ──────────────────────
+      // Only the person who posted the score and their friends can see or
+      // add either. "Friends" means the poster's own friends list contains
+      // you (friendships are written in both directions, see useFriends).
+      function canSeePost() {
+        return request.auth != null
+          && (request.auth.uid == uid
+              || exists(/databases/$(database)/documents/users/$(uid)/friends/$(request.auth.uid)));
+      }
+      function postExists() {
+        return exists(/databases/$(database)/documents/scores/$(uid)/$(game)/$(date));
+      }
+
+      // One reaction per person per post: the doc id is the reactor's uid,
+      // so reacting again replaces it. Only the app's six emoji are allowed.
+      match /reactions/{reactorUid} {
+        allow read: if canSeePost();
+        allow create, update: if canSeePost() && postExists()
+                     && request.auth.uid == reactorUid
+                     && request.resource.data.keys().hasOnly(['emoji', 'at'])
+                     && request.resource.data.emoji in ['🔥', '👏', '😮', '😂', '🫡', '💀']
+                     && request.resource.data.at == request.time;
+        allow delete: if request.auth != null && request.auth.uid == reactorUid;
+      }
+
+      // Comments are written as yourself, 1–500 characters, and can't be
+      // edited afterwards. You can delete your own; the poster can delete
+      // any comment on their score.
+      match /comments/{commentId} {
+        allow read: if canSeePost();
+        allow create: if canSeePost() && postExists()
+                     && request.resource.data.keys().hasOnly(['authorUid', 'text', 'createdAt'])
+                     && request.resource.data.authorUid == request.auth.uid
+                     && request.resource.data.text is string
+                     && request.resource.data.text.size() > 0
+                     && request.resource.data.text.size() <= 500
+                     && request.resource.data.createdAt == request.time;
+        allow update: if false;
+        allow delete: if request.auth != null
+                     && (resource.data.authorUid == request.auth.uid || request.auth.uid == uid);
+      }
     }
 
     // Public profile doc, one per account. Any signed-in user can read (needed for
