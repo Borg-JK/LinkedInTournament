@@ -5,6 +5,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../lib/useAuth';
+import BrandMark from '../../components/BrandMark';
 
 export default function AuthCallback() {
   const { completeSignInFromLink } = useAuth();
@@ -45,7 +46,7 @@ export default function AuthCallback() {
   return (
     <div className="page">
       <div className="card">
-        <div className="brand">LinkedIn Tournament</div>
+        <div className="brand brand-linkedin"><BrandMark size={34} onBlue={false} /><span>Tournament</span></div>
 
         {status === 'working' && <div className="subtitle">Signing you in…</div>}
 

@@ -1,20 +1,25 @@
 :root {
-  /* The warm bronze/gold identity is the app's palette, full stop — the
-     navy it used to default to now belongs only to the Queens game theme.
-     One palette site-wide is what keeps the document background (overscroll,
-     the iOS status bar) from ever disagreeing with the page on top of it. */
-  --bg: #1a1408;
-  --bg-soft: #2a2110;
+  /* LinkedIn's own palette, so the app reads as part of LinkedIn: the
+     warm off-white page LinkedIn's feed sits on, white cards on top, and
+     LinkedIn blue for actions and the navigation. One palette site-wide is
+     what keeps the document background (overscroll, the iOS status bar)
+     from ever disagreeing with the page on top of it. */
+  --bg: #f4f2ee;
+  --bg-soft: #f4f2ee;
   --surface: #ffffff;
-  --surface2: #f7f5ee;
+  --surface2: #f9f8f6;
   --border: rgba(0, 0, 0, 0.1);
   --border-soft: rgba(0, 0, 0, 0.06);
-  --gold: #d4af37;
-  --gold2: #f0d98a;
-  --gold-dim: rgba(212, 175, 55, 0.14);
+  --accent: #0a66c2;          /* LinkedIn blue */
+  --accent-strong: #004182;   /* its pressed/hover shade, and accent text */
+  --accent-dim: rgba(10, 102, 194, 0.1);
+  --on-accent: #ffffff;
   --text: #1a1a1a;
   --text-soft: #4a4a4a;
-  --text-muted: #7d7d7d;
+  --text-muted: #666666;
+  --page-text: rgba(0, 0, 0, 0.9);
+  --page-text-muted: rgba(0, 0, 0, 0.6);
+  /* Text on the few surfaces that stay dark: the Queens game colour. */
   --text-on-dark: #f5f1e8;
   --text-on-dark-muted: rgba(245, 241, 232, 0.62);
   --win: #2d6a4f;
@@ -41,8 +46,12 @@
   --dur-state: 150ms;   /* colour changes on pills, tabs, links */
   --dur-pop: 160ms;     /* small popovers: 125–200ms */
 
-  --topnav-bg: rgba(26, 20, 8, 0.9);
-  --nav-rule: rgba(240, 217, 138, 0.22);
+  /* The navigation (sidebar, phone top bar and tab bar) is LinkedIn blue. */
+  --nav-bg: #0a66c2;
+  --nav-bg-active: #004182;
+  --nav-text: #ffffff;
+  --nav-text-muted: rgba(255, 255, 255, 0.88);
+  --nav-rule: rgba(255, 255, 255, 0.18);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -92,11 +101,8 @@ a { touch-action: manipulation; }
    different one. Pages paint themselves only where their color differs
    (the per-game tournament themes, which set html[data-theme] to match). */
 body {
-  background:
-    radial-gradient(1100px 520px at 50% -8%, var(--bg-soft), transparent),
-    var(--bg);
-  background-attachment: fixed;
-  color: var(--text-on-dark);
+  background: var(--bg);
+  color: var(--page-text);
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 16px;
@@ -127,17 +133,20 @@ p, .section-sub, .subtitle, .tournament-sub, .lb-meta {
 
 a { color: inherit; }
 
-/* One focus ring for every control, shown only for keyboard focus. The
-   gold is solved for, not picked: it's the lightness of the app's gold hue
-   that clears 3:1 non-text contrast on every surface the app has — white
-   panels, the dark page, Queens navy and the light game themes (worst case
-   3.6:1). The brighter brand gold fails on white. Text fields keep their own
-   border-colour focus treatment instead. */
-:root { --focus-ring: #8a6d14; }
+/* One focus ring for every control, shown only for keyboard focus:
+   LinkedIn blue, which clears 3:1 non-text contrast on the white panels,
+   the off-white page and the light game themes. Queens navy and the blue
+   navigation get a light ring instead (below and in the shell section).
+   Text fields keep their own border-colour focus treatment. */
+:root { --focus-ring: #0a66c2; }
+html[data-theme="queens"] { --focus-ring: #e8c989; }
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
+.shell-sidebar :focus-visible,
+.shell-topbar :focus-visible,
+.shell-tabbar :focus-visible { outline-color: #fff; }
 input:focus-visible, textarea:focus-visible { outline: none; }
 
 button, input, select {
@@ -173,6 +182,13 @@ button, input, select {
   margin-bottom: 6px;
   text-align: center;
   letter-spacing: -0.01em;
+}
+.brand-linkedin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: inherit;
 }
 
 .subtitle {
@@ -226,7 +242,7 @@ button, input, select {
 
 .field input:focus,
 .field textarea:focus {
-  border-color: var(--gold);
+  border-color: var(--accent);
   background: var(--surface);
 }
 
@@ -238,16 +254,16 @@ button, input, select {
   padding: 13px 18px;
   border-radius: var(--radius-sm);
   border: none;
-  background: var(--gold);
-  color: #1a1508;
+  background: var(--accent);
+  color: var(--on-accent);
   font-weight: 700;
   font-size: 0.96rem;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(212, 175, 106, 0.28);
+  box-shadow: 0 6px 18px rgba(10, 102, 194, 0.28);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .btn:hover { background: var(--gold2); }
+  .btn:hover { background: var(--accent-strong); }
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
@@ -275,7 +291,7 @@ button, input, select {
 .link-btn {
   background: none;
   border: none;
-  color: var(--gold2);
+  color: var(--accent-strong);
   cursor: pointer;
   font-size: 0.88rem;
   font-weight: 600;
@@ -290,34 +306,19 @@ button, input, select {
 
 /* ── App shell (authenticated, full-width pages) ───────────────── */
 
-.topnav {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  width: 100%;
-  background: var(--topnav-bg);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
-}
-
-.topnav-inner {
-  max-width: 1520px;
-  margin: 0 auto;
-  padding: 18px 32px;
-  display: flex;
+/* LinkedIn's "in" mark, then the product name, in white on the nav blue. */
+.topnav-brand,
+.shell-brand {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--nav-rule);
-}
-
-.topnav-brand {
-  font-family: 'Fraunces', serif;
-  font-size: 1.35rem;
+  gap: 10px;
   font-weight: 700;
-  color: var(--gold2);
-  text-decoration: none;
+  font-size: 1.15rem;
   letter-spacing: -0.01em;
+  color: var(--nav-text);
+  text-decoration: none;
 }
+.brand-mark { flex-shrink: 0; display: block; }
 
 .topnav-right {
   position: relative;
@@ -328,7 +329,7 @@ button, input, select {
 
 .topnav-user {
   font-size: 0.94rem;
-  color: var(--text-on-dark-muted);
+  color: var(--page-text-muted);
   font-weight: 500;
 }
 
@@ -339,13 +340,13 @@ button, input, select {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-on-dark);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--nav-text);
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
-@media (hover: hover) and (pointer: fine) { .gear-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); } }
+@media (hover: hover) and (pointer: fine) { .gear-btn:hover { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.5); } }
 
 .dropdown {
   position: absolute;
@@ -385,7 +386,7 @@ button, input, select {
   color: var(--text-muted);
 }
 
-.dropdown-item-active { color: var(--gold); font-weight: 700; }
+.dropdown-item-active { color: var(--accent); font-weight: 700; }
 
 .dropdown-divider {
   height: 1px;
@@ -420,14 +421,14 @@ button, input, select {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: var(--track-eyebrow);
-  color: var(--gold2);
+  color: var(--accent-strong);
   font-weight: 600;
   margin-bottom: 10px;
 }
 
 .hero h1 {
   font-size: 2.6rem;
-  color: var(--text-on-dark);
+  color: var(--page-text);
   margin-bottom: 10px;
   letter-spacing: var(--track-display);
   line-height: 1.05;
@@ -435,7 +436,7 @@ button, input, select {
 
 .hero p {
   font-size: 1.08rem;
-  color: var(--text-on-dark-muted);
+  color: var(--page-text-muted);
   max-width: 620px;
   line-height: 1.6;
 }
@@ -465,7 +466,7 @@ button, input, select {
    cards and the daily-compare sidebar, tying the home page to the same
    visual language as the tournament pages instead of reading as a plain
    generic panel. */
-.panel-accent { border-top: 4px solid var(--gold); }
+.panel-accent { border-top: 4px solid var(--accent); }
 
 /* Numbered section header — the same "01 · Label" flourish used for the
    tournament page's section tabs, brought over so multi-part forms and
@@ -481,7 +482,7 @@ button, input, select {
   font-family: 'Fraunces', serif;
   font-style: italic;
   font-size: 1rem;
-  color: var(--gold);
+  color: var(--accent);
   flex: none;
 }
 .section-head h2 { margin-bottom: 0; }
@@ -529,7 +530,7 @@ button, input, select {
 
 .topnav-link {
   position: relative;
-  color: var(--text-on-dark-muted);
+  color: var(--page-text-muted);
   text-decoration: none;
   font-size: 0.94rem;
   font-weight: 500;
@@ -543,7 +544,7 @@ button, input, select {
   right: 0;
   bottom: 0;
   height: 2px;
-  background: var(--gold2);
+  background: var(--accent-strong);
   border-radius: 2px;
   /* Drawn with transform rather than by animating `right`, which forced a
      layout on every frame. */
@@ -552,13 +553,13 @@ button, input, select {
   transition: transform 200ms var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  .topnav-link:hover { color: var(--text-on-dark); }
+  .topnav-link:hover { color: var(--page-text); }
   .topnav-link:hover::after { transform: scaleX(1); }
 }
 
 /* Where you are: the current section keeps its underline and full
    brightness, so the nav answers "where am I?" without hovering. */
-.topnav-link[aria-current="page"] { color: var(--text-on-dark); }
+.topnav-link[aria-current="page"] { color: var(--page-text); }
 .topnav-link[aria-current="page"]::after { transform: scaleX(1); }
 
 .nav-badge {
@@ -591,7 +592,7 @@ button, input, select {
   margin-bottom: 16px;
   transition: border-color 0.15s ease, background 0.15s ease;
 }
-.search-input:focus { border-color: var(--gold); background: var(--surface); }
+.search-input:focus { border-color: var(--accent); background: var(--surface); }
 
 .list-empty {
   color: var(--text-muted);
@@ -632,14 +633,14 @@ button, input, select {
   padding: 7px 14px;
   border-radius: var(--radius-xs);
   border: none;
-  background: var(--gold);
-  color: #1a1508;
+  background: var(--accent);
+  color: var(--on-accent);
   font-weight: 700;
   font-size: 0.84rem;
   cursor: pointer;
   text-decoration: none;
 }
-@media (hover: hover) and (pointer: fine) { .btn-sm:hover { background: var(--gold2); } }
+@media (hover: hover) and (pointer: fine) { .btn-sm:hover { background: var(--accent-strong); } }
 .btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .btn-sm-ghost {
@@ -699,10 +700,10 @@ button, input, select {
   color: var(--text-soft);
   transition: border-color 0.15s ease, background 0.15s ease;
 }
-@media (hover: hover) and (pointer: fine) { .check-row:hover { border-color: var(--gold); } }
+@media (hover: hover) and (pointer: fine) { .check-row:hover { border-color: var(--accent); } }
 .check-row:has(input:checked) {
-  border-color: var(--gold);
-  background: var(--gold-dim);
+  border-color: var(--accent);
+  background: var(--accent-dim);
   color: var(--text);
   font-weight: 700;
 }
@@ -731,9 +732,10 @@ button, input, select {
 .check-row input[type="radio"] { border-radius: 50%; }
 .check-row input[type="checkbox"]:checked,
 .check-row input[type="radio"]:checked {
-  border-color: var(--gold);
-  background: var(--gold);
+  border-color: var(--accent);
+  background: var(--accent);
 }
+/* (the tick and dot below sit on that blue) */
 .check-row input[type="checkbox"]:checked::after {
   content: '';
   position: absolute;
@@ -741,7 +743,7 @@ button, input, select {
   top: 2px;
   width: 5px;
   height: 9px;
-  border: solid #1a1508;
+  border: solid var(--on-accent);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
@@ -753,7 +755,7 @@ button, input, select {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #1a1508;
+  background: var(--on-accent);
   transform: translate(-50%, -50%);
 }
 
@@ -774,7 +776,7 @@ button, input, select {
   font-weight: 700;
   cursor: pointer;
 }
-@media (hover: hover) and (pointer: fine) { .stepper-btn:hover { border-color: var(--gold); } }
+@media (hover: hover) and (pointer: fine) { .stepper-btn:hover { border-color: var(--accent); } }
 .stepper-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .stepper-value {
@@ -811,7 +813,7 @@ button, input, select {
   background: linear-gradient(165deg, var(--sb-bg-soft, var(--surface2)) 0%, var(--sb-bg, var(--surface)) 100%);
   color: var(--sb-text, var(--text));
   border-radius: 14px;
-  border: 1px solid color-mix(in srgb, var(--sb-accent, var(--gold)) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sb-accent, var(--accent)) 55%, transparent);
   padding: 16px 10px 14px;
   text-align: center;
   min-width: 0;
@@ -864,7 +866,7 @@ button, input, select {
   outline: none;
 }
 .score-box-form input::placeholder { color: var(--sb-text-muted, var(--text-muted)); }
-.score-box-form input:focus { border-color: var(--sb-accent, var(--gold)); }
+.score-box-form input:focus { border-color: var(--sb-accent, var(--accent)); }
 
 .score-box-btn {
   width: 100%;
@@ -872,14 +874,14 @@ button, input, select {
   padding: 7px 10px;
   border-radius: var(--radius-xs);
   border: none;
-  background: var(--sb-accent, var(--gold));
+  background: var(--sb-accent, var(--accent));
   color: #1a1508;
   font-weight: 700;
   font-size: 0.8rem;
   cursor: pointer;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
 }
-@media (hover: hover) and (pointer: fine) { .score-box-btn:hover { background: var(--sb-accent2, var(--gold2)); } }
+@media (hover: hover) and (pointer: fine) { .score-box-btn:hover { background: var(--sb-accent2, var(--accent-strong)); } }
 .score-box-btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
 .score-box-done {
@@ -893,7 +895,7 @@ button, input, select {
   font-family: 'Fraunces', serif;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--sb-accent, var(--gold));
+  color: var(--sb-accent, var(--accent));
 }
 
 .score-box-error {
@@ -930,7 +932,7 @@ button, input, select {
   box-sizing: border-box;
 }
 .paste-score-form textarea::placeholder { color: var(--sb-text-muted, var(--text-muted)); }
-.paste-score-form textarea:focus { border-color: var(--sb-accent, var(--gold)); }
+.paste-score-form textarea:focus { border-color: var(--sb-accent, var(--accent)); }
 .paste-score-preview {
   font-size: 0.76rem;
   line-height: 1.35;
@@ -968,11 +970,11 @@ button, input, select {
   font-variant-numeric: tabular-nums;
 }
 
-.leaderboard tr.leaderboard-me td { background: var(--gold-dim); font-weight: 700; }
+.leaderboard tr.leaderboard-me td { background: var(--accent-dim); font-weight: 700; }
 .leaderboard tr:first-child td { border-top: none; }
 
 .leaderboard td.leaderboard-winner {
-  color: var(--gold);
+  color: var(--accent);
   font-weight: 700;
 }
 .leaderboard td.leaderboard-winner::after {
@@ -992,7 +994,7 @@ button, input, select {
   gap: 6px;
   padding: 5px 11px;
   border-radius: 999px;
-  background: var(--gold-dim);
+  background: var(--accent-dim);
   color: var(--text);
   font-size: 0.82rem;
   font-weight: 700;
@@ -1025,7 +1027,7 @@ button, input, select {
 }
 
 .tournament-card {
-  --tournament-accent: var(--gold);
+  --tournament-accent: var(--accent);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas: "name rank" "games rank";
@@ -1075,8 +1077,8 @@ button, input, select {
   cursor: pointer;
 }
 .tournament-pin-btn.active {
-  background: var(--gold);
-  color: #1a1508;
+  background: var(--accent);
+  color: var(--on-accent);
   border-color: transparent;
 }
 
@@ -1084,7 +1086,7 @@ button, input, select {
   .tournament-card-wrap:hover { border-color: var(--border); }
   .tournament-card-wrap:hover::after { opacity: 1; }
   .tournament-info-btn:hover,
-  .tournament-pin-btn:not(.active):hover { color: var(--text); border-color: var(--gold); }
+  .tournament-pin-btn:not(.active):hover { color: var(--text); border-color: var(--accent); }
 }
 
 /* On a phone the placement moves under the name, so the name and the
@@ -1165,11 +1167,11 @@ button, input, select {
   font-weight: 600;
   cursor: pointer;
 }
-@media (hover: hover) and (pointer: fine) { .game-tab:hover { border-color: var(--tab-accent, var(--gold)); } }
+@media (hover: hover) and (pointer: fine) { .game-tab:hover { border-color: var(--tab-accent, var(--accent)); } }
 
 .game-tab-active {
-  border-color: var(--tab-accent, var(--gold));
-  background: color-mix(in srgb, var(--tab-accent, var(--gold)) 16%, var(--surface2));
+  border-color: var(--tab-accent, var(--accent));
+  background: color-mix(in srgb, var(--tab-accent, var(--accent)) 16%, var(--surface2));
   color: var(--text);
 }
 
@@ -1198,7 +1200,7 @@ button, input, select {
   font-variant-numeric: tabular-nums;
 }
 .dow-table td:first-child { text-align: left; font-weight: 600; }
-.dow-table tr.leaderboard-me td { background: var(--gold-dim); }
+.dow-table tr.leaderboard-me td { background: var(--accent-dim); }
 
 .ratio-good { color: var(--win); font-weight: 600; }
 .ratio-bad { color: var(--loss); }
@@ -1251,7 +1253,7 @@ html[data-theme="mini"]    { --ed-bg:#d8e2d0; --ed-bg-soft:#e8efe2; --ed-text:#1
 html[data-theme="zip"]     { --ed-bg:#f5d4ba; --ed-bg-soft:#fae3cf; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#c4521f; --ed-accent2:#a84015; --ed-on-accent:#ffffff; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
 html[data-theme="patches"] { --ed-bg:#d8dcc4; --ed-bg-soft:#e6e9d6; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#5c7a3a; --ed-accent2:#42591f; --ed-on-accent:#ffffff; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
 html[data-theme="wend"]    { --ed-bg:#d6e4f0; --ed-bg-soft:#e8f1f8; --ed-text:#1a1a1a; --ed-text-muted:rgba(0,0,0,.55); --ed-accent:#3a6ea5; --ed-accent2:#285279; --ed-on-accent:#ffffff; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
-html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f5f1e8; --ed-text-muted:rgba(245,241,232,.6); --ed-accent:#d4af37; --ed-accent2:#f0d98a; --ed-on-accent:#1a1508; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
+html[data-theme="overall"] { --ed-bg:#f4f2ee; --ed-bg-soft:#f4f2ee; --ed-text:rgba(0,0,0,.9); --ed-text-muted:rgba(0,0,0,.6); --ed-accent:#0a66c2; --ed-accent2:#004182; --ed-on-accent:#ffffff; --ed-card:#fff; --ed-card-text:#1a1a1a; --ed-card-muted:#8a8a8a; --ed-border:rgba(0,0,0,.08); }
 
 /* Header */
 .tournament-header {
@@ -1384,9 +1386,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .reveal-banner {
   padding: 12px 18px;
   border-radius: var(--radius-sm);
-  background: rgba(212, 175, 106, 0.14);
-  border: 1px solid var(--ed-accent, var(--gold));
-  color: var(--ed-text, var(--text-on-dark));
+  background: color-mix(in srgb, var(--ed-accent, var(--accent)) 14%, transparent);
+  border: 1px solid var(--ed-accent, var(--accent));
+  color: var(--ed-text, var(--page-text));
   font-size: 0.86rem;
   margin-bottom: 20px;
 }
@@ -1623,7 +1625,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .trophy[data-game="zip"]     .trophy-placeholder { background: linear-gradient(135deg, #e87b4e, #c4521f); color: #fff; }
 .trophy[data-game="tango"]   .trophy-placeholder { background: linear-gradient(135deg, #e0b049, #c9942a); color: #fff; }
 .trophy[data-game="patches"] .trophy-placeholder { background: linear-gradient(135deg, #88a05c, #5c7a3a); color: #fff; }
-.trophy[data-game="overall"] .trophy-placeholder { background: linear-gradient(135deg, #2a2010, #1a1408); color: #d4af37; }
+.trophy[data-game="overall"] .trophy-placeholder { background: linear-gradient(135deg, #0a66c2, #004182); color: #fff; }
 
 /* Battle */
 .battle-controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 22px; }
@@ -1677,7 +1679,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   background: var(--surface);
   color: var(--text);
   border-radius: var(--radius);
-  border-top: 5px solid var(--dc-accent, var(--gold));
+  border-top: 5px solid var(--dc-accent, var(--accent));
   box-shadow: var(--shadow-card);
   padding: 22px 18px;
 }
@@ -1713,7 +1715,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   cursor: pointer;
   margin-bottom: 16px;
 }
-.daily-compare-select:focus { outline: none; border-color: var(--dc-accent, var(--gold)); }
+.daily-compare-select:focus { outline: none; border-color: var(--dc-accent, var(--accent)); }
 
 .daily-compare-list {
   list-style: none;
@@ -1731,7 +1733,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   border-radius: var(--radius-xs);
   font-size: 0.85rem;
 }
-.daily-compare-row.daily-compare-me { background: var(--gold-dim); font-weight: 700; }
+.daily-compare-row.daily-compare-me { background: var(--accent-dim); font-weight: 700; }
 
 .daily-compare-rank {
   width: 18px;
@@ -1740,7 +1742,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   flex: none;
 }
 .daily-compare-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.daily-compare-time { font-variant-numeric: tabular-nums; color: var(--dc-accent, var(--gold)); font-weight: 700; }
+.daily-compare-time { font-variant-numeric: tabular-nums; color: var(--dc-accent, var(--accent)); font-weight: 700; }
 
 .daily-compare-hint {
   margin-top: 12px;
@@ -1762,17 +1764,17 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   border-radius: 999px;
   border: 1.5px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.08);
-  color: var(--text-on-dark-muted);
+  color: var(--page-text-muted);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
 }
-@media (hover: hover) and (pointer: fine) { .home-tab:hover { color: var(--text-on-dark); } }
+@media (hover: hover) and (pointer: fine) { .home-tab:hover { color: var(--page-text); } }
 .home-tab.active {
-  background: var(--gold);
+  background: var(--accent);
   border-color: transparent;
-  color: #1a1508;
+  color: var(--on-accent);
 }
 
 /* ── Personal history entry rows (editable) ────────────────────────── */
@@ -1795,8 +1797,8 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 }
 @media (hover: hover) and (pointer: fine) { .history-game-tab:hover { background: color-mix(in srgb, var(--hg-accent, var(--border)) 12%, transparent); } }
 .history-game-tab.active {
-  background: var(--hg-accent, var(--gold));
-  color: var(--hg-text, #1a1508);
+  background: var(--hg-accent, var(--accent));
+  color: var(--hg-text, var(--on-accent));
   border-color: transparent;
 }
 
@@ -1880,7 +1882,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .skeleton-time .skeleton-bar { width: 56px; height: 22px; margin: 4px auto 0; }
 .skeleton-pill { display: inline-block; width: 74px; height: 28px; border-radius: 999px;
   background: color-mix(in srgb, currentColor 9%, transparent); animation: skeleton-pulse 1.6s ease-in-out infinite; }
-.skeleton-page { max-width: 420px; width: 100%; margin: 64px auto 0; color: var(--text-on-dark); }
+.skeleton-page { max-width: 420px; width: 100%; margin: 64px auto 0; color: var(--page-text); }
 
 @keyframes skeleton-pulse {
   50% { opacity: 0.5; }
@@ -1928,7 +1930,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: var(--track-label);
-  color: var(--text-on-dark-muted);
+  color: var(--page-text-muted);
   font-weight: 600;
 }
 
@@ -1949,7 +1951,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .score-day-count {
   margin-left: auto;
   font-size: 0.82rem;
-  color: var(--text-on-dark-muted);
+  color: var(--page-text-muted);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1959,9 +1961,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   margin: -4px 0 14px;
   padding: 10px 14px;
   border-radius: var(--radius-sm);
-  background: var(--gold-dim);
-  border: 1px solid rgba(240, 217, 138, 0.3);
-  color: var(--text-on-dark);
+  background: var(--accent-dim);
+  border: 1px solid rgba(10, 102, 194, 0.3);
+  color: var(--page-text);
   font-size: 0.84rem;
   line-height: 1.5;
 }
@@ -1979,7 +1981,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   margin-top: 3px;
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--sb-accent, var(--gold));
+  color: var(--sb-accent, var(--accent));
 }
 
 @media (max-width: 520px) {
@@ -2028,7 +2030,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: var(--track-label);
-  color: var(--text-on-dark-muted);
+  color: var(--page-text-muted);
   font-weight: 600;
 }
 
@@ -2060,7 +2062,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   padding: 20px 16px 18px;
   border-radius: 16px;
   border: 1.5px solid var(--border-soft);
-  border-top: 4px solid var(--df-accent, var(--gold));
+  border-top: 4px solid var(--df-accent, var(--accent));
   background: var(--surface2);
   text-align: center;
 }
@@ -2099,7 +2101,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   font-size: 2rem;
   font-weight: 600;
   line-height: 1;
-  color: var(--df-accent, var(--gold));
+  color: var(--df-accent, var(--accent));
   font-variant-numeric: tabular-nums;
 }
 
@@ -2120,7 +2122,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .day-fill-card-add {
   padding: 9px 20px;
   border-radius: 999px;
-  border: 1.5px solid var(--df-accent, var(--gold));
+  border: 1.5px solid var(--df-accent, var(--accent));
   background: transparent;
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
@@ -2129,7 +2131,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   cursor: pointer;
 }
 @media (hover: hover) and (pointer: fine) { .day-fill-card-add:hover {
-  background: var(--df-accent, var(--gold));
+  background: var(--df-accent, var(--accent));
   color: #1a1508;
 } }
 
@@ -2253,23 +2255,24 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   }
 }
 
-/* ── Installed app: keep the status bar readable on light themes ──────
+/* ── Installed app: keep the status bar readable ──────────────────────
    Installed on iOS, the page runs under the status bar
    (apple-mobile-web-app-status-bar-style: black-translucent) and the
-   clock and battery are drawn in white — invisible over Tango cream or
-   Mini green. iOS reads that setting once at launch and won't change it, so
-   instead a dark band is painted exactly the status bar's height on the
-   light game themes. Only when installed: in a browser tab the bar isn't
-   over the page, and on Android the inset is 0, so the band is empty. */
+   clock and battery are drawn in white — invisible over the off-white page
+   or the light game themes. iOS reads that setting once at launch and
+   won't change it, so instead a band of the nav blue is painted exactly
+   the status bar's height, continuing the phone's blue top bar. Only when
+   installed: in a browser tab the bar isn't over the page, and on Android
+   the inset is 0, so the band is empty. */
 @media (display-mode: standalone) {
-  html:is([data-theme="tango"], [data-theme="mini"], [data-theme="zip"], [data-theme="patches"], [data-theme="wend"]) body::before {
+  body::before {
     content: '';
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: env(safe-area-inset-top, 0px);
-    background: var(--bg);
+    background: var(--nav-bg);
     z-index: 100;
     pointer-events: none;
   }
@@ -2296,18 +2299,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   flex-direction: column;
   gap: 28px;
   padding: calc(28px + env(safe-area-inset-top, 0px)) 16px 20px;
-  border-right: 1px solid var(--nav-rule);
-  background: color-mix(in srgb, var(--bg) 80%, #000);
+  background: var(--nav-bg);
 }
-.shell-brand {
-  font-family: 'Fraunces', serif;
-  font-weight: 700;
-  font-size: 1.25rem;
-  line-height: 1.1;
-  color: var(--gold2);
-  text-decoration: none;
-  padding: 0 10px;
-}
+.shell-brand { padding: 0 10px; }
 .shell-nav { display: flex; flex-direction: column; gap: 2px; }
 .shell-nav-item {
   display: flex;
@@ -2316,20 +2310,20 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   min-height: 42px;
   padding: 0 12px;
   border-radius: 10px;
-  color: var(--text-on-dark-muted);
+  color: var(--nav-text-muted);
   text-decoration: none;
   font-weight: 500;
   transition: background-color var(--dur-state) ease, color var(--dur-state) ease;
 }
 .shell-nav-item[aria-current="page"] {
-  color: var(--text-on-dark);
-  background: color-mix(in srgb, var(--gold) 16%, transparent);
+  color: var(--nav-text);
+  font-weight: 600;
+  background: var(--nav-bg-active);
 }
-.shell-nav-item[aria-current="page"] svg { color: var(--gold2); }
 @media (hover: hover) and (pointer: fine) {
   .shell-nav-item:not([aria-current="page"]):hover {
-    color: var(--text-on-dark);
-    background: color-mix(in srgb, var(--text-on-dark) 6%, transparent);
+    color: var(--nav-text);
+    background: rgba(255, 255, 255, 0.1);
   }
 }
 .shell-badge,
@@ -2338,8 +2332,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   height: 20px;
   padding: 0 6px;
   border-radius: 999px;
-  background: var(--loss);
+  background: #cc1016;
   color: #fff;
+  box-shadow: 0 0 0 2px var(--nav-bg);
   font-size: 0.72rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -2359,14 +2354,14 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: var(--text-on-dark-muted);
+  color: var(--nav-text-muted);
   font: inherit;
   cursor: pointer;
   text-align: left;
 }
-.shell-me-name { flex: 1; min-width: 0; color: var(--text-on-dark); font-weight: 600; overflow-wrap: anywhere; }
+.shell-me-name { flex: 1; min-width: 0; color: var(--nav-text); font-weight: 600; overflow-wrap: anywhere; }
 @media (hover: hover) and (pointer: fine) {
-  .shell-me-btn:hover { background: color-mix(in srgb, var(--text-on-dark) 6%, transparent); }
+  .shell-me-btn:hover { background: rgba(255, 255, 255, 0.1); }
 }
 /* The settings menu opens upward from the foot of the sidebar. */
 .dropdown-up {
@@ -2395,12 +2390,8 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
     align-items: center;
     justify-content: space-between;
     padding: calc(12px + env(safe-area-inset-top, 0px)) max(20px, env(safe-area-inset-right)) 12px max(20px, env(safe-area-inset-left));
-    background: var(--topnav-bg);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--nav-rule);
+    background: var(--nav-bg);
   }
-  .shell-topbar .topnav-brand { font-size: 1.2rem; }
   .shell-tabbar {
     position: fixed;
     left: 0;
@@ -2410,10 +2401,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     padding: 6px max(4px, env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left));
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border-top: 1px solid var(--nav-rule);
+    background: var(--nav-bg);
   }
   .shell-tab {
     display: flex;
@@ -2421,7 +2409,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
     align-items: center;
     gap: 3px;
     padding: 6px 0;
-    color: var(--text-on-dark-muted);
+    color: var(--nav-text-muted);
     text-decoration: none;
     font-size: 0.7rem;
     font-weight: 600;
@@ -2432,7 +2420,18 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
     transition: color var(--dur-state) ease, transform var(--dur-press) var(--ease-out);
   }
   .shell-tab:active { transform: scale(0.94); }
-  .shell-tab[aria-current="page"] { color: var(--gold2); }
+  .shell-tab[aria-current="page"] { color: var(--nav-text); }
+  /* LinkedIn's own marker for the current tab: a bar under it. */
+  .shell-tab[aria-current="page"] .shell-tab-icon::after {
+    content: '';
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    top: -10px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--nav-text);
+  }
   .shell-tab-icon { position: relative; display: inline-flex; }
   .shell-tab-badge { position: absolute; top: -5px; right: -11px; min-width: 17px; height: 17px; font-size: 0.64rem; padding: 0 4px; }
 }
@@ -2445,17 +2444,32 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .app-main-feed { max-width: 720px; }
 .feed-list { display: flex; flex-direction: column; gap: 14px; }
 .feed-empty { background: var(--surface); color: var(--text-muted); }
-.feed-empty a { color: #8a6d14; font-weight: 600; }
+.feed-empty a { color: var(--accent); font-weight: 600; }
 
+/* Each post wears its game's box colours (lib/theme.js, the same as the
+   score boxes on Today). Everything inside reads from these, so a light
+   game and dark Queens both work: */
 .feed-post {
-  background: var(--surface);
-  color: var(--text);
+  --post-text: var(--text);
+  --post-muted: rgba(0, 0, 0, 0.6);
+  --post-chip: rgba(255, 255, 255, 0.72);
+  --post-chip-border: rgba(0, 0, 0, 0.12);
+  --post-mine: #0a66c2;
+  --post-win: #1e5238;
+  background: linear-gradient(165deg, var(--game-bg-soft) 0%, var(--game-bg) 100%);
+  color: var(--post-text);
+  border: 1px solid color-mix(in srgb, var(--game) 55%, transparent);
   border-radius: var(--radius-sm);
   padding: 16px 18px 14px;
-  /* The game's own colour along the top, so you can tell Queens from Zip
-     before reading a word. */
-  border-top: 3px solid var(--game);
   box-shadow: var(--shadow-sm);
+}
+.feed-post-dark {
+  --post-text: var(--text-on-dark);
+  --post-muted: var(--text-on-dark-muted);
+  --post-chip: rgba(255, 255, 255, 0.1);
+  --post-chip-border: rgba(255, 255, 255, 0.22);
+  --post-mine: var(--game-ink);
+  --post-win: #8fd6b0;
 }
 
 .feed-post-head { display: flex; align-items: center; gap: 12px; }
@@ -2470,19 +2484,29 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   color: #1a1408;
 }
 .feed-post-who { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+/* Name, then the game in big type in its own colour. */
+.feed-post-title { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; }
 .feed-post-name { font-weight: 700; font-size: 0.98rem; overflow-wrap: anywhere; }
-.feed-post-meta { font-size: 0.8rem; color: var(--text-muted); }
+.feed-post-game {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: color-mix(in srgb, var(--game-ink) 70%, var(--post-text));
+}
+.feed-post-meta { font-size: 0.8rem; color: var(--post-muted); }
 .feed-post-time {
   font-family: 'Fraunces', serif;
   font-weight: 600;
   font-size: 1.7rem;
   line-height: 1;
-  color: color-mix(in srgb, var(--game) 78%, #1a1408);
+  color: var(--post-text);
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
 }
-.feed-post-vs { margin: 8px 0 0; font-size: 0.84rem; color: var(--text-muted); }
-.feed-post-vs-faster { color: var(--win); font-weight: 600; }
+.feed-post-vs { margin: 8px 0 0; font-size: 0.84rem; color: var(--post-muted); }
+.feed-post-vs-faster { color: var(--post-win); font-weight: 600; }
 
 .feed-reactions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 .feed-react {
@@ -2494,8 +2518,9 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   justify-content: center;
   padding: 0 10px;
   border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface2);
+  border: 1px solid var(--post-chip-border);
+  background: var(--post-chip);
+  color: var(--post-text);
   font: inherit;
   font-size: 1rem;
   cursor: pointer;
@@ -2508,8 +2533,13 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 .feed-react:active { transform: scale(0.94); }
 .feed-react:disabled { cursor: default; }
 /* Not picked by anyone yet: present, so it can be tapped, but quiet. */
-.feed-react-empty { background: transparent; opacity: 0.6; }
-.feed-react-mine { background: var(--gold-dim); border-color: var(--gold); opacity: 1; }
+.feed-react-empty { background: transparent; opacity: 0.7; }
+.feed-react-mine {
+  background: color-mix(in srgb, var(--post-mine) 16%, var(--post-chip));
+  border-color: var(--post-mine);
+  box-shadow: 0 0 0 1px var(--post-mine) inset;
+  opacity: 1;
+}
 .feed-react-n { font-size: 0.82rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 @media (hover: hover) and (pointer: fine) {
   .feed-react-empty:hover { opacity: 1; }
@@ -2523,9 +2553,8 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   font-size: 0.9rem;
   line-height: 1.45;
 }
-.feed-comment-body { flex: 1; min-width: 0; overflow-wrap: anywhere; color: var(--text-soft); }
-.feed-comment-body strong { color: var(--text); }
-.feed-comment-meta { flex-shrink: 0; font-size: 0.76rem; color: var(--text-muted); }
+.feed-comment-body { flex: 1; min-width: 0; overflow-wrap: anywhere; color: var(--post-text); }
+.feed-comment-meta { flex-shrink: 0; font-size: 0.76rem; color: var(--post-muted); }
 .feed-comment-delete {
   flex-shrink: 0;
   align-self: center;
@@ -2534,7 +2563,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   border: 0;
   border-radius: 6px;
   background: transparent;
-  color: var(--text-muted);
+  color: var(--post-muted);
   cursor: pointer;
 }
 @media (hover: hover) and (pointer: fine) {
@@ -2550,7 +2579,7 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   padding: 6px 2px;
   border: 0;
   background: transparent;
-  color: var(--text-muted);
+  color: var(--post-muted);
   font: inherit;
   font-size: 0.86rem;
   font-weight: 600;
@@ -2559,29 +2588,30 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
   transition: color var(--dur-state) ease;
 }
 @media (hover: hover) and (pointer: fine) {
-  .feed-reply-open:hover { color: var(--text); }
+  .feed-reply-open:hover { color: var(--post-text); }
 }
 .feed-reply-input {
   flex: 1;
   min-width: 0;
   padding: 9px 14px;
   border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface2);
+  border: 1px solid var(--post-chip-border);
+  background: var(--post-chip);
   font: inherit;
   font-size: 0.9rem;
-  color: var(--text);
+  color: var(--post-text);
   outline: none;
   transition: border-color var(--dur-state) ease, background-color var(--dur-state) ease;
 }
-.feed-reply-input:focus { border-color: var(--gold); background: var(--surface); }
+.feed-reply-input::placeholder { color: var(--post-muted); }
+.feed-reply-input:focus { border-color: var(--post-mine); }
 .feed-reply-send {
   flex-shrink: 0;
   padding: 0 16px;
   border-radius: 999px;
   border: 0;
-  background: var(--gold);
-  color: #1a1508;
+  background: var(--accent);
+  color: var(--on-accent);
   font: inherit;
   font-size: 0.86rem;
   font-weight: 700;
@@ -2590,6 +2620,59 @@ html[data-theme="overall"] { --ed-bg:#1a1408; --ed-bg-soft:#241d0f; --ed-text:#f
 }
 .feed-reply-send:active:not(:disabled) { transform: scale(0.97); }
 .feed-reply-send:disabled { opacity: 0.45; cursor: default; }
+
+/* Friends / Tournaments, then which tournament. */
+.feed-switch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 16px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.feed-switch-btn {
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-soft);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--dur-state) ease, color var(--dur-state) ease;
+}
+.feed-switch-btn[aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
+@media (hover: hover) and (pointer: fine) {
+  .feed-switch-btn[aria-selected="false"]:hover { color: var(--text); background: var(--accent-dim); }
+}
+.feed-tournaments { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.feed-tournament-chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition: background-color var(--dur-state) ease, color var(--dur-state) ease;
+}
+.feed-tournament-chip[aria-selected="true"] { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--on-accent); }
+@media (hover: hover) and (pointer: fine) {
+  .feed-tournament-chip[aria-selected="false"]:hover { background: var(--accent-dim); }
+}
+.feed-reveal-note {
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-xs);
+  background: var(--accent-dim);
+  color: var(--page-text);
+  font-size: 0.86rem;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .feed-react:active, .feed-reply-send:active:not(:disabled) { transform: none; }

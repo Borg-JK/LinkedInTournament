@@ -200,11 +200,15 @@ function extractInPage() {
     })),
     hallMonths: all('.hall-month-label').map(el => norm(el.textContent)),
     feedPosts: all('.feed-post').map(p => ({
-      name: text(p, '.feed-post-name'), meta: text(p, '.feed-post-meta'),
+      // The game sits beside the name now; joined back up with the puzzle
+      // number and age so the record reads as before ("Queens #896 · …").
+      name: text(p, '.feed-post-name'), meta: [text(p, '.feed-post-game'), text(p, '.feed-post-meta')].filter(Boolean).join(' '),
       time: text(p, '.feed-post-time'), vs: text(p, '.feed-post-vs'),
       reactions: all('.feed-react', p).map(b => `${norm(b.textContent)}${b.getAttribute('aria-pressed') === 'true' ? ' (mine)' : ''}`),
       comments: all('.feed-comment-body', p).map(el => norm(el.textContent)),
     })),
+    feedTournaments: all('.feed-tournament-chip').map(el => `${norm(el.textContent)}${el.getAttribute('aria-selected') === 'true' ? ' (selected)' : ''}`),
+    feedNote: text(document, '.feed-reveal-note'),
     pills: all('.pill-static').map(el => norm(el.textContent)),
     config: all('.config-list dd').map(el => norm(el.textContent)),
     numbersInCopy: {
@@ -373,7 +377,7 @@ async function recordFeed(page, out) {
 
   // Ana's Queens post: Borg's seeded reaction there is 🔥.
   const post = page.locator('.feed-post', { has: page.locator('.feed-post-name', { hasText: /^Ana$/ }) })
-    .filter({ has: page.locator('.feed-post-meta', { hasText: 'Queens' }) }).first();
+    .filter({ has: page.locator('.feed-post-game', { hasText: 'Queens' }) }).first();
   const reactionsOf = async () => (await extract(page)).feedPosts.find(p => p.name === 'Ana' && p.meta.startsWith('Queens')).reactions;
   const tap = async emoji => {
     await post.locator('.feed-react', { hasText: emoji }).click();
@@ -397,6 +401,21 @@ async function recordFeed(page, out) {
   await post.locator('.feed-comment-body', { hasText: 'nice one' }).waitFor({ state: 'detached' });
   await settle(page, { quietMs: 300 });
   out['feed/comment-deleted'] = { comments: (await extract(page)).feedPosts.find(p => p.name === 'Ana' && p.meta.startsWith('Queens')).comments };
+
+  // The tournament side: it opens on the first tournament in the home
+  // page's order (SKIM, pinned), and each chip switches to another.
+  await page.locator('.feed-switch-btn', { hasText: 'Tournaments' }).click();
+  await page.locator('.feed-post, .feed-empty').first().waitFor({ timeout: 90 * 1000 });
+  await settle(page);
+  const chips = page.locator('.feed-tournament-chip');
+  for (let i = 0; i < await chips.count(); i++) {
+    const name = (await chips.nth(i).textContent()).trim();
+    await chips.nth(i).click();
+    await page.locator('.feed-post, .feed-empty').first().waitFor({ timeout: 90 * 1000 });
+    await settle(page);
+    const { feedPosts, feedTournaments, feedNote } = await extract(page);
+    out[`feed/tournament/${name}`] = { feedPosts, feedTournaments, feedNote };
+  }
 }
 
 async function recordFunctional(browser) {
@@ -435,6 +454,7 @@ const SCREEN_VIEWS = [
   { name: 'home-history', go: async p => { await p.goto('/?view=history'); } },
   { name: 'friends', go: async p => { await p.goto('/friends'); } },
   { name: 'feed', go: async p => { await p.goto('/feed'); } },
+  { name: 'feed-tournament', go: async p => { await p.goto('/feed?view=tournaments'); } },
   { name: 'find-tournaments', go: async p => { await p.goto('/tournaments/search'); } },
   { name: 'new-tournament', go: async p => { await p.goto('/tournaments/new'); } },
   { name: 'skim-standings-overall', go: async p => { await p.goto('/tournaments/t_skim'); } },

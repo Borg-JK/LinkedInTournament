@@ -18,7 +18,7 @@ export default function Document() {
             (the iOS status bar, Android's toolbar) is part of the page as far
             as anyone looking at it is concerned. TournamentEditorial rewrites
             this while a per-game theme is on screen. */}
-        <meta name="theme-color" content="#1a1408" />
+        <meta name="theme-color" content="#0a66c2" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

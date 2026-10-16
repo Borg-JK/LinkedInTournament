@@ -58,7 +58,7 @@ export default function SharedScoreIntake() {
 
   if (saved) {
     return (
-      <section className="panel" style={{ marginBottom: 24, borderColor: 'var(--gold)' }}>
+      <section className="panel" style={{ marginBottom: 24, borderColor: 'var(--accent)' }}>
         <div className="section-sub" style={{ margin: 0 }}>
           Saved from your LinkedIn share ✓{savedDate ? ` — logged under ${savedDate}` : ''}
         </div>

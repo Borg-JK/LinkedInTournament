@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
+import BrandMark from '../components/BrandMark';
 
 export default function SignIn() {
   const { user, loading, sendSignInLink, completeSignInFromLink } = useAuth();
@@ -58,7 +59,7 @@ export default function SignIn() {
   return (
     <div className="page">
       <div className="card">
-        <div className="brand">LinkedIn Tournament</div>
+        <div className="brand brand-linkedin"><BrandMark size={34} onBlue={false} /><span>Tournament</span></div>
         <div className="subtitle">Sign in with your email — no password needed.</div>
 
         {sent ? (

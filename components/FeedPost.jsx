@@ -84,12 +84,20 @@ export default function FeedPost({ post }) {
   const faster = post.vsMine != null && post.vsMine < 0;
 
   return (
-    <article className="feed-post" style={{ '--game': theme.accent }}>
+    // The card wears the game's own box colours — the same ones as its score
+    // box on the Today page — so Queens reads as Queens before a word does.
+    <article
+      className={`feed-post${theme.onDark ? ' feed-post-dark' : ''}`}
+      style={{ '--game': theme.accent, '--game-ink': theme.onDark ? theme.accent2 : theme.accent, '--game-bg': theme.bg, '--game-bg-soft': theme.bgSoft }}
+    >
       <header className="feed-post-head">
         <Avatar uid={post.uid} name={post.name} />
         <div className="feed-post-who">
-          <span className="feed-post-name">{post.isMine ? 'You' : post.name}</span>
-          <span className="feed-post-meta">{post.gameLabel} #{post.puzzleNum} · {timeAgo(post.submittedAt)}</span>
+          <span className="feed-post-title">
+            <span className="feed-post-name">{post.isMine ? 'You' : post.name}</span>
+            <span className="feed-post-game">{post.gameLabel}</span>
+          </span>
+          <span className="feed-post-meta">#{post.puzzleNum} · {timeAgo(post.submittedAt)}</span>
         </div>
         <span className="feed-post-time">{formatSeconds(post.timeSeconds)}</span>
       </header>

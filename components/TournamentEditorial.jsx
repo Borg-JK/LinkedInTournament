@@ -51,22 +51,14 @@ export default function TournamentEditorial({ tournament, myUid, manageHref }) {
 
   // Mirror the active theme onto <html> while this page is mounted. The
   // palettes are declared there (see globals.css), so this is what lets the
-  // document canvas and the iOS status bar take the game's color too —
-  // without it, overscrolling the page rubber-bands into the app's own
-  // background and the theme visibly breaks at the edges.
+  // document canvas take the game's color too — without it, overscrolling
+  // the page rubber-bands into the app's own background and the theme
+  // visibly breaks at the edges. (The browser's theme-color stays the
+  // navigation's LinkedIn blue, which is what sits at the top of the screen.)
   useEffect(() => {
     const html = document.documentElement;
     html.setAttribute('data-theme', themeGame);
-    const meta = document.querySelector('meta[name="theme-color"]');
-    const previousColor = meta?.getAttribute('content');
-    // Read the color back out of the stylesheet rather than keeping a second
-    // copy of the palette here — the CSS stays the one place it's written down.
-    const edBg = getComputedStyle(html).getPropertyValue('--ed-bg').trim();
-    if (meta && edBg) meta.setAttribute('content', edBg);
-    return () => {
-      html.removeAttribute('data-theme');
-      if (meta && previousColor) meta.setAttribute('content', previousColor);
-    };
+    return () => html.removeAttribute('data-theme');
   }, [themeGame]);
 
   const pairs = tournament.members.flatMap(uid => tournament.games.map(gameId => ({ uid, gameId })));
