@@ -16,7 +16,8 @@ export default defineConfig({
   // flakiness against a single emulator.
   workers: 1,
   fullyParallel: false,
-  timeout: 30 * 60 * 1000,
+  // Generous: under App Nap a normal four-minute run has taken ten.
+  timeout: 60 * 60 * 1000,
   reporter: 'list',
   use: {
     // Without these a single stuck click or navigation waits out the whole
@@ -28,6 +29,18 @@ export default defineConfig({
     // pinned for the text to come out the same on every machine.
     locale: 'en-GB',
     timezoneId: 'Europe/Amsterdam',
+    // Headless pages count as background tabs, and after five minutes Chrome
+    // throttles a background page's timers to about one wake-up a minute —
+    // which stalls the app's own Firestore timers mid-run as well as the
+    // suite's. A test browser has no battery to save.
+    launchOptions: {
+      args: [
+        '--disable-background-timer-throttling',
+        '--disable-renderer-backgrounding',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-features=IntensiveWakeUpThrottling',
+      ],
+    },
   },
   // A production build, not `next dev`: dev mode runs React StrictMode's
   // double-mount, which behaves differently from what users get (it silently

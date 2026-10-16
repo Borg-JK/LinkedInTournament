@@ -54,6 +54,10 @@ async function newPage(browser, viewport, now = FROZEN_NOW) {
   // timeouts and the dev server's HMR keep working.
   await context.clock.setFixedTime(now);
   const page = await context.newPage();
+  // A view that comes up blank usually threw; say so instead of leaving
+  // only a locator timeout to go on.
+  page.on('pageerror', err => console.log(`[pageerror ${page.url()}] ${err.message}`));
+  page.on('console', msg => { if (msg.type() === 'error') console.log(`[console.error ${page.url()}] ${msg.text()}`); });
   return { context, page };
 }
 
@@ -79,6 +83,12 @@ async function signIn(page, email) {
 
 // ── Waiting for data ─────────────────────────────────────────────────────
 
+// A pause measured in this Node process, not inside the page. Chrome
+// throttles a background page's timers to roughly one wake-up a minute once
+// it has been hidden for five minutes — and headless pages count as hidden —
+// so page.waitForTimeout(100) could take 30s late in a long run.
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 // Data streams in over Firestore listeners, so "network idle" means
 // nothing. Instead wait until no loading placeholder is on screen and the
 // page's text has stopped changing.
@@ -88,11 +98,16 @@ async function settle(page, { quietMs = 400 } = {}) {
     return !t.includes('Loading…') && !/(^|\s)…(\s|$)/m.test(t);
   }, null, { timeout: 60_000 });
   await page.evaluate(() => document.fonts.ready);
+  // "Settled" = the same text on consecutive checks, for at least quietMs.
+  // The give-up limit is a number of checks, not a stopwatch: when macOS
+  // stretches this process's timers (App Nap, while the editor running the
+  // suite is in the background), each check simply comes later and the run
+  // takes longer — a wall-clock deadline used to expire after two checks.
   let last = null;
   let lastDiff = null;
   let stableSince = Date.now();
-  const deadline = Date.now() + 60_000;
-  while (Date.now() < deadline) {
+  let same = 0;
+  for (let checks = 1; checks <= 600; checks++) {
     const t = await page.evaluate(() => document.body.innerText);
     if (t !== last) {
       if (last !== null) {
@@ -101,12 +116,14 @@ async function settle(page, { quietMs = 400 } = {}) {
         lastDiff = a.map((line, i) => (line !== b[i] ? `${line}  ->  ${b[i]}` : null)).filter(Boolean).slice(0, 6);
       }
       last = t;
+      same = 0;
       stableSince = Date.now();
-    } else if (Date.now() - stableSince >= quietMs) return;
-    await page.waitForTimeout(100);
+    } else if (++same >= 2 && Date.now() - stableSince >= quietMs) {
+      return;
+    }
+    await sleep(100);
   }
-  // Say what kept changing — "never settled" alone can't be debugged.
-  throw new Error(`Page never settled on ${page.url()}. Last change:\n  ${(lastDiff || ['(none)']).join('\n  ')}`);
+  throw new Error(`Page never settled on ${page.url()} after 600 checks. Last change:\n  ${(lastDiff || ['(none)']).join('\n  ')}`);
 }
 
 // Chart.js times its animations off Date.now(), which the frozen clock pins
@@ -115,7 +132,7 @@ async function settle(page, { quietMs = 400 } = {}) {
 // without animation. Test-only: the app and its charts are untouched.
 async function settleCharts(page) {
   if (!(await page.locator('canvas').count())) return;
-  await page.waitForTimeout(300);
+  await sleep(300);
   await page.evaluate(() => {
     const charts = Object.values(window.__ltCharts || {});
     // Off for every chart, including ones created after this (via the
@@ -130,7 +147,7 @@ async function settleCharts(page) {
       chart.update('none');
     }
   });
-  await page.waitForTimeout(150);
+  await sleep(150);
 }
 
 // ── Extraction ───────────────────────────────────────────────────────────
@@ -182,6 +199,12 @@ function extractInPage() {
       game: text(t, '.trophy-game'), name: text(t, '.trophy-name'), pts: text(t, '.trophy-pts'),
     })),
     hallMonths: all('.hall-month-label').map(el => norm(el.textContent)),
+    feedPosts: all('.feed-post').map(p => ({
+      name: text(p, '.feed-post-name'), meta: text(p, '.feed-post-meta'),
+      time: text(p, '.feed-post-time'), vs: text(p, '.feed-post-vs'),
+      reactions: all('.feed-react', p).map(b => `${norm(b.textContent)}${b.getAttribute('aria-pressed') === 'true' ? ' (mine)' : ''}`),
+      comments: all('.feed-comment-body', p).map(el => norm(el.textContent)),
+    })),
     pills: all('.pill-static').map(el => norm(el.textContent)),
     config: all('.config-list dd').map(el => norm(el.textContent)),
     numbersInCopy: {
@@ -336,6 +359,46 @@ async function recordTournament(page, out, id, { scoreHistoryDays = true } = {})
   out[`${key}/scoring`] = await extract(page);
 }
 
+// The feed, and its two interactions against the real security rules:
+// one reaction per person (choosing another emoji moves your vote, choosing
+// yours again takes it back) and a comment posted then deleted. Each action
+// is undone, so the data ends exactly as seeded.
+async function recordFeed(page, out) {
+  await page.goto('/feed');
+  // The page is blank until sign-in restores, and blank text is "stable" to
+  // settle(); wait for the feed itself first.
+  await page.locator('.feed-post, .feed-empty').first().waitFor({ timeout: 90 * 1000 });
+  await settle(page);
+  out['feed'] = await extract(page);
+
+  // Ana's Queens post: Borg's seeded reaction there is 🔥.
+  const post = page.locator('.feed-post', { has: page.locator('.feed-post-name', { hasText: /^Ana$/ }) })
+    .filter({ has: page.locator('.feed-post-meta', { hasText: 'Queens' }) }).first();
+  const reactionsOf = async () => (await extract(page)).feedPosts.find(p => p.name === 'Ana' && p.meta.startsWith('Queens')).reactions;
+  const tap = async emoji => {
+    await post.locator('.feed-react', { hasText: emoji }).click();
+    await settle(page, { quietMs: 400 });
+  };
+  await tap('👏');
+  out['feed/reaction-switched'] = { reactions: await reactionsOf() };
+  await tap('👏');
+  out['feed/reaction-removed'] = { reactions: await reactionsOf() };
+  await tap('🔥');
+  out['feed/reaction-restored'] = { reactions: await reactionsOf() };
+
+  await post.locator('.feed-reply-open').click();
+  await post.locator('.feed-reply-input').fill('nice one');
+  await post.locator('.feed-reply-send').click();
+  await post.locator('.feed-comment-body', { hasText: 'nice one' }).waitFor();
+  await settle(page, { quietMs: 300 });
+  out['feed/comment-added'] = { comments: (await extract(page)).feedPosts.find(p => p.name === 'Ana' && p.meta.startsWith('Queens')).comments };
+  page.once('dialog', d => d.accept());
+  await post.locator('.feed-comment', { hasText: 'nice one' }).locator('.feed-comment-delete').click();
+  await post.locator('.feed-comment-body', { hasText: 'nice one' }).waitFor({ state: 'detached' });
+  await settle(page, { quietMs: 300 });
+  out['feed/comment-deleted'] = { comments: (await extract(page)).feedPosts.find(p => p.name === 'Ana' && p.meta.startsWith('Queens')).comments };
+}
+
 async function recordFunctional(browser) {
   const { context, page } = await newPage(browser, VIEWPORTS[2]);
   await signIn(page, LOGIN_EMAIL);
@@ -359,6 +422,8 @@ async function recordFunctional(browser) {
   await settle(page);
   out['tournaments/t_skim/manage'] = await extract(page);
 
+  await recordFeed(page, out);
+
   await context.close();
   return out;
 }
@@ -369,6 +434,7 @@ const SCREEN_VIEWS = [
   { name: 'home-today', go: async p => { await p.goto('/'); } },
   { name: 'home-history', go: async p => { await p.goto('/?view=history'); } },
   { name: 'friends', go: async p => { await p.goto('/friends'); } },
+  { name: 'feed', go: async p => { await p.goto('/feed'); } },
   { name: 'find-tournaments', go: async p => { await p.goto('/tournaments/search'); } },
   { name: 'new-tournament', go: async p => { await p.goto('/tournaments/new'); } },
   { name: 'skim-standings-overall', go: async p => { await p.goto('/tournaments/t_skim'); } },
@@ -397,7 +463,7 @@ async function shoot(page, viewport, name) {
   await settleCharts(page);
   const fullHeight = await page.evaluate(() => document.documentElement.scrollHeight);
   await page.setViewportSize({ width: viewport.width, height: Math.max(viewport.height, fullHeight) });
-  await page.waitForTimeout(250);
+  await sleep(250);
   await settleCharts(page);
   fs.mkdirSync(SCREENS, { recursive: true });
   await page.screenshot({ path: path.join(SCREENS, `${name}--${viewport.name}.png`), fullPage: true, animations: 'disabled' });

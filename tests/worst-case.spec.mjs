@@ -17,6 +17,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const FROZEN_NOW = new Date('2026-10-13T12:00:00+02:00');
+// Node-side pause — see the note on sleep() in regression.spec.mjs.
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const OUT = path.join('redesign-screenshots', 'worst-case');
 const T = '/tournaments/t_worst';
 
@@ -50,7 +52,7 @@ async function settle(page) {
   while (Date.now() - since < 400) {
     const t = await page.evaluate(() => document.body.innerText);
     if (t !== last) { last = t; since = Date.now(); }
-    await page.waitForTimeout(100);
+    await sleep(100);
   }
   // Charts: animation off so they draw synchronously (see regression spec).
   await page.evaluate(() => {
@@ -156,7 +158,7 @@ test('worst-case data across the standings and head-to-head views', async ({ bro
       for (const f of await page.evaluate(measure)) findings.push({ width: name, view: view.name, ...f });
       const full = await page.evaluate(() => document.documentElement.scrollHeight);
       await page.setViewportSize({ width, height: Math.max(height, full) });
-      await page.waitForTimeout(250);
+      await sleep(250);
       await settle(page);
       await page.screenshot({ path: path.join(OUT, `${view.name}--${name}.png`), fullPage: true });
       await page.setViewportSize({ width, height });
