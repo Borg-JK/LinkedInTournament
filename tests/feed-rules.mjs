@@ -70,7 +70,7 @@ console.log('— reactions');
 await expect('a friend reacts to a post', write('u_borg', REACT('u_borg'), { emoji: str('🔥') }, { serverTime: ['at'] }), true);
 await expect('reacting again replaces it (one per person)', write('u_borg', REACT('u_borg'), { emoji: str('👏') }, { serverTime: ['at'] }), true);
 await expect('a friend reads the reactions', read('u_nick', REACT('u_borg')), true);
-await expect('the poster reacts to their own post', write('u_ana', REACT('u_ana'), { emoji: str('🫡') }, { serverTime: ['at'] }), true);
+await expect('the poster reacts to their own post', write('u_ana', REACT('u_ana'), { emoji: str('🙌') }, { serverTime: ['at'] }), true);
 await expect('an emoji outside the six', write('u_nick', REACT('u_nick'), { emoji: str('🍆') }, { serverTime: ['at'] }), false);
 await expect('reacting as someone else', write('u_borg', REACT('u_nick'), { emoji: str('🔥') }, { serverTime: ['at'] }), false);
 await expect('a made-up timestamp instead of the server time', write('u_nick', REACT('u_nick'), { emoji: str('🔥'), at: { timestampValue: '2020-01-01T00:00:00Z' } }), false);

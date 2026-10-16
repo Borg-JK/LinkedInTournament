@@ -9,20 +9,8 @@ import { monthsBetween, monthLabel } from '../lib/months';
 import { computeMonthWinnerForGame, computeMonthWinnerOverall } from '../lib/hallOfFame';
 import { GAMES } from '../lib/games';
 import { colorForUid } from '../lib/colors';
+import { firstGrapheme } from '../lib/initial';
 
-
-// The first user-perceived character of a name, for the trophy avatar.
-// charAt(0) returned half an emoji ("🦊 Fox" gave a lone surrogate, drawn as
-// a broken glyph) and the first code point of a ZWJ sequence like 👩🏽‍💻.
-// Display only — the name itself is untouched.
-function firstGrapheme(name) {
-  const text = (name || '').trim();
-  if (!text) return '?';
-  if (typeof Intl !== 'undefined' && Intl.Segmenter) {
-    return new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(text)[Symbol.iterator]().next().value.segment;
-  }
-  return Array.from(text)[0];
-}
 
 function TrophyCard({ gameId, label, winner, isOverall }) {
   const initial = winner ? firstGrapheme(winner.name).toUpperCase() : null;

@@ -44,7 +44,7 @@ service cloud.firestore {
         allow create, update: if canSeePost() && postExists()
                      && request.auth.uid == reactorUid
                      && request.resource.data.keys().hasOnly(['emoji', 'at'])
-                     && request.resource.data.emoji in ['🔥', '👏', '😮', '😂', '🫡', '💀']
+                     && request.resource.data.emoji in ['🔥', '👏', '😮', '😂', '🙌', '💀']
                      && request.resource.data.at == request.time;
         allow delete: if request.auth != null && request.auth.uid == reactorUid;
       }

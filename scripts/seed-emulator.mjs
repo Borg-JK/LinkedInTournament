@@ -74,6 +74,17 @@ function days(from, to) {
 
 const tsAt = iso => Timestamp.fromDate(new Date(`${iso}T10:00:00Z`));
 
+// When a score was uploaded, for the feed. Spread across the morning (09:05
+// to 11:55 Amsterdam time, after that day's puzzles publish and before the
+// suite's frozen noon) so posts have distinct times, deterministically per
+// player and game. Nothing outside the feed reads submittedAt.
+function uploadedAt(iso, uid, game) {
+  let h = 0;
+  for (const ch of `${uid}/${game}`) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const minutes = 5 + (h % 170);
+  return Timestamp.fromDate(new Date(Date.parse(`${iso}T07:00:00Z`) + minutes * 60000));
+}
+
 async function clearEmulators() {
   // Each run starts from nothing, so a half-finished earlier run can't leak in.
   await fetch(`http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${PROJECT_ID}/databases/(default)/documents`, { method: 'DELETE' });
@@ -118,7 +129,7 @@ async function seed() {
         writer.set(db.doc(`scores/${p.uid}/${game}/${date}`), {
           timeSeconds: seconds,
           puzzleNum: puzzleNumberFor(game, date),
-          submittedAt: tsAt(date),
+          submittedAt: uploadedAt(date, p.uid, game),
         });
       }
     }
@@ -127,7 +138,7 @@ async function seed() {
   for (const date of TIE_DAYS) {
     for (const uid of ['u_ana', 'u_jacco']) {
       writer.set(db.doc(`scores/${uid}/queens/${date}`), {
-        timeSeconds: 24, puzzleNum: puzzleNumberFor('queens', date), submittedAt: tsAt(date),
+        timeSeconds: 24, puzzleNum: puzzleNumberFor('queens', date), submittedAt: uploadedAt(date, uid, 'queens'),
       });
     }
   }
@@ -164,6 +175,23 @@ async function seed() {
   }
 
   if (process.env.SEED_SET === 'worst') await seedWorstCase(writer, tsAt);
+
+  // A little conversation in the feed: reactions and comments on three of
+  // the last day's posts, including Borg's own.
+  const reactAt = tsAt(LAST_DAY);
+  const feedSocial = [
+    { post: 'scores/u_ana/queens/2026-10-13', reactions: { u_borg: '🔥', u_nick: '😮' },
+      comments: [['f1', 'u_nick', 'how is that even possible']] },
+    { post: 'scores/u_borg/queens/2026-10-13', reactions: { u_ana: '👏' },
+      comments: [['f2', 'u_ana', 'show-off'], ['f3', 'u_jacco', 'tomorrow is mine']] },
+    { post: 'scores/u_jacco/queens/2026-10-13', reactions: { u_borg: '😂', u_ana: '😂' }, comments: [] },
+  ];
+  for (const { post, reactions, comments } of feedSocial) {
+    for (const [uid, emoji] of Object.entries(reactions)) writer.set(db.doc(`${post}/reactions/${uid}`), { emoji, at: reactAt });
+    comments.forEach(([id, authorUid, text], i) => {
+      writer.set(db.doc(`${post}/comments/${id}`), { authorUid, text, createdAt: Timestamp.fromMillis(reactAt.toMillis() - (10 - i) * 60000) });
+    });
+  }
 
   // Borg is invited to (not yet in) Wend Only — exercises the invites panel.
   writer.set(db.doc('users/u_borg/tournamentInvites/t_solo'), {
