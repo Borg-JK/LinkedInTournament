@@ -47,6 +47,16 @@ async function del(uid, path) {
   });
   return res.ok;
 }
+// As the emulator's admin ("owner" token), bypassing the rules: used to
+// change a tournament's members the way the owner's own flow would.
+async function adminSetMembers(tournamentPath, uids) {
+  const res = await fetch(`${BASE}/${tournamentPath}?updateMask.fieldPaths=members`, {
+    method: 'PATCH',
+    headers: { Authorization: 'Bearer owner', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: { members: { arrayValue: { values: uids.map(str) } } } }),
+  });
+  if (!res.ok) throw new Error(`admin update of ${tournamentPath} failed: ${res.status}`);
+}
 async function read(uid, path) {
   const res = await fetch(`${BASE}/${path}`, { headers: { Authorization: `Bearer ${token(uid)}` } });
   return res.ok;
@@ -96,6 +106,28 @@ await expect('a friend of a friend reads comments', read('u_long', c('c1')), fal
 await expect('deleting someone else\'s comment', del('u_nick', c('c1')), false);
 await expect('the poster deletes a comment on their score', del('u_ana', c('c5')), true);
 await expect('deleting your own comment', del('u_borg', c('c1')), true);
+
+console.log('— tournament-mates');
+// Maximiliana isn't Ana's friend, but they're both in Wend Only (t_solo).
+// Nick isn't in Wend Only, and Ratio League (t_ratio) doesn't have Maximiliana.
+const MATE = 'users/u_ana/mates/u_long';
+await expect('naming a tournament you\'re not both in', write('u_long', MATE, { via: str('t_ratio') }), false);
+await expect('naming a tournament for someone else', write('u_borg', MATE, { via: str('t_solo') }), false);
+await expect('claiming to be in a tournament with them when you aren\'t', write('u_nick', 'users/u_ana/mates/u_nick', { via: str('t_solo') }), false);
+await expect('an extra field on a mate record', write('u_long', MATE, { via: str('t_solo'), x: str('y') }), false);
+await expect('recording a tournament you share', write('u_long', MATE, { via: str('t_solo') }), true);
+await expect('a tournament-mate reads the reactions', read('u_long', REACT('u_nick')), true);
+await expect('a tournament-mate reacts', write('u_long', REACT('u_long'), { emoji: str('👏') }, { serverTime: ['at'] }), true);
+await expect('a tournament-mate comments', write('u_long', c('m1'), { authorUid: str('u_long'), text: str('nice') }, { serverTime: ['createdAt'] }), true);
+await expect('a stranger can\'t read someone else\'s mate record', read('u_nick', MATE), false);
+await adminSetMembers('tournaments/t_solo', ['u_ana']);
+await expect('after leaving the tournament: reading the reactions', read('u_long', REACT('u_nick')), false);
+await expect('after leaving the tournament: reacting', write('u_long', REACT('u_long'), { emoji: str('🔥') }, { serverTime: ['at'] }), false);
+await adminSetMembers('tournaments/t_solo', ['u_ana', 'u_long']);
+await expect('the mate removes their own reaction', del('u_long', REACT('u_long')), true);
+await expect('the poster deletes the mate\'s comment', del('u_ana', c('m1')), true);
+await expect('the mate removes their mate record', del('u_long', MATE), true);
+await expect('without the record, back to no access', read('u_long', REACT('u_nick')), false);
 
 console.log('— unchanged');
 await expect('any signed-in user can still read the score itself', read('u_long', POST), true);

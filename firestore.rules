@@ -25,13 +25,24 @@ service cloud.firestore {
       allow delete: if request.auth != null && request.auth.uid == uid;
 
       // ── Feed: reactions and comments on a score ──────────────────────
-      // Only the person who posted the score and their friends can see or
-      // add either. "Friends" means the poster's own friends list contains
-      // you (friendships are written in both directions, see useFriends).
+      // Only the person who posted the score, their friends, and the people
+      // they're in a tournament with can see or add either. "Friends" means
+      // the poster's own friends list contains you (friendships are written
+      // in both directions, see useFriends). "In a tournament with" goes
+      // through users/{poster}/mates/{you}, which names the tournament — and
+      // that tournament is checked here, every time, to still have you both
+      // as members, so leaving it ends the access.
       function canSeePost() {
         return request.auth != null
           && (request.auth.uid == uid
-              || exists(/databases/$(database)/documents/users/$(uid)/friends/$(request.auth.uid)));
+              || exists(/databases/$(database)/documents/users/$(uid)/friends/$(request.auth.uid))
+              || sharesTournament());
+      }
+      function sharesTournament() {
+        let matePath = /databases/$(database)/documents/users/$(uid)/mates/$(request.auth.uid);
+        return exists(matePath)
+          && request.auth.uid in get(/databases/$(database)/documents/tournaments/$(get(matePath).data.via)).data.members
+          && uid in get(/databases/$(database)/documents/tournaments/$(get(matePath).data.via)).data.members;
       }
       function postExists() {
         return exists(/databases/$(database)/documents/scores/$(uid)/$(game)/$(date));
@@ -144,6 +155,23 @@ service cloud.firestore {
                       && (request.auth.uid == uid
                           || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
         allow update: if false;
+      }
+
+      // "{mateUid} is in a tournament with {uid}", written by mateUid into
+      // uid's tree (the same way accepting a friend request writes the
+      // reciprocal friend entry) when the tournament feed opens. `via` names
+      // a tournament that has you both as members; it's checked on write,
+      // and again by the feed rules on every read (see canSeePost above).
+      match /mates/{mateUid} {
+        allow read: if request.auth != null
+                    && (request.auth.uid == uid || request.auth.uid == mateUid);
+        allow create, update: if request.auth != null && request.auth.uid == mateUid
+                      && request.resource.data.keys().hasOnly(['via'])
+                      && request.resource.data.via is string
+                      && mateUid in get(/databases/$(database)/documents/tournaments/$(request.resource.data.via)).data.members
+                      && uid in get(/databases/$(database)/documents/tournaments/$(request.resource.data.via)).data.members;
+        allow delete: if request.auth != null
+                      && (request.auth.uid == uid || request.auth.uid == mateUid);
       }
 
       // Personal display preferences for a tournament (pinned, card color)
