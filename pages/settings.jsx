@@ -15,7 +15,7 @@ const MODE_HELP = {
 };
 
 export default function Settings() {
-  const { user, profile, profileChecked, loading, setScoreEntryDefault, setGameOrder } = useAuth();
+  const { user, profile, profileChecked, loading, setScoreEntryDefault, setGameOrder, setShowTour } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -85,6 +85,20 @@ export default function Settings() {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section className="panel" style={{ marginTop: 20 }} aria-labelledby="tour-h">
+          <div className="panel-head-row">
+            <h2 id="tour-h">The tour</h2>
+            <button
+              type="button"
+              className="btn-sm btn-sm-ghost"
+              onClick={() => save(async () => { await setShowTour(true); window.location.assign('/'); })}
+            >
+              Show it again
+            </button>
+          </div>
+          <div className="section-sub">The walk around Today that new accounts get, including how to log a result.</div>
         </section>
       </main>
     </AppShell>

@@ -37,6 +37,7 @@ const BEFORE_PUBLISH = new Date('2026-10-13T08:30:00+02:00');
 
 const LOGIN_EMAIL = 'borg@test.local';
 const NEW_USER_EMAIL = 'new@test.local';
+const TOUR_USER_EMAIL = 'tour@test.local';
 const OOB_URL = 'http://127.0.0.1:9099/emulator/v1/projects/demo-lt/oobCodes';
 
 const VIEWPORTS = [
@@ -444,6 +445,55 @@ async function recordFeed(page, out) {
   out['tournament/t_skim/chat/deleted'] = { chat: (await extract(page)).chat };
 }
 
+// A brand-new account: sign up, and Today opens on the tour. Every step is
+// recorded (title and text), then finished — and the tour doesn't come back.
+async function recordTour(browser, out) {
+  const { context, page } = await newPage(browser, VIEWPORTS[2]);
+  await signIn(page, TOUR_USER_EMAIL);
+  await page.waitForURL(/\/onboarding/);
+  await page.fill('#username', 'Tourist');
+  await page.locator('form button[type="submit"]').click();
+  await page.locator('.tour-card').waitFor({ timeout: 90 * 1000 });
+  await settle(page, { quietMs: 600 });
+  const steps = [];
+  for (let n = 0; n < 12; n++) {
+    const card = page.locator('.tour-card');
+    steps.push([
+      (await card.locator('.tour-count').textContent()).trim(),
+      (await card.locator('.tour-title').textContent()).trim(),
+      (await card.locator('.tour-body').textContent()).trim(),
+    ]);
+    const next = card.getByRole('button', { name: /^(Show me|Next|Done)$/ });
+    const label = (await next.textContent()).trim();
+    await next.click();
+    if (label === 'Done') break;
+    await settle(page, { quietMs: 200 });
+  }
+  out['tour/steps'] = { steps };
+  await page.locator('.tour').waitFor({ state: 'detached' });
+  await expect.poll(async () => {
+    const host = process.env.FIRESTORE_EMULATOR_HOST || '127.0.0.1:8080';
+    const res = await fetch(`http://${host}/v1/projects/demo-lt/databases/(default)/documents/users/u_tour`, { headers: { Authorization: 'Bearer owner' } });
+    return (await res.json()).fields?.showTour?.booleanValue;
+  }, { timeout: 30_000 }).toBe(false);
+  await page.reload();
+  await page.locator('.score-box').first().waitFor({ timeout: 90 * 1000 });
+  await settle(page);
+  out['tour/after-done'] = { tourShown: await page.locator('.tour').count() };
+  await context.close();
+}
+
+// Turns the tour back on for u_tour (the emulator's admin access), for its
+// screenshot.
+async function resetTour() {
+  const host = process.env.FIRESTORE_EMULATOR_HOST || '127.0.0.1:8080';
+  const res = await fetch(
+    `http://${host}/v1/projects/demo-lt/databases/(default)/documents/users/u_tour?updateMask.fieldPaths=showTour`,
+    { method: 'PATCH', headers: { Authorization: 'Bearer owner', 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: { showTour: { booleanValue: true } } }) },
+  );
+  if (!res.ok) throw new Error(`Couldn't reset showTour: ${res.status}`);
+}
+
 // Settings: the game order (Zip moved to the top shows on Today) and the
 // single paste box, which reads which game each pasted share is from.
 // Everything is put back afterwards, so later states see the seeded data.
@@ -561,6 +611,7 @@ async function recordFunctional(browser) {
 
   await recordFeed(page, out);
   await recordSettings(page, out);
+  await recordTour(browser, out);
 
   await context.close();
   return out;
@@ -636,6 +687,24 @@ async function recordScreenshots(browser) {
       await signIn(page, NEW_USER_EMAIL);
       await page.waitForURL(/\/onboarding/);
       await shoot(page, viewport, 'onboarding');
+      await context.close();
+    }
+    // A new account's first look at Today: the tour, on its "log your
+    // times" step.
+    {
+      await resetTour();
+      const { context, page } = await newPage(browser, viewport);
+      await signIn(page, TOUR_USER_EMAIL);
+      await page.goto('/');
+      await page.locator('.tour-card').waitFor();
+      await page.locator('.tour-card').getByRole('button', { name: 'Show me' }).click();
+      await sleep(500);
+      // What the person actually sees, at the real screen size — the
+      // full-page shot below stretches the window, which moves the note.
+      fs.mkdirSync(SCREENS, { recursive: true });
+      await page.screenshot({ path: path.join(SCREENS, `tour-scores-screen--${viewport.name}.png`), animations: 'disabled' });
+      await shoot(page, viewport, 'tour-scores');
+      await page.locator('.tour-card').getByRole('button', { name: 'Skip tour' }).click();
       await context.close();
     }
     // Before the 09:00 publish time — the only time the day note shows.

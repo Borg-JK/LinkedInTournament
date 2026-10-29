@@ -98,7 +98,7 @@ export default function AppShell({ children }) {
     <div className="shell">
       <aside className="shell-sidebar">
         <a href="/" className="shell-brand">LinkedIn<br />Tournament</a>
-        <nav className="shell-nav" aria-label="Sections">
+        <nav className="shell-nav" aria-label="Sections" data-tour="nav">
           {NAV.map(n => (
             <a key={n.id} href={n.href} className="shell-nav-item" aria-current={here(n.id)}>
               <NavIcon name={n.icon} />
@@ -107,7 +107,7 @@ export default function AppShell({ children }) {
             </a>
           ))}
         </nav>
-        <div className="shell-me" ref={sideRef}>
+        <div className="shell-me" ref={sideRef} data-tour="settings">
           <button
             type="button"
             className="shell-me-btn"
@@ -125,7 +125,7 @@ export default function AppShell({ children }) {
 
       <header className="shell-topbar">
         <a href="/" className="topnav-brand">LinkedIn Tournament</a>
-        <div className="topnav-right" ref={topRef}>
+        <div className="topnav-right" ref={topRef} data-tour="settings">
           <button
             type="button"
             className="gear-btn"
@@ -142,7 +142,7 @@ export default function AppShell({ children }) {
 
       <div className="shell-content">{children}</div>
 
-      <nav className="shell-tabbar" aria-label="Sections">
+      <nav className="shell-tabbar" aria-label="Sections" data-tour="nav">
         {NAV.map(n => (
           <a key={n.id} href={n.href} className="shell-tab" aria-current={here(n.id)}>
             <span className="shell-tab-icon">

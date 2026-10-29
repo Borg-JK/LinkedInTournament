@@ -68,7 +68,7 @@ export default function QuickPasteBox({ scoresByDate = {} }) {
   }
 
   return (
-    <section className="quick-paste" aria-label="Paste your LinkedIn results">
+    <section className="quick-paste" aria-label="Paste your LinkedIn results" data-tour="scores">
       <label htmlFor="quick-paste-input" className="quick-paste-label">Paste from LinkedIn</label>
       <textarea
         id="quick-paste-input"

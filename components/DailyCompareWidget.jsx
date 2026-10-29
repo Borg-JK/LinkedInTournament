@@ -39,7 +39,7 @@ export default function DailyCompareWidget() {
   const theme = themeFor(gameId);
 
   return (
-    <aside className="daily-compare" style={{ '--dc-accent': theme.accent, '--dc-accent2': theme.accent2 }}>
+    <aside data-tour="compare" className="daily-compare" style={{ '--dc-accent': theme.accent, '--dc-accent2': theme.accent2 }}>
       <div className="daily-compare-title">Today vs. friends</div>
 
       <select

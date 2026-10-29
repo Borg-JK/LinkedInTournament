@@ -27485,5 +27485,47 @@
       "Patches",
       "Wend"
     ]
+  },
+  "tour/steps": {
+    "steps": [
+      [
+        "1 of 7",
+        "Welcome, Tourist",
+        "A quick look around before your first puzzle — about thirty seconds."
+      ],
+      [
+        "2 of 7",
+        "Log your times here",
+        "Play a game on LinkedIn, then tap Share → Copy. Paste it into that game’s box here and confirm — the time and puzzle number are read for you. Rather type it? Each box has “Type it in”."
+      ],
+      [
+        "3 of 7",
+        "Today, or yesterday",
+        "New puzzles go up at 9:00. Missed one? Switch to Yesterday and fill it in — it still counts."
+      ],
+      [
+        "4 of 7",
+        "Today vs. friends",
+        "Where your time ranks among your friends, game by game."
+      ],
+      [
+        "5 of 7",
+        "Tournaments",
+        "Compete over a month. Start one with “+ New”, or Find one to join — invites show up at the top of this page."
+      ],
+      [
+        "6 of 7",
+        "Feed, friends and history",
+        "The Feed shows your friends’ times: react with an emoji or reply. Add people by username in Friends. History is your own record."
+      ],
+      [
+        "7 of 7",
+        "Make it yours",
+        "Choose one paste box for every game, put your games in your own order, or sign out — it’s all in here."
+      ]
+    ]
+  },
+  "tour/after-done": {
+    "tourShown": 0
   }
 }

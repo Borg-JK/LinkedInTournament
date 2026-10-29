@@ -1009,7 +1009,8 @@ button, input, select {
   border: 1.5px solid var(--sb-input-border, var(--border));
   background: var(--sb-input-bg, var(--surface2));
   color: var(--sb-text, var(--text));
-  font-size: 0.7rem;
+  font-family: inherit;
+  font-size: 0.8rem;
   resize: vertical;
   outline: none;
   box-sizing: border-box;
@@ -2975,6 +2976,53 @@ html[data-theme="overall"] { --ed-bg:#f4f2ee; --ed-bg-soft:#f4f2ee; --ed-text:rg
 .order-btn:disabled { opacity: 0.3; cursor: default; }
 @media (hover: hover) and (pointer: fine) {
   .order-btn:hover:not(:disabled) { background: var(--accent-dim); }
+}
+
+/* ── First-visit tour (components/Walkthrough.jsx) ───────────────────
+   The page dims except for a rounded cut-out round the part being shown
+   (one big shadow, so it costs nothing to move); the note sits next to it.
+   The cut-out glides between steps; the note fades in on each one. */
+.tour { position: fixed; inset: 0; z-index: 60; }
+.tour-dim { position: fixed; inset: 0; background: rgba(10, 20, 35, 0.55); }
+.tour-hole {
+  position: fixed;
+  border-radius: 14px;
+  box-shadow: 0 0 0 9999px rgba(10, 20, 35, 0.55), 0 0 0 3px #fff inset;
+  pointer-events: none;
+  transition: top 260ms var(--ease-out), left 260ms var(--ease-out), width 260ms var(--ease-out), height 260ms var(--ease-out);
+}
+.tour-card {
+  position: fixed;
+  left: 50%;
+  margin-left: calc(min(380px, 100vw - 32px) / -2);
+  width: min(380px, calc(100vw - 32px));
+  padding: 18px 18px 14px;
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+  outline: none;
+  animation: tour-in 200ms var(--ease-out) both;
+}
+.tour-card-center { top: 50%; transform: translateY(-50%); }
+.tour-card-pinned { bottom: 16px; }
+@media (max-width: 860px) {
+  /* Clear of the phone's tab bar. */
+  .tour-card-pinned { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+}
+@keyframes tour-in { from { opacity: 0; } }
+.tour-count { font-size: 0.74rem; font-weight: 700; letter-spacing: var(--track-label); text-transform: uppercase; color: var(--accent); }
+.tour-title { font-size: 1.3rem; margin: 4px 0 6px; }
+.tour-body { font-size: 0.93rem; line-height: 1.5; color: var(--text-soft); }
+.tour-actions { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+.tour-spacer { flex: 1; }
+.tour-skip { border: 0; background: none; padding: 6px 2px; color: var(--text-muted); font: inherit; font-size: 0.86rem; font-weight: 600; cursor: pointer; }
+@media (hover: hover) and (pointer: fine) {
+  .tour-skip:hover { color: var(--text); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour-hole { transition: none; }
+  .tour-card { animation: none; }
 }
 
 /* ── Notification pop-up (components/NotificationPopup.jsx) ──────────

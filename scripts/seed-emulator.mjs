@@ -27,6 +27,9 @@ export const PROJECT_ID = 'demo-lt';
 export const LOGIN_EMAIL = 'borg@test.local';
 // Signed up but never finished onboarding — lands on /onboarding.
 export const NEW_USER_EMAIL = 'new@test.local';
+// Signs up during the run to go through the first-visit tour (u_new stays
+// un-onboarded for the onboarding screenshot).
+export const TOUR_USER_EMAIL = 'tour@test.local';
 
 initializeApp({ projectId: PROJECT_ID });
 const db = getFirestore();
@@ -102,6 +105,7 @@ async function seed() {
   }
 
   await auth.createUser({ uid: 'u_new', email: NEW_USER_EMAIL, emailVerified: true });
+  await auth.createUser({ uid: 'u_tour', email: TOUR_USER_EMAIL, emailVerified: true });
 
   // Borg is friends with everyone; Nick and Ana are friends with each other
   // too, so mutual-friend suggestions have something to show.

@@ -14,6 +14,7 @@ import DailyCompareWidget from '../components/DailyCompareWidget';
 import PersonalHistoryTab from '../components/PersonalHistoryTab';
 import SharedScoreIntake from '../components/SharedScoreIntake';
 import NotificationPopup from '../components/NotificationPopup';
+import Walkthrough from '../components/Walkthrough';
 import Skeleton from '../components/Skeleton';
 
 function InfoIcon() {
@@ -243,7 +244,8 @@ export default function Home() {
         {homeTab === 'today' ? (
           <>
             <SharedScoreIntake />
-            <NotificationPopup />
+            {/* A new account's first look gets the tour; the pop-up waits. */}
+            {profile.showTour ? <Walkthrough /> : <NotificationPopup />}
 
             {!invitesLoading && invites.length > 0 && (
               <section className="panel" style={{ marginBottom: 24 }}>
@@ -271,7 +273,7 @@ export default function Home() {
               <div className="home-main">
                 <ScoreBoxes />
 
-                <section className="panel panel-accent">
+                <section className="panel panel-accent" data-tour="tournaments">
                   <div className="panel-head-row">
                     <h2>Tournaments</h2>
                     <div style={{ display: 'flex', gap: 8 }}>

@@ -209,7 +209,7 @@ export default function ScoreBoxes() {
     <section className="score-day">
       <div className="score-day-bar">
         <span className="score-day-label">Scores for</span>
-        <div className="score-day-tabs">
+        <div className="score-day-tabs" data-tour="days">
           {/* Name and date are separate spans so a phone can stack them —
               "Today" over "Wed 7 Oct" — and still fit both days on one row. */}
           <button
@@ -241,7 +241,7 @@ export default function ScoreBoxes() {
 
       {defaultMode === 'single' && <QuickPasteBox scoresByDate={{ [dateIso]: scores }} />}
 
-      <div className="score-boxes-grid">
+      <div className="score-boxes-grid" data-tour={defaultMode === 'single' ? undefined : 'scores'}>
         {games.map(game => (
           <ScoreBox
             key={`${game.id}|${dateIso}`}
