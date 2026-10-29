@@ -2,7 +2,7 @@
 // A tournament's chat, for its members. Your own messages on the right;
 // everyone else's on the left with their name, once per run of messages.
 // You can delete your own, and the tournament's owner can delete any.
-import { useState, useRef, useLayoutEffect, Fragment } from 'react';
+import { useState, useRef, useLayoutEffect, useEffect, Fragment } from 'react';
 import { useAuth } from '../lib/useAuth';
 import { useTournamentChat, MESSAGE_MAX } from '../lib/useTournamentChat';
 import { Avatar, useNames } from './FeedPost';
@@ -27,7 +27,31 @@ export default function TournamentChat({ tournament }) {
   const [draft, setDraft] = useState('');
   const [busy, setBusy] = useState(false);
   const listRef = useRef(null);
+  const formRef = useRef(null);
   const stickToBottom = useRef(true);
+  const [listHeight, setListHeight] = useState(null);
+
+  // The chat fills the screen from where it starts down to the bottom, so
+  // the message box is always in view — however tall the tournament's
+  // header above it is. Never shorter than a few messages, though.
+  useEffect(() => {
+    const measure = () => {
+      const list = listRef.current;
+      const form = formRef.current;
+      if (!list || !form) return;
+      const top = list.getBoundingClientRect().top + window.scrollY;
+      const viewport = window.visualViewport?.height || window.innerHeight;
+      setListHeight(Math.max(240, Math.floor(viewport - top - form.offsetHeight - 24)));
+    };
+    measure();
+    document.fonts?.ready.then(measure); // the header's height settles once its fonts load
+    window.addEventListener('resize', measure);
+    window.visualViewport?.addEventListener('resize', measure);
+    return () => {
+      window.removeEventListener('resize', measure);
+      window.visualViewport?.removeEventListener('resize', measure);
+    };
+  }, []);
   const isOwner = tournament.ownerId === user?.uid;
 
   // Stay at the newest message as they arrive — unless you've scrolled up
@@ -35,7 +59,8 @@ export default function TournamentChat({ tournament }) {
   useLayoutEffect(() => {
     const el = listRef.current;
     if (el && stickToBottom.current) el.scrollTop = el.scrollHeight;
-  }, [messages]);
+    // Names arrive after the messages, and a long one wraps — re-pin then too.
+  }, [messages, listHeight, names]);
   function onScroll() {
     const el = listRef.current;
     stickToBottom.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
@@ -59,7 +84,7 @@ export default function TournamentChat({ tournament }) {
 
   return (
     <section className="chat" aria-label={`${tournament.name} chat`}>
-      <div className="chat-list" ref={listRef} onScroll={onScroll}>
+      <div className="chat-list" ref={listRef} onScroll={onScroll} style={listHeight ? { height: listHeight } : undefined}>
         {messages === null ? (
           <Skeleton variant="rows" count={3} />
         ) : messages.length === 0 ? (
@@ -95,7 +120,7 @@ export default function TournamentChat({ tournament }) {
         )}
       </div>
 
-      <form className="chat-form" onSubmit={onSubmit}>
+      <form className="chat-form" onSubmit={onSubmit} ref={formRef}>
         <input
           className="chat-input"
           value={draft}

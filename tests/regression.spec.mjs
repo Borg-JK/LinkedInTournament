@@ -433,6 +433,11 @@ async function recordFeed(page, out) {
     const { chat, chatDays } = await extract(page);
     out['tournament/t_skim/chat'] = { chat, chatDays };
   }
+  // The message box is on screen without scrolling.
+  {
+    const box = await page.locator('.chat-form').boundingBox();
+    expect(box.y + box.height).toBeLessThanOrEqual(page.viewportSize().height);
+  }
   await page.locator('.chat-input').fill('gg all');
   await page.locator('.chat-send').click();
   await page.locator('.chat-text', { hasText: 'gg all' }).waitFor();
@@ -626,7 +631,17 @@ const SCREEN_VIEWS = [
   { name: 'feed', go: async p => { await p.goto('/feed'); } },
   { name: 'feed-tournament', go: async p => { await p.goto('/feed?view=tournaments'); } },
   { name: 'settings', go: async p => { await p.goto('/settings'); await p.locator('.order-row').first().waitFor(); } },
-  { name: 'skim-chat', go: async p => { await p.goto('/tournaments/t_skim?section=chat'); await p.locator('.chat-msg').first().waitFor(); } },
+  {
+    name: 'skim-chat',
+    go: async p => {
+      await p.goto('/tournaments/t_skim?section=chat');
+      await p.locator('.chat-msg').first().waitFor();
+      await settle(p);
+      // At the real screen size too: the chat is sized to fit it.
+      fs.mkdirSync(SCREENS, { recursive: true });
+      await p.screenshot({ path: path.join(SCREENS, `skim-chat-screen--${p.viewportSize().width <= 400 ? 'phone' : p.viewportSize().width <= 900 ? 'tablet' : 'desktop'}.png`), animations: 'disabled' });
+    },
+  },
   // Shown, shot, then closed again, so the dashboard shots after it are clear.
   {
     name: 'home-notifications',
