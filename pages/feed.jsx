@@ -1,7 +1,8 @@
 // pages/feed.jsx
 // The feed: every time you and your friends posted for today's and
 // yesterday's puzzles, newest first, with reactions and comments — or the
-// same for one of your tournaments' members, switched at the top.
+// same for one of your tournaments' members, switched at the top. (Each
+// tournament's chat lives on the tournament's own page.)
 import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '../lib/useAuth';
@@ -9,9 +10,11 @@ import { useFriends } from '../lib/useFriends';
 import { useFeed, useTournamentFeed } from '../lib/useFeed';
 import { useTournaments, useTournamentPrefs } from '../lib/useTournaments';
 import { markFeedSeen } from '../lib/feedSeen';
+import { useNotifications } from '../lib/useNotifications';
 import AppShell from '../components/AppShell';
 import FeedPost from '../components/FeedPost';
 import Skeleton from '../components/Skeleton';
+import NavIcon from '../components/NavIcon';
 
 function FeedList({ posts, ready, empty }) {
   if (!ready) return <div className="feed-list"><section className="panel"><Skeleton variant="rows" count={4} /></section></div>;
@@ -65,6 +68,11 @@ export default function FeedPage() {
   const { tournaments, loading: tLoading } = useTournaments();
   const { prefs: tournamentPrefs } = useTournamentPrefs();
   const router = useRouter();
+  const { unseen, markSeen } = useNotifications();
+
+  // Being on the feed is seeing the reactions and comments on your times,
+  // so the dashboard pop-up doesn't announce them again afterwards.
+  useEffect(() => { if (unseen.length > 0) markSeen(); }, [unseen.length, markSeen]);
 
   useEffect(() => {
     if (loading || !profileChecked) return;
@@ -138,6 +146,10 @@ export default function FeedPage() {
                 ))}
               </div>
             )}
+            <a href={`/tournaments/${selected.id}?section=chat`} className="feed-chat-link">
+              <NavIcon name="comment" size={16} />
+              {selected.name} chat
+            </a>
             <TournamentFeed key={selected.id} tournament={selected} />
           </>
         )}

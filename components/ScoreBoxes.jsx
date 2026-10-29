@@ -11,12 +11,13 @@ import { useAuth } from '../lib/useAuth';
 import { useScoresForDate, submitScore, deleteScore } from '../lib/useScores';
 import {
   GAMES, puzzleNumberFor, dateForPuzzleNumber, todayIso,
-  activePuzzleDayIso, addDaysIso, PUZZLE_PUBLISH_HOUR,
+  activePuzzleDayIso, addDaysIso, PUZZLE_PUBLISH_HOUR, orderedGames,
 } from '../lib/games';
 import { formatSeconds } from '../lib/time';
 import { themeFor } from '../lib/theme';
 import InlineTimeEditor from './InlineTimeEditor';
 import PasteScoreForm from './PasteScoreForm';
+import QuickPasteBox from './QuickPasteBox';
 import Skeleton from './Skeleton';
 
 function dayLabel(dateIso) {
@@ -30,7 +31,7 @@ function ScoreBox({ game, dateIso, existing, loadError, onRetry, defaultMode }) 
   // Paste-to-submit is the default entry flow — typing digits in by hand is
   // the fallback — but it's a per-person preference (Settings gear menu),
   // not a hardcoded choice.
-  const [mode, setMode] = useState(defaultMode); // 'paste' | 'type'
+  const [mode, setMode] = useState(defaultMode); // 'paste' | 'single' | 'type'
   // Set when a pasted share's puzzle number put the score on a different day
   // than the one on screen — otherwise the box would just look like it
   // silently failed to save.
@@ -95,6 +96,13 @@ function ScoreBox({ game, dateIso, existing, loadError, onRetry, defaultMode }) 
         ) : (
           <div className="score-box-loading"><Skeleton variant="lines" count={1} className="skeleton-time" /></div>
         )
+      ) : showForm && mode === 'single' && !editing ? (
+        // One paste box above does the pasting; an empty box just says so,
+        // with typing it in as the fallback.
+        <div className="score-box-empty">
+          <span className="score-box-dash" aria-label="No time yet">–</span>
+          <button type="button" className="chip-link" onClick={() => setMode('type')}>Type it in</button>
+        </div>
       ) : showForm ? (
         <>
           {mode === 'paste' ? (
@@ -114,7 +122,7 @@ function ScoreBox({ game, dateIso, existing, loadError, onRetry, defaultMode }) 
               autoFocus={editing}
             />
           )}
-          {mode === 'type' && (
+          {mode === 'type' && defaultMode !== 'single' && (
             <button type="button" className="chip-link score-box-mode-toggle" onClick={() => setMode('paste')}>
               Paste from LinkedIn instead
             </button>
@@ -150,6 +158,8 @@ export default function ScoreBoxes() {
   const [dateIso, setDateIso] = useState(liveDay);
   const { scores, loading, error, retry } = useScoresForDate(dateIso);
   const defaultMode = profile?.scoreEntryDefault || 'paste';
+  // The order this person chose in Settings.
+  const games = orderedGames(profile?.gameOrder);
 
   // Only worth explaining when it's actually counter-intuitive — i.e. while
   // the live puzzle is dated yesterday because 09:00 hasn't come round yet.
@@ -191,8 +201,10 @@ export default function ScoreBoxes() {
         </p>
       )}
 
+      {defaultMode === 'single' && <QuickPasteBox scoresByDate={{ [dateIso]: scores }} />}
+
       <div className="score-boxes-grid">
-        {GAMES.map(game => (
+        {games.map(game => (
           <ScoreBox
             key={`${game.id}|${dateIso}`}
             game={game}

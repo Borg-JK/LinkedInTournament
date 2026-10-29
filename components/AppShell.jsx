@@ -24,6 +24,13 @@ function sectionFor(pathname, query) {
   return 'today';
 }
 
+// How scores get entered (profile.scoreEntryDefault); also on /settings.
+export const SCORE_ENTRY_MODES = [
+  ['paste', 'Paste into each box'],
+  ['single', 'One paste box for all games'],
+  ['type', 'Type it in'],
+];
+
 function SettingsMenu({ up = false, onClose }) {
   const { profile, logout, setScoreEntryDefault } = useAuth();
   const mode = profile?.scoreEntryDefault || 'paste';
@@ -34,7 +41,7 @@ function SettingsMenu({ up = false, onClose }) {
   return (
     <div className={`dropdown${up ? ' dropdown-up' : ''}`} role="menu">
       <div className="dropdown-section-label">Score entry default</div>
-      {[['paste', 'Paste from LinkedIn'], ['type', 'Type it in']].map(([id, label]) => (
+      {SCORE_ENTRY_MODES.map(([id, label]) => (
         <button
           key={id}
           type="button"
@@ -46,6 +53,7 @@ function SettingsMenu({ up = false, onClose }) {
           {mode === id ? '✓ ' : ''}{label}
         </button>
       ))}
+      <a href="/settings" role="menuitem" className="dropdown-item">Arrange games…</a>
       <div className="dropdown-divider" />
       <button type="button" role="menuitem" className="dropdown-item dropdown-item-danger" onClick={() => { onClose(); logout(); }}>
         Sign out

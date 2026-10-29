@@ -11,6 +11,8 @@ const PATHS = {
   comment: <path d="M5 5h14v10H9l-4 4V5z" />,
   plus: <path d="M12 5v14M5 12h14" />,
   trash: <><path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12" /></>,
+  close: <path d="M6 6l12 12M18 6L6 18" />,
+  send: <path d="M4 12l16-8-6 16-2.5-6.5L4 12z" />,
 };
 
 export default function NavIcon({ name, size = 20 }) {

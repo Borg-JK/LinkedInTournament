@@ -13,6 +13,7 @@ import ScoreBoxes from '../components/ScoreBoxes';
 import DailyCompareWidget from '../components/DailyCompareWidget';
 import PersonalHistoryTab from '../components/PersonalHistoryTab';
 import SharedScoreIntake from '../components/SharedScoreIntake';
+import NotificationPopup from '../components/NotificationPopup';
 import Skeleton from '../components/Skeleton';
 
 function InfoIcon() {
@@ -242,6 +243,7 @@ export default function Home() {
         {homeTab === 'today' ? (
           <>
             <SharedScoreIntake />
+            <NotificationPopup />
 
             {!invitesLoading && invites.length > 0 && (
               <section className="panel" style={{ marginBottom: 24 }}>

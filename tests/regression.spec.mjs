@@ -207,6 +207,10 @@ function extractInPage() {
       reactions: all('.feed-react', p).map(b => `${norm(b.textContent)}${b.getAttribute('aria-pressed') === 'true' ? ' (mine)' : ''}`),
       comments: all('.feed-comment-body', p).map(el => norm(el.textContent)),
     })),
+    notifications: all('.notif-item').map(el => [text(el, '.notif-text'), text(el, '.notif-when')]),
+    chat: all('.chat-msg').map(m => [text(m, '.chat-name'), text(m, '.chat-text'), m.classList.contains('chat-msg-mine')]),
+    chatDays: all('.chat-day').map(el => norm(el.textContent)),
+    quickPaste: all('.quick-paste-found li').map(el => norm(el.textContent)),
     feedTournaments: all('.feed-tournament-chip').map(el => `${norm(el.textContent)}${el.getAttribute('aria-selected') === 'true' ? ' (selected)' : ''}`),
     feedNote: text(document, '.feed-reveal-note'),
     pills: all('.pill-static').map(el => norm(el.textContent)),
@@ -416,6 +420,119 @@ async function recordFeed(page, out) {
     const { feedPosts, feedTournaments, feedNote } = await extract(page);
     out[`feed/tournament/${name}`] = { feedPosts, feedTournaments, feedNote };
   }
+
+  // SKIM's chat, on SKIM's own page: the seeded conversation, then a
+  // message sent and deleted (Borg owns SKIM and wrote it). Only who said
+  // what is recorded — a sent message carries the server's real time,
+  // which changes run to run.
+  await page.goto('/tournaments/t_skim?section=chat');
+  await page.locator('.chat-msg, .chat-empty').first().waitFor({ timeout: 90 * 1000 });
+  await settle(page);
+  {
+    const { chat, chatDays } = await extract(page);
+    out['tournament/t_skim/chat'] = { chat, chatDays };
+  }
+  await page.locator('.chat-input').fill('gg all');
+  await page.locator('.chat-send').click();
+  await page.locator('.chat-text', { hasText: 'gg all' }).waitFor();
+  await settle(page, { quietMs: 300 });
+  out['tournament/t_skim/chat/sent'] = { chat: (await extract(page)).chat };
+  page.once('dialog', d => d.accept());
+  await page.locator('.chat-msg', { hasText: 'gg all' }).locator('.chat-delete').click();
+  await page.locator('.chat-text', { hasText: 'gg all' }).waitFor({ state: 'detached' });
+  await settle(page, { quietMs: 300 });
+  out['tournament/t_skim/chat/deleted'] = { chat: (await extract(page)).chat };
+}
+
+// Settings: the game order (Zip moved to the top shows on Today) and the
+// single paste box, which reads which game each pasted share is from.
+// Everything is put back afterwards, so later states see the seeded data.
+async function recordSettings(page, out) {
+  const orderNames = async () => (await page.locator('.order-name').allTextContents()).map(t => t.trim());
+  await page.goto('/settings');
+  await page.locator('.order-row').first().waitFor({ timeout: 90 * 1000 });
+  await settle(page);
+  out['settings'] = { order: await orderNames() };
+
+  for (let i = 0; i < 3; i++) {
+    await page.getByRole('button', { name: 'Move Zip up' }).click();
+    await settle(page, { quietMs: 300 });
+  }
+  out['settings/zip-first'] = { order: await orderNames() };
+  await page.goto('/');
+  await page.locator('.score-box').first().waitFor({ timeout: 90 * 1000 });
+  await settle(page);
+  out['home/game-order'] = { boxes: (await extract(page)).scoreBoxes.map(b => b.game) };
+
+  await page.goto('/settings');
+  await page.locator('.order-row').first().waitFor({ timeout: 90 * 1000 });
+  await page.getByLabel('One paste box for all games').check();
+  await settle(page, { quietMs: 300 });
+  await page.goto('/');
+  await page.locator('.quick-paste').waitFor({ timeout: 90 * 1000 });
+  await settle(page);
+  // A changed Queens time, an unchanged Zip time, and something that isn't a share.
+  await page.locator('#quick-paste-input').fill(
+    'Queens #896 | 0:20 and flawless 👑\nlnkd.in/queens.\n\nZip #575 | 0:26 🏁\nlnkd.in/zip.\nhello #12 | 0:10',
+  );
+  await settle(page, { quietMs: 300 });
+  out['home/quick-paste/preview'] = { quickPaste: (await extract(page)).quickPaste };
+  await page.locator('.quick-paste-save').click();
+  await page.locator('.quick-paste-saved').waitFor();
+  await settle(page, { quietMs: 300 });
+  {
+    const { scoreBoxes } = await extract(page);
+    out['home/quick-paste/saved'] = { saved: (await page.locator('.quick-paste-saved').textContent()).trim(), scoreBoxes };
+  }
+
+  // Put it all back: Borg's real Queens time, the default order and mode.
+  await page.locator('#quick-paste-input').fill('Queens #896 | 0:18\nlnkd.in/queens.');
+  await page.locator('.quick-paste-save').click();
+  await page.locator('.quick-paste-saved').waitFor();
+  await page.goto('/settings');
+  await page.locator('.order-row').first().waitFor({ timeout: 90 * 1000 });
+  await page.getByRole('button', { name: 'Reset' }).click();
+  await page.getByLabel('Paste into each box').check();
+  await settle(page, { quietMs: 300 });
+  out['settings/restored'] = { order: await orderNames() };
+}
+
+// The dashboard pop-up: Borg has reactions and comments on his Queens time
+// that he hasn't seen. Closing it marks them seen — for good, so a reload
+// doesn't bring it back. (First thing in the run, so it isn't covering
+// anything the later home states click on.)
+async function recordNotifications(page, out) {
+  await page.goto('/');
+  await page.locator('.notif-popup').waitFor({ timeout: 90 * 1000 });
+  await settle(page);
+  out['home/notifications'] = { notifications: (await extract(page)).notifications };
+  await page.locator('.notif-close').click();
+  await page.locator('.notif-popup').waitFor({ state: 'detached' });
+  // Let the "seen" mark reach the server before reloading (a write still
+  // in flight is dropped when the page unloads).
+  await expect.poll(notificationsSeenSaved, { timeout: 30_000 }).toBe(true);
+  await page.reload();
+  await page.locator('.score-box').first().waitFor({ timeout: 90 * 1000 });
+  await settle(page);
+  out['home/notifications/after-close'] = { notifications: (await extract(page)).notifications };
+}
+
+async function notificationsSeenSaved() {
+  const host = process.env.FIRESTORE_EMULATOR_HOST || '127.0.0.1:8080';
+  const res = await fetch(`http://${host}/v1/projects/demo-lt/databases/(default)/documents/users/u_borg`,
+    { headers: { Authorization: 'Bearer owner' } });
+  return res.ok && !!(await res.json()).fields?.notificationsSeenAt;
+}
+
+// Clears Borg's "seen up to" mark through the emulator's admin access, so
+// the pop-up shows again for its screenshot.
+async function resetNotificationsSeen() {
+  const host = process.env.FIRESTORE_EMULATOR_HOST || '127.0.0.1:8080';
+  const res = await fetch(
+    `http://${host}/v1/projects/demo-lt/databases/(default)/documents/users/u_borg?updateMask.fieldPaths=notificationsSeenAt`,
+    { method: 'PATCH', headers: { Authorization: 'Bearer owner', 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: {} }) },
+  );
+  if (!res.ok) throw new Error(`Couldn't reset notificationsSeenAt: ${res.status}`);
 }
 
 async function recordFunctional(browser) {
@@ -423,6 +540,7 @@ async function recordFunctional(browser) {
   await signIn(page, LOGIN_EMAIL);
   const out = {};
 
+  await recordNotifications(page, out);
   await recordHomeToday(page, out);
   await recordHomeHistory(page, out);
   await recordTournament(page, out, 't_skim');
@@ -442,6 +560,7 @@ async function recordFunctional(browser) {
   out['tournaments/t_skim/manage'] = await extract(page);
 
   await recordFeed(page, out);
+  await recordSettings(page, out);
 
   await context.close();
   return out;
@@ -455,6 +574,18 @@ const SCREEN_VIEWS = [
   { name: 'friends', go: async p => { await p.goto('/friends'); } },
   { name: 'feed', go: async p => { await p.goto('/feed'); } },
   { name: 'feed-tournament', go: async p => { await p.goto('/feed?view=tournaments'); } },
+  { name: 'settings', go: async p => { await p.goto('/settings'); await p.locator('.order-row').first().waitFor(); } },
+  { name: 'skim-chat', go: async p => { await p.goto('/tournaments/t_skim?section=chat'); await p.locator('.chat-msg').first().waitFor(); } },
+  // Shown, shot, then closed again, so the dashboard shots after it are clear.
+  {
+    name: 'home-notifications',
+    go: async p => { await resetNotificationsSeen(); await p.goto('/'); await p.locator('.notif-popup').waitFor(); },
+    after: async p => {
+      await p.locator('.notif-close').click();
+      await p.locator('.notif-popup').waitFor({ state: 'detached' });
+      await expect.poll(notificationsSeenSaved, { timeout: 30_000 }).toBe(true);
+    },
+  },
   { name: 'find-tournaments', go: async p => { await p.goto('/tournaments/search'); } },
   { name: 'new-tournament', go: async p => { await p.goto('/tournaments/new'); } },
   { name: 'skim-standings-overall', go: async p => { await p.goto('/tournaments/t_skim'); } },
@@ -521,6 +652,7 @@ async function recordScreenshots(browser) {
     for (const view of SCREEN_VIEWS) {
       await view.go(page);
       await shoot(page, viewport, view.name);
+      if (view.after) await view.after(page);
     }
     await context.close();
   }

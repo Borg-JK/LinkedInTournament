@@ -14,7 +14,7 @@ import NavIcon from './NavIcon';
 // Names for whoever reacted or commented. They aren't necessarily your
 // friends (a friend's friend can comment on their post), so they come from
 // the shared uid -> username cache rather than your friends list.
-function useNames(uids) {
+export function useNames(uids) {
   const [names, setNames] = useState({});
   const key = [...new Set(uids)].sort().join(',');
   useEffect(() => {
@@ -27,7 +27,7 @@ function useNames(uids) {
   return names;
 }
 
-function Avatar({ uid, name, size = 38 }) {
+export function Avatar({ uid, name, size = 38 }) {
   return (
     <span className="feed-avatar" style={{ width: size, height: size, background: colorForUid(uid), fontSize: size * 0.42 }} aria-hidden="true">
       {firstGrapheme(name).toUpperCase()}

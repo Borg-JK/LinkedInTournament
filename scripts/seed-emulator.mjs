@@ -193,6 +193,21 @@ async function seed() {
     });
   }
 
+  // A short chat in SKIM, the evening before and that morning.
+  const chat = [
+    ['c1', 'u_nick', 'who else got stuck on Queens today', -14 * 60],
+    ['c2', 'u_ana', 'not me 😌', -13 * 60 - 50],
+    ['c3', 'u_ana', 'Zip was brutal though', -13 * 60 - 49],
+    ['c4', 'u_borg', 'rematch tomorrow, same time', -13 * 60 - 30],
+    ['c5', 'u_jacco', 'morning all — Tango in 0:41, beat that', -90],
+    ['c6', 'u_long', 'challenge accepted', -75],
+  ];
+  for (const [id, authorUid, text, minutesFromLastDay] of chat) {
+    writer.set(db.doc(`tournaments/t_skim/messages/${id}`), {
+      authorUid, text, createdAt: Timestamp.fromMillis(tsAt(LAST_DAY).toMillis() + minutesFromLastDay * 60000),
+    });
+  }
+
   // Borg is invited to (not yet in) Wend Only — exercises the invites panel.
   writer.set(db.doc('users/u_borg/tournamentInvites/t_solo'), {
     tournamentName: 'Wend Only', invitedBy: 'u_ana', sentAt: tsAt('2026-10-12'), status: 'pending',

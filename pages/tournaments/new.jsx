@@ -9,6 +9,8 @@ import { SCORING_METRICS, DEFAULT_SCORING_METRIC, ELIGIBILITY_STEPS, DEFAULT_ELI
 import { JOIN_POLICIES, DEFAULT_JOIN_POLICY } from '../../lib/useTournaments';
 import { REVEAL_POLICIES, DEFAULT_REVEAL_POLICY, DEFAULT_REVEAL_INTERVAL_DAYS } from '../../lib/reveal';
 import { todayIso } from '../../lib/games';
+import { themeFor } from '../../lib/theme';
+import { colorForUid } from '../../lib/colors';
 import AppShell from '../../components/AppShell';
 
 export default function NewTournament() {
@@ -65,198 +67,190 @@ export default function NewTournament() {
 
   if (!profile) return null;
 
+  const metric = SCORING_METRICS.find(m => m.id === scoringMetric);
+  const join = JOIN_POLICIES.find(p => p.id === joinPolicy);
+  const reveal = REVEAL_POLICIES.find(p => p.id === revealPolicy);
+  const rulesSummary = [
+    `${thresholdPct}% to qualify`,
+    join?.label,
+    revealPolicy === 'interval' ? `${reveal?.label} (every ${revealIntervalDays} days)` : reveal?.label,
+  ].filter(Boolean).join(' · ');
+
   return (
     <AppShell>
-      <main className="app-main app-main-narrow">
+      <main className="app-main app-main-setup">
         <div className="hero">
           <div className="hero-eyebrow">Start something</div>
           <h1>New tournament</h1>
-          <p>Choose its games, scoring, and who's in.</p>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <section className="panel" style={{ marginBottom: 20 }}>
-            <div className="section-head">
-              <span className="section-head-num">01</span>
-              <h2>The basics</h2>
-            </div>
-            <div className="section-sub">What it's called, and when scoring begins.</div>
-
-            <div className="field">
-              <label htmlFor="tname">Name</label>
-              <input
-                id="tname"
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                placeholder="e.g. Autumn League"
-                autoFocus
-              />
-            </div>
-            <div className="field" style={{ marginBottom: 0 }}>
-              <label htmlFor="tstart">Start date</label>
-              <input
-                id="tstart"
-                type="date"
-                value={startDate}
-                onChange={e => setStartDate(e.target.value)}
-              />
-            </div>
-          </section>
-
-          <section className="panel" style={{ marginBottom: 20 }}>
-            <div className="section-head">
-              <span className="section-head-num">02</span>
-              <h2>Games &amp; scoring</h2>
-            </div>
-            <div className="section-sub">Which puzzles count, and how daily results turn into standings.</div>
-
-            <div className="panel-head-row" style={{ marginTop: 18 }}>
-              <span className="field-label" style={{ marginBottom: 0 }}>Games</span>
-              <button
-                type="button"
-                className="chip-link"
-                onClick={() => setGames(allGamesSelected ? [] : [...GAME_IDS])}
-              >
-                {allGamesSelected ? 'Clear all' : 'All games'}
-              </button>
-            </div>
-            <ul className="check-list" style={{ marginBottom: 22 }}>
-              {GAMES.map(g => (
-                <li key={g.id}>
-                  <label className="check-row">
-                    <input type="checkbox" checked={games.includes(g.id)} onChange={() => toggleGame(g.id)} />
-                    {g.label}
-                  </label>
-                </li>
-              ))}
-            </ul>
-
-            <ul className="check-list">
-              {SCORING_METRICS.map(m => (
-                <li key={m.id}>
-                  <label className="check-row check-row-radio">
-                    <input
-                      type="radio"
-                      name="scoringMetric"
-                      checked={scoringMetric === m.id}
-                      onChange={() => setScoringMetric(m.id)}
-                    />
-                    <span>
-                      <span className="check-row-title">{m.label}</span>
-                      <span className="check-row-desc">{m.desc}</span>
-                    </span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section className="panel" style={{ marginBottom: 20 }}>
-            <div className="section-head">
-              <span className="section-head-num">03</span>
-              <h2>How it plays</h2>
-            </div>
-            <div className="section-sub">Participation, joining, and how much suspense the reveal has.</div>
-
-            <div className="field-label-group">
-              <span className="field-label">Eligibility threshold</span>
-              <span className="field-help">Minimum participation to qualify for standings</span>
-            </div>
-            <div className="stepper" style={{ marginBottom: 26 }}>
-              <button
-                type="button"
-                className="stepper-btn"
-                disabled={thresholdPct <= ELIGIBILITY_STEPS[0]}
-                onClick={() => setThresholdPct(p => ELIGIBILITY_STEPS[Math.max(0, ELIGIBILITY_STEPS.indexOf(p) - 1)])}
-              >−</button>
-              <span className="stepper-value">{thresholdPct}%</span>
-              <button
-                type="button"
-                className="stepper-btn"
-                disabled={thresholdPct >= ELIGIBILITY_STEPS[ELIGIBILITY_STEPS.length - 1]}
-                onClick={() => setThresholdPct(p => ELIGIBILITY_STEPS[Math.min(ELIGIBILITY_STEPS.length - 1, ELIGIBILITY_STEPS.indexOf(p) + 1)])}
-              >+</button>
-            </div>
-
-            <div className="field-label">
-              When can people join?
-            </div>
-            <ul className="check-list" style={{ marginBottom: 26 }}>
-              {JOIN_POLICIES.map(p => (
-                <li key={p.id}>
-                  <label className="check-row check-row-radio">
-                    <input type="radio" name="joinPolicy" checked={joinPolicy === p.id} onChange={() => setJoinPolicy(p.id)} />
-                    <span>
-                      <span className="check-row-title">{p.label}</span>
-                      <span className="check-row-desc">{p.desc}</span>
-                    </span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-
-            <div className="field-label">
-              Standings reveal
-            </div>
-            <ul className="check-list">
-              {REVEAL_POLICIES.map(p => (
-                <li key={p.id}>
-                  <label className="check-row check-row-radio">
-                    <input type="radio" name="revealPolicy" checked={revealPolicy === p.id} onChange={() => setRevealPolicy(p.id)} />
-                    <span>
-                      <span className="check-row-title">{p.label}</span>
-                      <span className="check-row-desc">{p.desc}</span>
-                    </span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-            {revealPolicy === 'interval' && (
-              <div className="field" style={{ marginTop: 12, marginBottom: 0 }}>
-                <label>Reveal every</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <form onSubmit={handleSubmit} className="setup">
+          <div className="setup-grid">
+            <section className="panel setup-card" aria-labelledby="setup-basics">
+              <h2 id="setup-basics" className="setup-h">Name and games</h2>
+              <div className="setup-row">
+                <div className="field setup-name">
+                  <label htmlFor="tname">Name</label>
                   <input
-                    type="number"
-                    min={1}
-                    max={28}
-                    style={{ width: 90 }}
-                    value={revealIntervalDays}
-                    onChange={e => setRevealIntervalDays(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                    id="tname"
+                    type="text"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    placeholder="e.g. Autumn League"
+                    autoFocus
                   />
-                  <span className="section-sub" style={{ margin: 0 }}>days</span>
+                </div>
+                <div className="field setup-start">
+                  <label htmlFor="tstart">Starts</label>
+                  <input id="tstart" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
                 </div>
               </div>
-            )}
-          </section>
 
-          <section className="panel" style={{ marginBottom: 20 }}>
-            <div className="section-head">
-              <span className="section-head-num">04</span>
-              <h2>Who's in</h2>
-            </div>
-            <div className="section-sub">You're added automatically as the owner. Everyone else is invited, not added — they join once they accept.</div>
-            {friends.length === 0 ? (
-              <div className="panel-empty">No friends yet — add some first, or create this just for yourself for now.</div>
-            ) : (
-              <ul className="check-list">
-                {friends.map(f => (
-                  <li key={f.uid}>
-                    <label className="check-row">
-                      <input type="checkbox" checked={inviteUids.includes(f.uid)} onChange={() => toggleInvite(f.uid)} />
-                      {f.username}
-                    </label>
-                  </li>
+              <div className="setup-label-row">
+                <span className="field-label" id="games-label">Games</span>
+                <button type="button" className="chip-link" onClick={() => setGames(allGamesSelected ? [] : [...GAME_IDS])}>
+                  {allGamesSelected ? 'Clear all' : 'All games'}
+                </button>
+              </div>
+              <div className="setup-chips" role="group" aria-labelledby="games-label">
+                {GAMES.map(g => (
+                  <button
+                    key={g.id}
+                    type="button"
+                    className="setup-game"
+                    style={{ '--game': themeFor(g.id).accent }}
+                    aria-pressed={games.includes(g.id)}
+                    onClick={() => toggleGame(g.id)}
+                  >
+                    {g.label}
+                  </button>
                 ))}
-              </ul>
-            )}
-          </section>
+              </div>
+            </section>
 
-          {error && <div className="error" style={{ margin: '0 0 16px' }}>{error}</div>}
+            <section className="panel setup-card" aria-labelledby="setup-scoring">
+              <h2 id="setup-scoring" className="setup-h">Scoring</h2>
+              <div className="setup-tiles" role="radiogroup" aria-labelledby="setup-scoring">
+                {SCORING_METRICS.map(m => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={scoringMetric === m.id}
+                    className="setup-tile"
+                    onClick={() => setScoringMetric(m.id)}
+                  >
+                    {m.label}
+                  </button>
+                ))}
+              </div>
+              <p className="setup-desc">{metric?.desc}</p>
+            </section>
 
-          <button className="btn" type="submit" disabled={busy}>
-            {busy ? 'Creating…' : 'Create tournament'}
-          </button>
+            <section className="panel setup-card" aria-labelledby="setup-who">
+              <h2 id="setup-who" className="setup-h">Invite</h2>
+              <p className="setup-desc setup-desc-top">You're in as the owner. Friends you pick get an invite and join once they accept.</p>
+              {friends.length === 0 ? (
+                <div className="panel-empty">No friends yet — add some first, or make this just for yourself for now.</div>
+              ) : (
+                <div className="setup-chips" role="group" aria-labelledby="setup-who">
+                  {friends.map(f => (
+                    <button
+                      key={f.uid}
+                      type="button"
+                      className="setup-friend"
+                      aria-pressed={inviteUids.includes(f.uid)}
+                      onClick={() => toggleInvite(f.uid)}
+                    >
+                      <span className="setup-friend-dot" style={{ background: colorForUid(f.uid) }} aria-hidden="true" />
+                      {f.username}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* The rules most tournaments leave alone, folded into a line
+                that says what they are. */}
+            <details className="panel setup-card setup-rules">
+              <summary>
+                <span className="setup-h">Rules</span>
+                <span className="setup-rules-summary">{rulesSummary}</span>
+                <span className="setup-rules-change">Change</span>
+              </summary>
+
+              <div className="setup-rule">
+                <span className="field-label">To qualify</span>
+                <div className="stepper">
+                  <button
+                    type="button"
+                    className="stepper-btn"
+                    aria-label="Lower the threshold"
+                    disabled={thresholdPct <= ELIGIBILITY_STEPS[0]}
+                    onClick={() => setThresholdPct(p => ELIGIBILITY_STEPS[Math.max(0, ELIGIBILITY_STEPS.indexOf(p) - 1)])}
+                  >−</button>
+                  <span className="stepper-value">{thresholdPct}%</span>
+                  <button
+                    type="button"
+                    className="stepper-btn"
+                    aria-label="Raise the threshold"
+                    disabled={thresholdPct >= ELIGIBILITY_STEPS[ELIGIBILITY_STEPS.length - 1]}
+                    onClick={() => setThresholdPct(p => ELIGIBILITY_STEPS[Math.min(ELIGIBILITY_STEPS.length - 1, ELIGIBILITY_STEPS.indexOf(p) + 1)])}
+                  >+</button>
+                </div>
+                <span className="field-help">of days played, at least</span>
+              </div>
+
+              <div className="setup-rule-block">
+                <span className="field-label" id="join-label">Joining</span>
+                <div className="setup-seg" role="radiogroup" aria-labelledby="join-label">
+                  {JOIN_POLICIES.map(p => (
+                    <button key={p.id} type="button" role="radio" aria-checked={joinPolicy === p.id} className="setup-seg-btn" onClick={() => setJoinPolicy(p.id)}>
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+                <p className="setup-desc">{join?.desc}</p>
+              </div>
+
+              <div className="setup-rule-block">
+                <span className="field-label" id="reveal-label">Standings reveal</span>
+                <div className="setup-seg setup-seg-wrap" role="radiogroup" aria-labelledby="reveal-label">
+                  {REVEAL_POLICIES.map(p => (
+                    <button key={p.id} type="button" role="radio" aria-checked={revealPolicy === p.id} className="setup-seg-btn" onClick={() => setRevealPolicy(p.id)}>
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+                <p className="setup-desc">{reveal?.desc}</p>
+                {revealPolicy === 'interval' && (
+                  <label className="setup-interval">
+                    Every
+                    <input
+                      type="number"
+                      min={1}
+                      max={28}
+                      value={revealIntervalDays}
+                      onChange={e => setRevealIntervalDays(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                    />
+                    days
+                  </label>
+                )}
+              </div>
+            </details>
+          </div>
+
+          {/* Always in reach: what you're about to make, and the button. */}
+          <div className="setup-bar">
+            <span className="setup-bar-summary">
+              {games.length} {games.length === 1 ? 'game' : 'games'} · {metric?.label}
+              {inviteUids.length > 0 ? ` · ${inviteUids.length} invited` : ''}
+            </span>
+            {error && <span className="setup-bar-error" role="alert">{error}</span>}
+            <button className="btn setup-create" type="submit" disabled={busy}>
+              {busy ? 'Creating…' : 'Create tournament'}
+            </button>
+          </div>
         </form>
       </main>
     </AppShell>

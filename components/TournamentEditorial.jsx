@@ -3,6 +3,7 @@
 // while a member is looking at a tournament — ported from the original
 // dashboard's per-tournament page (header, section tabs, per-game theming).
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { usePlayerGameScores } from '../lib/useScores';
 import { useTournamentMemberJoinDates } from '../lib/useTournaments';
 import { resolveUser } from '../lib/users';
@@ -13,6 +14,7 @@ import StandingsTab from './StandingsTab';
 import HallOfFameTab from './HallOfFameTab';
 import BattleTab from './BattleTab';
 import ScoringTab from './ScoringTab';
+import TournamentChat from './TournamentChat';
 import Skeleton from './Skeleton';
 
 const SECTIONS = [
@@ -20,6 +22,7 @@ const SECTIONS = [
   { id: 'hall',      num: '02', label: 'Hall of Fame' },
   { id: 'battle',    num: '03', label: 'Battle' },
   { id: 'scoring',   num: '04', label: 'Scoring' },
+  { id: 'chat',      num: '05', label: 'Chat' },
 ];
 
 function useMemberNames(memberUids) {
@@ -39,7 +42,19 @@ function useMemberNames(memberUids) {
 }
 
 export default function TournamentEditorial({ tournament, myUid, manageHref }) {
+  const router = useRouter();
   const [section, setSection] = useState('standings');
+  // On a phone the tabs scroll sideways; keep the open one in view (a link
+  // straight to Chat would otherwise open with its tab off-screen).
+  useEffect(() => {
+    document.querySelector('.t-section-tab.active')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }, [section]);
+
+  // A link can open a section directly: /tournaments/{id}?section=chat.
+  useEffect(() => {
+    if (router.isReady && SECTIONS.some(s => s.id === router.query.section)) setSection(router.query.section);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
   const [themeGame, setThemeGame] = useState(tournament.games.length > 1 ? 'overall' : tournament.games[0]);
   const names = useMemberNames(tournament.members);
 
@@ -117,7 +132,10 @@ export default function TournamentEditorial({ tournament, myUid, manageHref }) {
           </div>
         )}
 
-        {!dataReady ? (
+        {section === 'chat' ? (
+          // The chat doesn't need the scores, so it doesn't wait for them.
+          <TournamentChat tournament={tournament} />
+        ) : !dataReady ? (
           <div className="leaderboard-card"><Skeleton variant="rows" count={5} /></div>
         ) : (
           <>
