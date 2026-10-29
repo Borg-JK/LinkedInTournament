@@ -6,7 +6,7 @@
 // The day is explicit rather than "today": puzzles publish at 09:00, so
 // before then the live puzzle is still yesterday's, and you can switch to
 // the previous day to fill in one you missed.
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../lib/useAuth';
 import { useScoresForDate, submitScore, deleteScore } from '../lib/useScores';
 import {
@@ -23,6 +23,41 @@ import Skeleton from './Skeleton';
 function dayLabel(dateIso) {
   const [y, m, d] = dateIso.split('-').map(Number);
   return new Date(y, m - 1, d).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+}
+
+// Edit and Delete, tucked behind "⋯" so the time has the box to itself.
+function ScoreBoxMenu({ label, onEdit, onDelete }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDoc = e => { if (!ref.current?.contains(e.target)) setOpen(false); };
+    const onKey = e => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('mousedown', onDoc); document.removeEventListener('keydown', onKey); };
+  }, [open]);
+  const pick = fn => () => { setOpen(false); fn(); };
+  return (
+    <div className="score-box-menu" ref={ref}>
+      <button
+        type="button"
+        className="score-box-more"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={`${label}: edit or delete`}
+        onClick={() => setOpen(o => !o)}
+      >
+        <span aria-hidden="true">⋯</span>
+      </button>
+      {open && (
+        <div className="score-box-menu-list" role="menu">
+          <button type="button" role="menuitem" onClick={pick(onEdit)}>Edit</button>
+          <button type="button" role="menuitem" className="score-box-menu-danger" onClick={pick(onDelete)}>Delete</button>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function ScoreBox({ game, dateIso, existing, loadError, onRetry, defaultMode }) {
@@ -72,6 +107,9 @@ function ScoreBox({ game, dateIso, existing, loadError, onRetry, defaultMode }) 
   const boxStyle = {
     '--sb-accent': theme.accent,
     '--sb-accent2': theme.accent2,
+    // The time's colour: the game's own, deepened enough to read on its
+    // light background (Queens keeps its light gold on navy).
+    '--sb-ink': theme.onDark ? theme.accent2 : `color-mix(in srgb, ${theme.accent} 70%, #1a1a1a)`,
     '--sb-bg': theme.bg,
     '--sb-bg-soft': theme.bgSoft,
     '--sb-text': theme.onDark ? 'var(--text-on-dark)' : 'var(--text)',
@@ -131,9 +169,9 @@ function ScoreBox({ game, dateIso, existing, loadError, onRetry, defaultMode }) 
       ) : (
         <div className="score-box-done">
           <span className="score-box-time">{formatSeconds(existing.timeSeconds)}</span>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button className="chip-link" onClick={() => setEditing(true)}>Edit</button>
-            <button className="chip-link chip-link-danger" onClick={handleDelete}>Delete</button>
+          <div className="score-box-foot">
+            <span className="score-box-qualifier">{existing.qualifier || ''}</span>
+            <ScoreBoxMenu label={game.label} onEdit={() => setEditing(true)} onDelete={handleDelete} />
           </div>
         </div>
       )}

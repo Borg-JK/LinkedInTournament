@@ -652,7 +652,7 @@ button, input, select {
 }
 @media (hover: hover) and (pointer: fine) { .chip-link:hover { text-decoration: underline; } }
 .chip-link-danger { color: var(--text-muted); transition: color 120ms ease; }
-.score-box .chip-link { color: var(--sb-accent2, var(--accent)); }
+.score-box .chip-link { color: var(--sb-ink, var(--accent)); }
 .score-box .chip-link-danger { color: var(--sb-text-muted, var(--text-muted)); }
 .chip-link-danger:focus-visible,
 .chip-link-danger:active { color: #b0453a; }
@@ -801,36 +801,45 @@ button, input, select {
   .score-boxes-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }
 
+/* The "scoreboard" box: the game and puzzle number small along the top,
+   the time as big as the box allows, then the LinkedIn qualifier
+   ("flawless 👑") and a ⋯ menu for Edit / Delete along the bottom. */
 .score-box {
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(165deg, var(--sb-bg-soft, var(--surface2)) 0%, var(--sb-bg, var(--surface)) 100%);
   color: var(--sb-text, var(--text));
-  border-radius: 14px;
-  border: 1px solid color-mix(in srgb, var(--sb-accent, var(--accent)) 55%, transparent);
-  padding: 16px 10px 14px;
-  text-align: center;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--sb-accent, var(--accent)) 40%, transparent);
+  padding: 14px 16px 10px;
+  text-align: left;
   min-width: 0;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.2) inset,
-    0 8px 20px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
 .score-box-head {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
 }
 
 .score-box-game {
-  font-weight: 700;
-  font-size: 0.86rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .score-box-num {
-  font-size: 0.75rem;
+  flex-shrink: 0;
   color: var(--sb-text-muted, var(--text-muted));
+  font-variant-numeric: tabular-nums;
 }
 
 .score-box-loading {
@@ -842,7 +851,8 @@ button, input, select {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  align-items: center;
+  align-items: flex-start;
+  margin-top: 4px;
 }
 
 .score-box-form input {
@@ -879,8 +889,7 @@ button, input, select {
 .score-box-done {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  flex: 1;
 }
 
 /* Once it's entered, the time is what the box is for: as big as the box
@@ -889,14 +898,87 @@ button, input, select {
    desktop's wider ones, and "10:00" still fits on one line in either. */
 .score-box { container-type: inline-size; }
 .score-box-time {
-  font-family: 'Fraunces', serif;
-  font-size: 2rem;
-  font-size: clamp(2rem, 26cqi, 3.6rem);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 2.4rem;
+  font-size: clamp(2.4rem, 30cqi, 4.75rem);
   line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 8px 0 4px;
+  color: var(--sb-ink, var(--accent));
+}
+
+.score-box-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 32px;
+  margin-top: auto;
+}
+.score-box-qualifier {
+  min-width: 0;
+  font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
-  margin: 2px 0 4px;
-  color: var(--sb-accent, var(--accent));
+  color: var(--sb-text-muted, var(--text-muted));
+  overflow-wrap: anywhere;
+}
+.score-box-qualifier::first-letter { text-transform: uppercase; }
+
+.score-box-menu { position: relative; flex-shrink: 0; margin-right: -6px; }
+.score-box-more {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--sb-text-muted, var(--text-muted));
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--dur-state) ease;
+}
+.score-box-more[aria-expanded="true"] { background: color-mix(in srgb, currentColor 14%, transparent); }
+@media (hover: hover) and (pointer: fine) {
+  .score-box-more:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
+}
+.score-box-menu-list {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 4px);
+  z-index: 5;
+  min-width: 130px;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  transform-origin: bottom right;
+  animation: notif-in 140ms var(--ease-out) both;
+}
+.score-box-menu-list button {
+  display: block;
+  width: 100%;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.score-box-menu-list .score-box-menu-danger { color: var(--loss); }
+@media (hover: hover) and (pointer: fine) {
+  .score-box-menu-list button:hover { background: var(--surface2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .score-box-menu-list { animation: none; }
 }
 
 .score-box-error {
@@ -907,7 +989,7 @@ button, input, select {
 
 .score-box-mode-toggle {
   display: block;
-  margin: 8px auto 0;
+  margin: 8px 0 0;
   font-size: 0.75rem;
   color: var(--sb-text-muted, var(--text-muted));
 }
@@ -940,8 +1022,9 @@ button, input, select {
 }
 .paste-score-actions {
   display: flex;
-  gap: 8px;
-  justify-content: center;
+  align-items: center;
+  gap: 8px 12px;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
@@ -2860,8 +2943,8 @@ html[data-theme="overall"] { --ed-bg:#f4f2ee; --ed-bg-soft:#f4f2ee; --ed-text:rg
 .quick-paste-saved { margin-top: 10px; color: var(--win); font-weight: 600; font-size: 0.88rem; }
 
 /* An empty box when the paste box above does the pasting. */
-.score-box-empty { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.score-box-dash { font-family: 'Fraunces', serif; font-size: 2rem; line-height: 1; color: var(--sb-text-muted, var(--text-muted)); }
+.score-box-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-top: 8px; }
+.score-box-dash { font-size: 2.4rem; font-weight: 800; line-height: 1; color: var(--sb-text-muted, var(--text-muted)); opacity: 0.6; }
 
 /* ── Settings: game order (pages/settings.jsx) ── */
 .order-list { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
