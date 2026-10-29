@@ -313,6 +313,29 @@ service cloud.firestore {
         allow update: if false;
       }
 
+      // The tournament's chat. Only its current members can read it or
+      // post, as themselves, 1–1000 characters, stamped with the server's
+      // time. Messages can't be edited; you can delete your own, and the
+      // owner can delete any.
+      match /messages/{messageId} {
+        function isMember() {
+          return request.auth != null
+            && request.auth.uid in get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.members;
+        }
+        allow read: if isMember();
+        allow create: if isMember()
+                      && request.resource.data.keys().hasOnly(['authorUid', 'text', 'createdAt'])
+                      && request.resource.data.authorUid == request.auth.uid
+                      && request.resource.data.text is string
+                      && request.resource.data.text.size() > 0
+                      && request.resource.data.text.size() <= 1000
+                      && request.resource.data.createdAt == request.time;
+        allow update: if false;
+        allow delete: if request.auth != null
+                      && (resource.data.authorUid == request.auth.uid
+                          || request.auth.uid == get(/databases/$(database)/documents/tournaments/$(tournamentId)).data.ownerId);
+      }
+
       // Holds people waiting for the next calendar month under a 'monthly'
       // joinPolicy — see the tournaments/{id} update rule above for the
       // self-promotion path. Created either by the invitee themselves

@@ -129,6 +129,31 @@ await expect('the poster deletes the mate\'s comment', del('u_ana', c('m1')), tr
 await expect('the mate removes their mate record', del('u_long', MATE), true);
 await expect('without the record, back to no access', read('u_long', REACT('u_nick')), false);
 
+console.log('— tournament chat');
+// Ratio League (t_ratio): Borg, Ana, Nick, JaccoW; owned by Nick.
+// Maximiliana (u_long) isn't in it.
+const MSG = id => `tournaments/t_ratio/messages/${id}`;
+await expect('a member posts a message', write('u_borg', MSG('m1'), { authorUid: str('u_borg'), text: str('who is winning this month?') }, { serverTime: ['createdAt'] }), true);
+await expect('a member reads the chat', read('u_ana', MSG('m1')), true);
+await expect('a non-member reads the chat', read('u_long', MSG('m1')), false);
+await expect('a non-member posts', write('u_long', MSG('m2'), { authorUid: str('u_long'), text: str('hi') }, { serverTime: ['createdAt'] }), false);
+await expect('posting as someone else', write('u_borg', MSG('m3'), { authorUid: str('u_ana'), text: str('hi') }, { serverTime: ['createdAt'] }), false);
+await expect('an empty message', write('u_borg', MSG('m4'), { authorUid: str('u_borg'), text: str('') }, { serverTime: ['createdAt'] }), false);
+await expect('a 1001-character message', write('u_borg', MSG('m5'), { authorUid: str('u_borg'), text: str('x'.repeat(1001)) }, { serverTime: ['createdAt'] }), false);
+await expect('a 1000-character message', write('u_borg', MSG('m6'), { authorUid: str('u_borg'), text: str('x'.repeat(1000)) }, { serverTime: ['createdAt'] }), true);
+await expect('a made-up timestamp', write('u_borg', MSG('m7'), { authorUid: str('u_borg'), text: str('hi'), createdAt: { timestampValue: '2020-01-01T00:00:00Z' } }), false);
+await expect('an extra field on a message', write('u_borg', MSG('m8'), { authorUid: str('u_borg'), text: str('hi'), pinned: { booleanValue: true } }, { serverTime: ['createdAt'] }), false);
+await expect('editing a message afterwards', write('u_borg', MSG('m1'), { authorUid: str('u_borg'), text: str('edited') }, { serverTime: ['createdAt'], update: true }), false);
+await expect('deleting someone else\'s message', del('u_ana', MSG('m1')), false);
+await expect('the owner deletes someone else\'s message', del('u_nick', MSG('m6')), true);
+await expect('deleting your own message', del('u_borg', MSG('m1')), true);
+await expect('a message for the leaving test', write('u_borg', MSG('m10'), { authorUid: str('u_borg'), text: str('bye Jacco') }, { serverTime: ['createdAt'] }), true);
+await expect('while a member: reading it', read('u_jacco', MSG('m10')), true);
+await adminSetMembers('tournaments/t_ratio', ['u_borg', 'u_ana', 'u_nick']);
+await expect('after leaving the tournament: reading the chat', read('u_jacco', MSG('m10')), false);
+await expect('after leaving the tournament: posting', write('u_jacco', MSG('m9'), { authorUid: str('u_jacco'), text: str('hi') }, { serverTime: ['createdAt'] }), false);
+await adminSetMembers('tournaments/t_ratio', ['u_borg', 'u_ana', 'u_nick', 'u_jacco']);
+
 console.log('— unchanged');
 await expect('any signed-in user can still read the score itself', read('u_long', POST), true);
 
